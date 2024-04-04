@@ -857,11 +857,11 @@ the performances of the proposed test statistics.
 \hypertarget{simulated-data}{%
 \subsection{Simulated Data}\label{simulated-data}}
 
-Figure 1a shows the phantom used for a simulated image with dimensions
-of \(250\times 250\) pixels to illustrate the differences between
-heterogeneous (dark, \(\alpha=-2\)) and homogeneous (light,
-\(\alpha=-10\)) regions, with \(L = 5\). The areas are formed by
-independent draws from the \(G^0_I\) distribution.
+Figure~\ref{fig:sim_SAR_Images}(a) shows the phantom used for a
+simulated image with dimensions of \(250\times 250\) pixels to
+illustrate the differences between heterogeneous (dark, \(\alpha=-2\))
+and homogeneous (light, \(\alpha=-10\)) regions, with \(L = 5\). The
+areas are formed by independent draws from the \(G^0_I\) distribution.
 
 The three test statistics are applied to the simulated image using local
 sliding windows of size \(7\times 7\).
@@ -893,12 +893,14 @@ lighter backgrounds represent heterogeneous areas.
 \hypertarget{real-data}{%
 \subsection{Real Data}\label{real-data}}
 
-We applied the proposed test statistics in actual SAR images acquired
-over cities, including Flevoland, Netherlands and Ottawa, Canada.\\
-These images were captured by the Sentinel-1A satellite operating in the
-C band, with VV polarization, intensity format, and \(L=5\) nominal
-looks. Both images have dimensions of \(512 \times 512\) pixels and
-contain urban areas, water forest regions, as shown in
+We assessed the proposed test statistics using two real SAR images. For
+our analysis, we selected images of the city of Frankfurt, Germany, and
+Ottawa, Canada. These images were acquired by the Sentinel-1A satellite
+operating in the C band, with VV polarization, intensity format, and
+\(L=5\) nominal looks.
+
+Both images have dimensions of \(512 \times 512\) pixels and contain
+urban areas, water and forest regions, as shown in
 Figures~\ref{fig:real_SAR_Images_coe}(a)-(b).
 
 The \(p\)-values obtained for the \(S_H\), \(T_{\text{CV}}\), and
@@ -920,7 +922,7 @@ respectively.
 
 }
 
-\caption{Results of applying the test statistics, Frankfurt. (a) $P$-values from the entropy-based test; (b) $P$-values from the CV test; (c) $P$-values from the   $\text{CV}_{\text{MnAD}}$ test; }\label{fig:sim_SAR_Images_Frankfurt}
+\caption{Results of applying the test statistics in Frankfurt image. (a) $P$-values from the entropy-based test; (b) $P$-values from the CV test; (c) $P$-values from the   $\text{CV}_{\text{MnAD}}$ test. }\label{fig:sim_SAR_Images_Frankfurt}
 \end{figure}
 \begin{figure}[H]
 
@@ -928,7 +930,7 @@ respectively.
 
 }
 
-\caption{Results of tests on simulated data with a threshold of $0.1$ of the $p$-value, Frankfurt. (a) Entropy-based test; (b) CV test; (c) $\text{CV}_{\text{MnAD}}$ test.}\label{fig:sim_SAR_Images_01Frankfurt}
+\caption{Test results with a threshold of $0.1$ of the $p$-value for the Frankfurt image. (a) Entropy-based test; (b) CV test; (c) $\text{CV}_{\text{MnAD}}$ test.}\label{fig:sim_SAR_Images_01Frankfurt}
 \end{figure}
 
 \begin{figure}[H]
@@ -937,7 +939,7 @@ respectively.
 
 }
 
-\caption{Results of applying the test statistics, Ottawa. (a) $P$-values from the entropy-based test; (b) $P$-values from the CV test; (c) $P$-values from the   $\text{CV}_{\text{MnAD}}$ test; }\label{fig:sim_SAR_Images_Ottawa}
+\caption{Results of applying the test statistics in Ottawa image. (a) $P$-values from the entropy-based test; (b) $P$-values from the CV test; (c) $P$-values from the   $\text{CV}_{\text{MnAD}}$ test.}\label{fig:sim_SAR_Images_Ottawa}
 \end{figure}
 \begin{figure}[H]
 
@@ -945,7 +947,7 @@ respectively.
 
 }
 
-\caption{Results of tests on simulated data with a threshold of $0.1$ of the $p$-value, Ottawa. (a) Entropy-based test; (b) CV test; (c) $\text{CV}_{\text{MnAD}}$ test.}\label{fig:sim_SAR_Images_01_Ottawa}
+\caption{Test results with a threshold of $0.1$ of the $p$-value for the Ottawa image. (a) Entropy-based test; (b) CV test; (c) $\text{CV}_{\text{MnAD}}$ test.}\label{fig:sim_SAR_Images_01_Ottawa}
 \end{figure}
 
 \hypertarget{sec:conclusion}{%
