@@ -39,7 +39,7 @@ status: submit
   #A Simple summary goes here.
 abstract: |
   This paper presents a statistical approach to identify the underlying roughness characteristics in synthetic aperture radar (SAR) intensity data. The physical modeling of this kind of data allows to use the Gamma distribution in the presence of fully-developed speckle, i.e., when there are infinitely many independent backscatterers per resolution cell. This situation is often called "homogeneous" or 
-  "textureless" areas. The $\mathcal{G}_I^0$ distribution is also a widely accepted law for heterogeneous and extremely heterogeneous areas. We propose three test statistics for discriminating between homogeneous and non-homogeneous areas, i.e., between Gamma and GI0 distributed data, both with a known number of looks. The first test statistic utilizes a bootstrapped non-parametric estimator of the Shannon entropy, offering a robust evaluation in the face of uncertain distributional assumptions. The second test uses the classic coefficient of variation. The third test employs an alternative form of estimating the CV based on the ratio of the median absolute deviation to the median. We apply our test statistic to produce maps of $p$-values for the hypothesis of homogeneity. These maps identify different types of targets. We show that our proposal outperforms its competitors using simulated and SAR data.
+  "textureless" areas. The $\mathcal{G}_I^0$ distribution is also a widely accepted law for heterogeneous and extremely heterogeneous areas. We propose three test statistics for discriminating between homogeneous and non-homogeneous areas, i.e., between Gamma and GI0 distributed data, both with a known number of looks. The first test statistic utilizes a bootstrapped non-parametric estimator of the Shannon entropy, offering a robust evaluation in the face of uncertain distributional assumptions. The second test uses the classic coefficient of variation. The third test employs an alternative form of estimating the CV based on the ratio of the mean absolute deviation from the median to the median. We apply our test statistic to produce maps of $p$-values for the hypothesis of homogeneity. These maps identify different types of targets. We show that our proposal outperforms its competitors using simulated and SAR data.
 # back matter
 keywords: |
   SAR; heterogeneity; entropy;  coefficient of variation; hypothesis tests
@@ -79,16 +79,16 @@ conflictsofinterest: |
   The authors declare no conflict of interest.
 supplementary: |
  This article is fully reproducible using RMarkdown. All code and data are accessible at
- \url{https://github.com/rjaneth/Janeth-Alpala} (accessed on 10 March 2024).
-abbreviations:
-  - short: MDPI
-    long: Multidisciplinary Digital Publishing Institute
-  - short: DOAJ
-    long: Directory of open access journals
-  - short: TLA
-    long: Three letter acronym
-  - short: LD 
-    long: linear dichroism
+ \url{https://github.com/rjaneth/identifying-heterogeneity-in-sar-data-with-new-test-statistics} (accessed on 5 April 2024).
+# abbreviations:
+#   - short: MDPI
+#     long: Multidisciplinary Digital Publishing Institute
+#   - short: DOAJ
+#     long: Directory of open access journals
+#   - short: TLA
+#     long: Three letter acronym
+#   - short: LD 
+#     long: linear dichroism
     
 header-includes:
    - \usepackage[english]{babel}
@@ -102,6 +102,10 @@ header-includes:
    - \usepackage{booktabs}
    - \usepackage{color}
    - \usepackage{amsmath}
+   - \usepackage{multirow}
+   - \usepackage{subcaption}
+   - \captionsetup[sub]{labelfont=bf,textfont=bf}
+
    
 bibliography: references.bib
 #appendix: appendix.tex
@@ -142,6 +146,8 @@ library(latex2exp)
 library(e1071)# kurtosis
 library(viridis)
 library(nortest)# AD
+library(MASS)#
+library(fitdistrplus)# model selection AIC and BIC
 
 
 
@@ -202,10 +208,10 @@ source("../Code/R/Programs/read_ENVI_images.R")
 
 # Introduction {#sec:Introduction}
 
-Synthetic Aperture Radar (SAR) technology has become an important tool for environmental monitoring and disaster management, providing valuable imagery in different conditions, including day or night and diverse weather situations&nbsp;\cite{Mu2019}.
-However, the effective utilization of SAR data depends on a thorough understanding of its statistical properties, especially the impact of speckle effects, which are inherent in SAR data due to the coherent nature of the imaging process.
+Synthetic Aperture Radar (SAR) technology has become an important tool for environmental monitoring and disaster management, providing valuable imagery in different conditions, including day or night and diverse weather situations&nbsp;\cite{Moreira2013,Mu2019}.
+However, the effective utilization of SAR data depends on a thorough understanding of its statistical properties, especially the impact of speckle effects, which are inherent in SAR data due to the coherent nature of the imaging process&nbsp;\cite{Argenti2013}.
 
-In the presence of non-Gaussian speckle interference, SAR data requires a reliable statistical model for accurate processing. The $\mathcal{G}^0$ distribution, suitable for SAR data, includes the Gamma law as a specific case for fully developed speckle, providing flexibility with fewer parameters for analysis.
+In the presence of non-Gaussian speckle interference, SAR data requires a reliable statistical model for accurate processing. The $\mathcal{G}^0$ distribution, suitable for SAR data, includes the Gamma law as a limit case for fully developed speckle&nbsp;\cite{Ferreira2020}, providing flexibility with fewer parameters for analysis.
 
 Our work is motivated to improve the identification of potential roughness features in SAR intensity data. 
 Physical modeling of SAR data allows to take advantage of the gamma distribution in the presence of fully developed speckle, creating a scenario with an infinite number of independent backscatterers per unit of resolution, often referred to as homogeneous areas.
@@ -215,27 +221,37 @@ Hence, to understand the core ideas behind our approach, we explore into the use
 
 The entropy is a fundamental concept in information theory with broad applications to pattern recognition, statistical physics, stochastic dynamics, and statistics. 
 Shannon introduced it for a random variable in 1948&nbsp;\cite{Shannon1948} as a measure of information and uncertainty.  
-In statistics, Shannon entropy is a crucial descriptive parameter, particularly for assessing data dispersion and conducting tests for normality, exponentiality, and uniformity&nbsp;\cite{Wieczorkowski1999}. 
+In statistics, Shannon entropy is a crucial descriptive parameter, particularly for assessing data dispersion and conducting tests for normality, exponentiality, and uniformity&nbsp;\cite{Wieczorkowski1999,Zamanzade2012}. 
 Entropy estimation involves several practical difficulties, especially when the model is unknown; in these cases, non-parametric methods are used.
-Among the non-parametric approaches, Subhash et al.&nbsp;\cite{Subhash2021} discussed the use of spacing methods.
-This non-parametric strategy offers flexibility to address a wide range of models without imposing specific parametric restrictions.
+
+Spacing methods have been discussed as a non-parametric approach in&nbsp;\cite{AlizadehNoughabi2010,Subhash2021}. 
+This strategy offers flexibility to address a wide range of models without imposing specific parametric restrictions.
+
 In our study, entropy serves as the fundamental parameter, providing a robust assessment by means of a bootstrapped non-parametric estimator of Shannon entropy.
 
 
-Simultaneously, we used the classic coefficient of variation (CV) and an alternative form based on the ratio between the median absolute deviation and the median.
-The coefficient of variation, recognised as an efficient and robust index of textural information, measures the homogeneity of the image.
+Simultaneously, we use the classic coefficient of variation (CV) and an alternative form based on the ratio between the median absolute deviation and the median. 
+The CV is known as an efficient and robust index of textural information, measures the homogeneity of the image&nbsp;\cite{Lopes1990}.
+
+The CV, introduced by Pearson&nbsp;\cite{Pearson1896} in 1896, is a relative measure of dispersion widely used in various areas of applied statistics including sampling, biostatistics, medical and biological research, climatology, and other fields \cite{hendricks1936sampling, Tian2005,SubrahmanyaNairy2003,Chankham2024}.
+It facilitates the comparison of variability between different populations and is especially valuable for comparing variables with different units. 
+This is because when the main purpose is to compare variations of several variables, the standard deviation cannot serve as an adequate measure of variation unless all variables are expressed in the same unit of measurement and have identical mean values. 
+When these requirements are not hold for the variables under study, CV is the relative measure typically used in real applications. 
+The variable with the highest CV value is the one with the highest relative dispersion around the mean&nbsp;\cite{Banik2011}.
+
+
 
 Applying these test statistics to generate $p$-value maps facilitates testing of the homogeneity hypothesis, revealing diverse types of targets within the SAR data. 
 Through extensive experimentation involving real and simulated SAR data, we demonstrate the superiority of our proposed methodology over existing approaches.
 
 The article is structured as follows: 
 Section&nbsp;\ref{sec:Background} covers statistical modeling and entropy estimation for Intensity SAR data. Section&nbsp;\ref{sec:test} outlines hypothesis testing based on non-parametric entropy estimators and and coefficient of variation. 
-In Section&nbsp;\ref{sec:results}, we present experimental results. 
+In Section&nbsp;\ref{sec:Results}, we present experimental results. 
 Finally, in Section&nbsp;\ref{sec:conclusion} conclusions are exhibited.
 
 # Background {#sec:Background} 
 
-## Statistical modeling of Intensity SAR data 
+## Statistical Modeling of Intensity SAR data 
 
 The primary models used for intensity SAR data include the Gamma and $\mathcal{G}_I^0$  distributions&nbsp;[@Frery1997]. 
 The first is suitable for fully developed speckle and is a limiting case of the second, which is appealing due to its versatility in accurately representing regions with various roughness characteristics&nbsp;[@Cassetti2022].
@@ -280,7 +296,7 @@ H_{\Gamma_{\text{SAR}}}(L, \mu) =   L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) + \
 H_{G_I^0}(\mu, \alpha, L) =L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) +\ln \mu -\ln\Gamma(L-\alpha)\\
 + (L-\alpha) \psi^{(0)}(L-\alpha)-(1-\alpha)\psi^{(0)}(-\alpha)+\ln (-1-\alpha)+\ln\Gamma(-\alpha)-L,
 \end{multline}
-where $\psi^{(0)}(\cdot)$ is the digamma function. Fig.&nbsp;\ref{fig:Plot_GI0_to_gamma1}, shows the behaviour of the entropy of \(G_I^0\) when when \(\alpha \in \left\{-\infty, -20, -8, -3\right\}\), observing its convergence towards the entropy of \(\Gamma_{\text{SAR}}\) as \(\alpha\) takes large negative values. 
+where $\psi^{(0)}(\cdot)$ is the digamma function. Figure&nbsp;\ref{fig:Plot_GI0_to_gamma1}, shows the behaviour of the entropy of \(G_I^0\) when when \(\alpha \in \left\{-\infty, -20, -8, -3\right\}\), observing its convergence towards the entropy of \(\Gamma_{\text{SAR}}\) as \(\alpha\) takes large negative values. 
 
 ```{r Plot_GI0_to_gamma1, echo=FALSE, message=FALSE, warning=FALSE, out.width="70%", fig.show="hold", fig.pos="hbt", fig.cap="$H_{ G_I^0}$ converges to the $H_{\\Gamma_{\\text{SAR}}}$ with $L=8$."}
 
@@ -387,7 +403,7 @@ The results are consistent for the other situations.
 In the case of the bootstrap technique, each sample is replicated $100$ times with replacement.
 We choose to use the following heuristic formula for spacing, $m=\left[\sqrt{n}+0.5\right]$.
 
-In Fig.&nbsp;\ref{fig:Plot_bias_mse_gi0} we depict comparisons of bias and mean squared error (MSE) between the original non-parametric entropy estimators and their respective bootstrap-enhanced versions. 
+In Figure&nbsp;\ref{fig:Plot_bias_mse_gi0} we depict comparisons of bias and mean squared error (MSE) between the original non-parametric entropy estimators and their respective bootstrap-enhanced versions. 
 The use of the bootstrap technique exhibits more precision, reduced bias and MSE, and improved convergence.
 The results of simulation are exhibited in Table&nbsp;\ref{tab:table2}.
 
@@ -525,43 +541,51 @@ knitr::kable(
 
 ```
 
-# Hypothesis testing based on non-parametric entropy {#sec:test}
 
-General asymptotic results for functions of spacings are detailed in Ref.&nbsp;\cite{Khashimov1990}, while Van Es&nbsp;\cite{Bert1992} developed a correction for the case of Shannon entropy.
-Following the work of these authors, the next result applies: 
-<!-- \begin{lemma} -->
-<!-- Suppose that $f(\cdot)$ is a bounded density bounded away from zero and satisfies a Lipschitz condition on its support. -->
-<!-- Then, if $m,n\rightarrow \infty$ and $m=o(n^{1/2})$, one holds that: -->
-<!-- \begin{equation*} -->
-<!-- \sqrt{n}\,\Big(\label{Eq:bias_t} -->
-<!-- \widetilde{H}_{i}+\int_{-\infty}^\infty f(z)\ln f(z) \mathrm{d}z\Big) -->
-<!-- \xrightarrow[]{\mathcal{D}} -->
-<!-- \mathcal{N}\big(0,\operatorname{Var}(\ln f(Z))\big), -->
-<!-- \end{equation*} -->
-<!-- where $o(\cdot)$ represents the little-o. -->
-<!-- \end{lemma}  -->
+## Coefficient of variation and a robust alternative
+
+The population CV is defined as a ratio of the population standard deviation $(\sigma)$ to the population mean $(\mu)$:
+
+\begin{align}
+	\text{CV}=\frac{\sigma}{\mu}, \quad \mu \neq 0.
+\end{align}
+
+<!-- In practice, the population CV is unknown and needs to be estimated.  -->
+<!-- The typical sample estimate of the population CV is given as: -->
+<!-- \begin{align} -->
+<!-- 	\text{CV}=\frac{S}{\bar{X}},  -->
+<!-- \end{align} -->
+<!-- where $S$ and $\bar{X}$ are the sample standard deviation and the sample mean, respectively. -->
+
+
+We explore a robust alternative to the CV as discussed in \cite{Ospina2019}, involving the ratio of the mean absolute deviation from the median (MnAD) to the median, two well-known robust measures of scale and location, respectively. The MnAD is defined as $n^{-1}\sum_{i=1}^n|x_i-\widehat{Q}_2|$, where $\widehat{Q}_2$ represents an estimate of the population median, which can be approximated by the sample median. 
+  
+  
+# Hypothesis Testing  {#sec:test}
+
 
 
 We aim at testing the following hypotheses: 
 
 $$
- \begin{cases}\mathcal{H}_0: \widetilde{H}= H_{\Gamma_{\text{SAR}}}\\ 
-  \mathcal{H}_1:\widetilde{H}\neq H_{\Gamma_{\text{SAR}}}.\end{cases}
+ \begin{cases}\mathcal{H}_0: \text{ The data comes from the } \Gamma_{\text{SAR}}\\ 
+  \mathcal{H}_1:\text{ The data comes from the } G_I^0.\end{cases}
 $$
-In other words, we verify the hypothesis that the data are fully-developed speckle with the following test statistic:
+In other words, we verify the hypothesis that the data are fully-developed speckle.
+The proposed tests are described below.
+
+## The Proposed Test Based on Non-parametric Entropy
+
+The first test statistic assess the behavior of the data under the null hypothesis, through the empirical distribution.
 \begin{equation}
 \label{Eq:test_e}
-S(\bm{Z};L)= \widetilde{H}-\left[H_{\Gamma_{\text{SAR}}}(L)+\ln \widebar{\bm{Z}}\right].
+S_H= \widetilde{H}-\left[H_{\Gamma_{\text{SAR}}}(L)+\ln \widebar{Z}\right].
 \end{equation}
-<!-- This test statistic assess the behavior of the data under the null hypothesis, through the empirical distribution.  -->
 The values should be around zero under the null hypothesis and far otherwise. 
 <!-- This suggests significant differences and implies the presence of heterogeneous clutter. -->
 
-# Results {#sec:results} 
 
-
-## The Proposed Test
-Fig.&nbsp;\ref{fig:Plot_density} depicts empirical test statistic densities for various sample sizes, and Table&nbsp;\ref{tab:table_stat_combined} summarizes key statistics, including mean, SD, variance (Var), skewness (SK), excess kurtosis (EK), and Anderson–Darling $p$-values for normality. 
+Figure&nbsp;\ref{fig:Plot_density} depicts empirical test statistic densities for various sample sizes, and Table&nbsp;\ref{tab:table_stat_combined} summarizes key statistics, including mean, SD, variance (Var), skewness (SK), excess kurtosis (EK), and Anderson–Darling $p$-values for normality. 
 <!-- ACF Only show L=2 and L=8 -->
 Results with $p$-values larger than $0.05$  indicate no evidence against normality. 
 Small variance and near-zero skewness and excess kurtosis suggest limited spread, symmetry, and light tails.  
@@ -648,7 +672,7 @@ for (L in L_values) {
 
 ```
 
-```{r Plot_density, echo=FALSE, message=FALSE, warning=FALSE, out.width="80%", fig.pos="hbt",  fig.cap="Empirical density  under null hypothesis.", fig.width=6, fig.height=5.0}
+```{r Plot_density, echo=FALSE, message=FALSE, warning=FALSE, out.width="80%", fig.pos="hbt",  fig.cap="Empirical density  under the null hypothesis.", fig.width=6, fig.height=5.0}
 
 theme_set(theme_minimal() +
             theme(text = element_text(family = "serif"),
@@ -703,11 +727,14 @@ summary_stats_5 <- all_summary_stats[["5"]]
 load("./Data/results1_8.Rdata")
 summary_stats_8 <- all_summary_stats[["8"]]
 
+load("./Data/results1_11.Rdata")
+summary_stats_11 <- all_summary_stats[["11"]]
 
 combined_summary_stats <- rbind(
   transform(summary_stats_2),
   transform(summary_stats_5),
-  transform(summary_stats_8)
+  transform(summary_stats_8),
+  transform(summary_stats_11)
   
 )
 colnames(combined_summary_stats) <- c("$L$", "$n$", "Mean", "SD", "Var", "SK", "EK", "$p$-value")
@@ -731,7 +758,7 @@ combined_summary_stats[] <- lapply(combined_summary_stats, function(x) {
 
 table_result_combined <- knitr::kable(
   combined_summary_stats,
-  caption = "Descriptive analysis of $S(\\bm Z; L)$ with $L\\in\\left\\{3,5, 8\\right\\}$ and $\\mu=1$.",
+  caption = "Descriptive analysis of $S_H$ with $L\\in\\left\\{3,5, 8,11\\right\\}$ and $\\mu=1$.",
   format = "latex",
   booktabs = TRUE,
   align = "lrrrrrrr",
@@ -960,52 +987,165 @@ save(results_power, file = "./Data/results_power1.Rdata")
 
 ```
 
-```{r Table_size_and_power, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
-#cat("\\setlength{\\tabcolsep}{4pt}\n")
-
-load("./Data/type_I_results1.Rdata")
 
 
-type_I_error_rates <- tapply(results$P_Value, INDEX = list(results$L, results$Sample_Size, results$Alpha_Nominal), FUN = function(p_values) {
-  sum(p_values) / length(p_values)  
-})
 
 
-type_I_error_results <- as.data.frame(as.table(type_I_error_rates))
+## The Proposed Test Based on Coefficient of Variation and a Robust Alternative
 
-colnames(type_I_error_results) <- c("L", "Sample_Size", "Alpha_Nominal", "Type_I_Error_Rate")
-
-spread_results <- spread(type_I_error_results, key = Alpha_Nominal, value = Type_I_Error_Rate)
-
-
-spread_results <- spread_results %>% 
-  select(L, Sample_Size, `0.01`, `0.05`, `0.1`)
-
-load("./Data/results_power1.Rdata")
+In addition to the entropy-based test, we also propose a test statistic based on the classical CV. This test statistic is defined as follows:
+\begin{align}
+	T_{\text{CV}}=\frac{S}{\widebar{Z}},
+\end{align}
+where $S$ and $\widebar{Z}$ are the sample standard deviation and the sample mean, respectively.
 
 
-summary_stats <- results_power %>%
-  spread(key = alpha_nominal, value = power) %>%
-  select(L, Sample_Size, `0.01`, `0.05`, `0.1`)
+Similarly, we use another test statistic based on the ratio of the MnAD to the median. This statistic is given by:
+\begin{align}
+	T_{\text{CV}_{\text{MnAD}}}=\frac{\text{MnAD}}{\text{Median}}.
+\end{align}
+These test statistics allow assessing the variability of the data.
+
+The situations where the use of CV and $\text{CV}_{\text{MnAD}}$ may be appropriate, i.e. where the observations are positive, the log-normal (LN) and inverse Gaussian (IG) distribution are often more justified compared to Gamma and Weibull distributions \cite{Chaubey2017,takagi1997application}.
+
+The inverse Gaussian distribution is shown to be well approximated by the log-normal distribution \cite{whitmore1978} which implies that the IG distribution also does not share the problem of non-existence of fixed width confidence interval with the Gaussian case.
 
 
-combined_results <- merge(spread_results, summary_stats, by = c("L", "Sample_Size"))
-combined_results <- combined_results %>% 
-  arrange(L, Sample_Size)
+The LN distribution in two parameters has the following density function.
+\begin{align}
+	f_Z(z;\mu, \sigma )=\frac{1}{\sigma z\sqrt{2\pi}}\exp\left\{-\frac{(\ln z- \mu)^2}{2\sigma^2}\right\}, \quad z>0, \sigma>0, -\infty < \mu < \infty,
+\end{align}
+here, $\mu$ is the log-scale parameter and $\sigma$ is the shape parameter. 
 
-combined_results <- combined_results %>% 
-  select(L, Sample_Size, `0.01.x`, `0.05.x`, `0.1.x`, `0.01.y`, `0.05.y`, `0.1.y`)
 
 
-colnames(combined_results) <- c("$L$", "$n$", "$1\\%$", "$5\\%$", "$10\\%$", "$1\\%$", "$5\\%$", "$10\\%$")
+## Model Selection Criterion   
+
+Akaike information criterion (AIC) and Bayesian information criterion (BIC) are used to select the best fitting distribution. 
+
+The AIC is a fine technique that deals with the trade-off between the goodness-of-fit of the model and the simplicity of the model in terms of the number of model parameters&nbsp;\cite{Burnham2004}. 
+The model or distribution with the lowest value of AIC is chosen to be the best.
+The BIC assesses goodness-of-fit of a distribution or model, but avoids overfitting by penalising an additional degree of freedom&nbsp;\cite{Dziak2019}. 
+The model with the lowest BIC value is chosen as the best.
+
+
+
+The AIC and BIC results in Tables&nbsp;\ref{tab:table_aic_gamma}-\ref{tab:table_aic_gio_MnADmedian} indicate that the CV and $\text{CV}_{\text{MnAD}}$ data from different synthetic sample sizes, extracted from the Gamma SAR and $G_I^0$ distributions, respectively, adhere to the characteristics of an LN distribution.
+The AIC and BIC values of the IG distribution and the LN distribution are not significantly different because both distributions are based on the right-skewed characteristic.
+In this situation, the model for the LN distribution was considered to be the best due to it providing the lowest AIC and BIC values.
+
+
+
+Figures&nbsp;\ref{fig:Plot_cv}-\ref{fig:Plot_madmed_gi0_MnADmedian} present density plots, Q-Q plots, P-P plots, and Cumulative Distribution Function plots, which offer an additional measure of goodness-of-fit and confirm that the most suitable distribution to be considered is the LN distribution.
+
+```{r Simulated_AIC_BIC_gamma, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1234567890, kind = "Mersenne-Twister")
+R <- 15000
+mu <- 1
+L <- 5
+#B <- 5
+#alpha1 <- -3
+sample.sizes <- c(25, 49, 81, 121)
+
+
+results_AIC <- data.frame(Test = character(),
+                          SampleSize = integer(),
+                          Normal = numeric(),
+                          Lognormal = numeric(),
+                          Gamma = numeric(),
+                          Weibull = numeric(),
+                          InverseGaussian = numeric())
+
+results_BIC <- data.frame(Test = character(),
+                          SampleSize = integer(),
+                          Normal = numeric(),
+                          Lognormal = numeric(),
+                          Gamma = numeric(),
+                          Weibull = numeric(),
+                          InverseGaussian = numeric())
+
+for (s in sample.sizes) {
+  TestStatistics <- numeric(0)
+  
+  for (r in 1:R) {
+    z <- gamma_sar_sample(L, mu, s)
+    #z <- gi0_sample(mu, alpha1, L, s)
+    TestStat <- sd(z) / mean(z)
+    TestStatistics <- c(TestStatistics, TestStat)
+  }
+  
+  fit_weibull <- fitdistr(TestStatistics, "weibull")
+  fit_lognormal <- fitdistr(TestStatistics, "lognormal")
+  fit_gamma <- fitdistr(TestStatistics, "gamma")
+  fit_normal <- fitdistr(TestStatistics, "normal")
+  
+  AIC_values <- c(AIC(fit_weibull), AIC(fit_lognormal), AIC(fit_gamma), AIC(fit_normal))
+  BIC_values <- c(BIC(fit_weibull), BIC(fit_lognormal), BIC(fit_gamma), BIC(fit_normal))
+  
+  dinvgauss <- function(x, mu, lambda) {
+    sqrt(lambda / (2 * pi * x^3)) * exp(-lambda * (x - mu)^2 / (2 * mu^2 * x))
+  }
+  
+  negLL_invgauss <- function(params, data) {
+    mu <- params[1]
+    lambda <- params[2]
+    CV <- data
+    
+    -sum(log(dinvgauss(CV, mu, lambda)))
+  }
+  
+  fit_invGauss <- fitdist(data = TestStatistics, distr = "invgauss", method = "mle",
+                          start = list(mu = mean(TestStatistics), lambda = var(TestStatistics)))
+  
+  log_likelihood <- logLik(fit_invGauss)
+  num_params <- length(coef(fit_invGauss))
+  n <- length(TestStatistics)
+  AIC_manual <- -2 * log_likelihood + 2 * num_params
+  BIC_manual <- -2 * log_likelihood + num_params * log(n)
+  
+  results_AIC <- rbind(results_AIC, data.frame(Test = "AIC",
+                                               SampleSize = s,
+                                               Normal = AIC_values[4],
+                                               Lognormal = AIC_values[2],
+                                               Gamma = AIC_values[3],
+                                               Weibull = AIC_values[1],
+                                               InverseGaussian = AIC_manual))
+  
+  results_BIC <- rbind(results_BIC, data.frame(Test = "BIC",
+                                               SampleSize = s,
+                                               Normal = BIC_values[4],
+                                               Lognormal = BIC_values[2],
+                                               Gamma = BIC_values[3],
+                                               Weibull = BIC_values[1],
+                                               InverseGaussian = BIC_manual))
+}
+
+
+save(results_AIC, results_BIC, file = "./Data/results_AIC_BIC_gamma.Rdata")
+
+```
+
+```{r Table_AIC_BIC_gamma, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+
+load("./Data/results_AIC_BIC_gamma.Rdata")
+
+combined <- rbind(results_AIC, results_BIC)
+rownames(combined) <- NULL
+
+colnames(combined) <- c("\\textbf{Criterion}", "$\\bm{n}$", "\\textbf{Normal}", "\\textbf{Lognormal}", "\\textbf{Gamma}", "\\textbf{Weibull}", "\\textbf{Inverse Gaussian}")
+
+
+#combined$`Inverse Gaussian` <- c("\\multirow{2}{*}{Inverse}", "Gaussian")
+
+
 
 # LaTeX notation 
-combined_results[] <- lapply(combined_results, function(x) {
+combined[] <- lapply(combined, function(x) {
   if (is.numeric(x)) {
     if (all(x %% 1 == 0)) {
       formatted_numbers <- sprintf("$%d$", x)
     } else {
-      formatted_numbers <- ifelse(x < 0, sprintf("$%.3f$", x), sprintf("$\\phantom{-}%.3f$", x))
+      formatted_numbers <- ifelse(x < 0, sprintf("$%.2f$", x), sprintf("$\\phantom{-}%.2f$", x))
     }
     return(formatted_numbers)
   } else {
@@ -1014,33 +1154,710 @@ combined_results[] <- lapply(combined_results, function(x) {
 })
 
 
-table_combined_result <- knitr::kable(
-  combined_results,
-  caption = "Size and Power of the proposed test.",
+table_result_combined <- knitr::kable(
+  combined,
+  caption = "AIC and BIC values for evaluating the best distribution with CV data from Gamma SAR.",
   format = "latex",
   booktabs = TRUE,
-  align = "lcccccccc",
+  align = "lccccccc",
   escape = FALSE,
-  digits = 3,
-  label = "table_size_power",
+  digits = 2,
+  label = "table_aic_gamma",
   centering = FALSE,
-  linesep = "",
-  table.envir = "table", position = "H")%>%
-  add_header_above(c(" ", " ", "Size" = 3,  "Power" = 3)) %>%
-  collapse_rows(columns = 1:2, latex_hline = "major", valign = "middle") %>%
+  table.envir = "table", position = "H") %>%
+  collapse_rows(latex_hline = "major", valign = "middle") %>%
   row_spec(0,  align = "c")
 
-print(table_combined_result)
+print(table_result_combined)
+```
+
+```{r Simulated_AIC_BIC_GI0, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1234567890, kind = "Mersenne-Twister")
+R <- 15000
+mu <- 1
+L <- 5
+B <- 5
+alpha1 <- -3
+sample.sizes <- c(25, 49, 81, 121)
+
+# Simulación y cálculo de resultados
+results_AIC <- data.frame(Test = character(),
+                          SampleSize = integer(),
+                          Normal = numeric(),
+                          Lognormal = numeric(),
+                          Gamma = numeric(),
+                          Weibull = numeric(),
+                          InverseGaussian = numeric())
+
+results_BIC <- data.frame(Test = character(),
+                          SampleSize = integer(),
+                          Normal = numeric(),
+                          Lognormal = numeric(),
+                          Gamma = numeric(),
+                          Weibull = numeric(),
+                          InverseGaussian = numeric())
+
+for (s in sample.sizes) {
+  TestStatistics <- numeric(0)
+  
+  for (r in 1:R) {
+    z <- gi0_sample(mu, alpha1, L, s)
+    TestStat <- sd(z) / mean(z)
+    TestStatistics <- c(TestStatistics, TestStat)
+  }
+  
+  fit_weibull <- fitdistr(TestStatistics, "weibull")
+  fit_lognormal <- fitdistr(TestStatistics, "lognormal")
+  fit_gamma <- fitdistr(TestStatistics, "gamma")
+  fit_normal <- fitdistr(TestStatistics, "normal")
+  
+  AIC_values <- c(AIC(fit_weibull), AIC(fit_lognormal), AIC(fit_gamma), AIC(fit_normal))
+  BIC_values <- c(BIC(fit_weibull), BIC(fit_lognormal), BIC(fit_gamma), BIC(fit_normal))
+  
+  dinvgauss <- function(x, mu, lambda) {
+    sqrt(lambda / (2 * pi * x^3)) * exp(-lambda * (x - mu)^2 / (2 * mu^2 * x))
+  }
+  
+  negLL_invgauss <- function(params, data) {
+    mu <- params[1]
+    lambda <- params[2]
+    CV <- data
+    
+    -sum(log(dinvgauss(CV, mu, lambda)))
+  }
+  
+  fit_invGauss <- fitdist(data = TestStatistics, distr = "invgauss", method = "mle",
+                          start = list(mu = mean(TestStatistics), lambda = var(TestStatistics)))
+  
+  log_likelihood <- logLik(fit_invGauss)
+  num_params <- length(coef(fit_invGauss))
+  n <- length(TestStatistics)
+  AIC_manual <- -2 * log_likelihood + 2 * num_params
+  BIC_manual <- -2 * log_likelihood + num_params * log(n)
+  
+  results_AIC <- rbind(results_AIC, data.frame(Test = "AIC",
+                                               SampleSize = s,
+                                               Normal = AIC_values[4],
+                                               Lognormal = AIC_values[2],
+                                               Gamma = AIC_values[3],
+                                               Weibull = AIC_values[1],
+                                               InverseGaussian = AIC_manual))
+  
+  results_BIC <- rbind(results_BIC, data.frame(Test = "BIC",
+                                               SampleSize = s,
+                                               Normal = BIC_values[4],
+                                               Lognormal = BIC_values[2],
+                                               Gamma = BIC_values[3],
+                                               Weibull = BIC_values[1],
+                                               InverseGaussian = BIC_manual))
+}
+
+# Guardar los resultados en un archivo .Rdata
+save(results_AIC, results_BIC, file = "./Data/results_AIC_BIC.Rdata")
+
+```
+
+```{r Table_AIC_BIC, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+
+load("./Data/results_AIC_BIC.Rdata")
+
+combined <- rbind(results_AIC, results_BIC)
+rownames(combined) <- NULL
+
+colnames(combined) <- c("\\textbf{Criterion}", "$\\bm{n}$", "\\textbf{Normal}", "\\textbf{Lognormal}", "\\textbf{Gamma}", "\\textbf{Weibull}", "\\textbf{Inverse Gaussian}")
+
+# Modificar el nombre de la última columna para que esté en dos líneas
+#combined$`Inverse Gaussian` <- c("\\multirow{2}{*}{Inverse}", "Gaussian")
 
 
+
+# LaTeX notation 
+combined[] <- lapply(combined, function(x) {
+  if (is.numeric(x)) {
+    if (all(x %% 1 == 0)) {
+      formatted_numbers <- sprintf("$%d$", x)
+    } else {
+      formatted_numbers <- ifelse(x < 0, sprintf("$%.2f$", x), sprintf("$\\phantom{-}%.2f$", x))
+    }
+    return(formatted_numbers)
+  } else {
+    return(x)
+  }
+})
+
+
+table_result_combined <- knitr::kable(
+  combined,
+  caption = "AIC and BIC values for evaluating the best distribution with CV data from $G_I^0$.",
+  format = "latex",
+  booktabs = TRUE,
+  align = "lccccccc",
+  escape = FALSE,
+  digits = 2,
+  label = "table_aic",
+  centering = FALSE,
+  table.envir = "table", position = "H") %>%
+  collapse_rows(latex_hline = "major", valign = "middle") %>%
+  row_spec(0,  align = "c")
+
+print(table_result_combined)
+```
+
+```{r Simulated_AIC_BIC_gamma_MnADmedian, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+set.seed(1234567890, kind = "Mersenne-Twister")
+R <- 15000
+mu <- 1
+L <- 5
+sample.sizes <- c(25, 49, 81, 121)
+
+# madmedian <- function(x){
+#   mdn <- median(x)
+#   MAD <- 1.4826 * median(abs(x - mdn))
+#   MAD/mdn
+# }
+
+MnADmedian <- function(x){
+  mdn <- median(x)
+  MnAD <- mean(abs(x - mdn))
+  MnAD/mdn
+}
+
+results_AIC <- data.frame(Test = character(),
+                          SampleSize = integer(),
+                          Normal = numeric(),
+                          Lognormal = numeric(),
+                          Gamma = numeric(),
+                          Weibull = numeric(),
+                          InverseGaussian = numeric())
+
+results_BIC <- data.frame(Test = character(),
+                          SampleSize = integer(),
+                          Normal = numeric(),
+                          Lognormal = numeric(),
+                          Gamma = numeric(),
+                          Weibull = numeric(),
+                          InverseGaussian = numeric())
+
+for (s in sample.sizes) {
+  TestStatistics <- numeric(0)
+  
+  for (r in 1:R) {
+    z <- gamma_sar_sample(L, mu, s)
+    # z <- gi0_sample(mu, alpha1, L, s)
+    madmed <- MnADmedian(z)  
+    TestStatistics <- c(TestStatistics, madmed)
+  }
+  
+  fit_weibull <- fitdistr(TestStatistics, "weibull")
+  fit_lognormal <- fitdistr(TestStatistics, "lognormal")
+  fit_gamma <- fitdistr(TestStatistics, "gamma")
+  fit_normal <- fitdistr(TestStatistics, "normal")
+  
+  AIC_values <- c(AIC(fit_weibull), AIC(fit_lognormal), AIC(fit_gamma), AIC(fit_normal))
+  BIC_values <- c(BIC(fit_weibull), BIC(fit_lognormal), BIC(fit_gamma), BIC(fit_normal))
+  
+  dinvgauss <- function(x, mu, lambda) {
+    sqrt(lambda / (2 * pi * x^3)) * exp(-lambda * (x - mu)^2 / (2 * mu^2 * x))
+  }
+  
+  negLL_invgauss <- function(params, data) {
+    mu <- params[1]
+    lambda <- params[2]
+    CV <- data
+    
+    -sum(log(dinvgauss(CV, mu, lambda)))
+  }
+  
+  fit_invGauss <- fitdist(data = TestStatistics, distr = "invgauss", method = "mle",
+                          start = list(mu = mean(TestStatistics), lambda = var(TestStatistics)))
+  
+  log_likelihood <- logLik(fit_invGauss)
+  num_params <- length(coef(fit_invGauss))
+  n <- length(TestStatistics)
+  AIC_manual <- -2 * log_likelihood + 2 * num_params
+  BIC_manual <- -2 * log_likelihood + num_params * log(n)
+  
+  results_AIC <- rbind(results_AIC, data.frame(Test = "AIC",
+                                               SampleSize = s,
+                                               Normal = AIC_values[4],
+                                               Lognormal = AIC_values[2],
+                                               Gamma = AIC_values[3],
+                                               Weibull = AIC_values[1],
+                                               InverseGaussian = AIC_manual))
+  
+  results_BIC <- rbind(results_BIC, data.frame(Test = "BIC",
+                                               SampleSize = s,
+                                               Normal = BIC_values[4],
+                                               Lognormal = BIC_values[2],
+                                               Gamma = BIC_values[3],
+                                               Weibull = BIC_values[1],
+                                               InverseGaussian = BIC_manual))
+}
+
+save(results_AIC, results_BIC, file = "./Data/results_AIC_BIC_gamma_MnADmedian.Rdata")
+
+```
+
+```{r Table_AIC_BIC_gamma_MnADmedian, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+
+load("./Data/results_AIC_BIC_gamma_MnADmedian.Rdata")
+
+combined <- rbind(results_AIC, results_BIC)
+rownames(combined) <- NULL
+
+colnames(combined) <- c("\\textbf{Criterion}", "$\\bm{n}$", "\\textbf{Normal}", "\\textbf{Lognormal}", "\\textbf{Gamma}", "\\textbf{Weibull}", "\\textbf{Inverse Gaussian}")
+
+
+#combined$`Inverse Gaussian` <- c("\\multirow{2}{*}{Inverse}", "Gaussian")
+
+
+
+# LaTeX notation 
+combined[] <- lapply(combined, function(x) {
+  if (is.numeric(x)) {
+    if (all(x %% 1 == 0)) {
+      formatted_numbers <- sprintf("$%d$", x)
+    } else {
+      formatted_numbers <- ifelse(x < 0, sprintf("$%.2f$", x), sprintf("$\\phantom{-}%.2f$", x))
+    }
+    return(formatted_numbers)
+  } else {
+    return(x)
+  }
+})
+
+
+table_result_combined <- knitr::kable(
+  combined,
+  caption = "AIC and BIC values for evaluating the best distribution with $\\text{CV}_{\\text{MnAD}}$ data from Gamma SAR.",
+  format = "latex",
+  booktabs = TRUE,
+  align = "lccccccc",
+  escape = FALSE,
+  digits = 2,
+  label = "table_aic_gamma_madmed",
+  centering = FALSE,
+  table.envir = "table", position = "H") %>%
+  collapse_rows(latex_hline = "major", valign = "middle") %>%
+  row_spec(0,  align = "c")
+
+print(table_result_combined)
+```
+
+
+```{r Simulated_AIC_BIC_GI0_MnADmedian, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1234567890, kind = "Mersenne-Twister")
+R <- 15000
+mu <- 1
+L <- 5
+B <- 5
+alpha1 <- -5
+sample.sizes <- c(25, 49, 81, 121)
+
+
+# madmedian <- function(x){
+#   mdn <- median(x)
+#   MAD <- 1.4826 * median(abs(x - mdn))
+#   return(MAD/mdn)
+# }
+
+MnADmedian <- function(x){
+  mdn <- median(x)
+  MnAD <- mean(abs(x - mdn))
+  MnAD/mdn
+}
+results_AIC <- data.frame(Test = character(),
+                          SampleSize = integer(),
+                          Normal = numeric(),
+                          Lognormal = numeric(),
+                          Gamma = numeric(),
+                          Weibull = numeric(),
+                          InverseGaussian = numeric())
+
+results_BIC <- data.frame(Test = character(),
+                          SampleSize = integer(),
+                          Normal = numeric(),
+                          Lognormal = numeric(),
+                          Gamma = numeric(),
+                          Weibull = numeric(),
+                          InverseGaussian = numeric())
+
+for (s in sample.sizes) {
+  TestStatistics <- numeric(0)
+  
+  for (r in 1:R) {
+    z <- gi0_sample(mu, alpha1, L, s)
+    madmed <- MnADmedian(z) 
+    TestStatistics <- c(TestStatistics, madmed)
+  }
+  
+  fit_weibull <- fitdistr(TestStatistics, "weibull")
+  fit_lognormal <- fitdistr(TestStatistics, "lognormal")
+  fit_gamma <- fitdistr(TestStatistics, "gamma")
+  fit_normal <- fitdistr(TestStatistics, "normal")
+  
+  AIC_values <- c(AIC(fit_weibull), AIC(fit_lognormal), AIC(fit_gamma), AIC(fit_normal))
+  BIC_values <- c(BIC(fit_weibull), BIC(fit_lognormal), BIC(fit_gamma), BIC(fit_normal))
+  
+  dinvgauss <- function(x, mu, lambda) {
+    sqrt(lambda / (2 * pi * x^3)) * exp(-lambda * (x - mu)^2 / (2 * mu^2 * x))
+  }
+  
+  negLL_invgauss <- function(params, data) {
+    mu <- params[1]
+    lambda <- params[2]
+    CV <- data
+    
+    -sum(log(dinvgauss(CV, mu, lambda)))
+  }
+  
+  fit_invGauss <- fitdist(data = TestStatistics, distr = "invgauss", method = "mle",
+                          start = list(mu = mean(TestStatistics), lambda = var(TestStatistics)))
+  
+  log_likelihood <- logLik(fit_invGauss)
+  num_params <- length(coef(fit_invGauss))
+  n <- length(TestStatistics)
+  AIC_manual <- -2 * log_likelihood + 2 * num_params
+  BIC_manual <- -2 * log_likelihood + num_params * log(n)
+  
+  results_AIC <- rbind(results_AIC, data.frame(Test = "AIC",
+                                               SampleSize = s,
+                                               Normal = AIC_values[4],
+                                               Lognormal = AIC_values[2],
+                                               Gamma = AIC_values[3],
+                                               Weibull = AIC_values[1],
+                                               InverseGaussian = AIC_manual))
+  
+  results_BIC <- rbind(results_BIC, data.frame(Test = "BIC",
+                                               SampleSize = s,
+                                               Normal = BIC_values[4],
+                                               Lognormal = BIC_values[2],
+                                               Gamma = BIC_values[3],
+                                               Weibull = BIC_values[1],
+                                               InverseGaussian = BIC_manual))
+}
+
+
+save(results_AIC, results_BIC, file = "./Data/results_AIC_BIC_GI0_MnADmedian.Rdata")
+
+```
+
+
+```{r Table_AIC_BIC_GI0_MnADmedian, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+
+load("./Data/results_AIC_BIC_GI0_MnADmedian.Rdata")
+
+combined <- rbind(results_AIC, results_BIC)
+rownames(combined) <- NULL
+
+colnames(combined) <- c("\\textbf{Criterion}", "$\\bm{n}$", "\\textbf{Normal}", "\\textbf{Lognormal}", "\\textbf{Gamma}", "\\textbf{Weibull}", "\\textbf{Inverse Gaussian}")
+
+
+#combined$`Inverse Gaussian` <- c("\\multirow{2}{*}{Inverse}", "Gaussian")
+
+
+
+# LaTeX notation 
+combined[] <- lapply(combined, function(x) {
+  if (is.numeric(x)) {
+    if (all(x %% 1 == 0)) {
+      formatted_numbers <- sprintf("$%d$", x)
+    } else {
+      formatted_numbers <- ifelse(x < 0, sprintf("$%.2f$", x), sprintf("$\\phantom{-}%.2f$", x))
+    }
+    return(formatted_numbers)
+  } else {
+    return(x)
+  }
+})
+
+
+table_result_combined <- knitr::kable(
+  combined,
+  caption = "AIC and BIC values for evaluating the best distribution with $\\text{CV}_{\\text{MnAD}}$ data from $G_I^0$.",
+  format = "latex",
+  booktabs = TRUE,
+  align = "lccccccc",
+  escape = FALSE,
+  digits = 2,
+  label = "table_aic_gio_MnADmedian",
+  centering = FALSE,
+  table.envir = "table", position = "H") %>%
+  collapse_rows(latex_hline = "major", valign = "middle") %>%
+  row_spec(0,  align = "c")
+
+print(table_result_combined)
+```
+
+```{r Simulated_cv_gamma, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1234567890, kind = "Mersenne-Twister")
+
+sample.size <- c(49)
+R <- 15000
+mu <- 1
+L <- 5
+B <- 5
+alpha1 <- -2
+
+TestStatistics <- numeric(0)  
+
+for (s in sample.size) {
+  for (r in 1:R) {
+    z <- gamma_sar_sample(L, mu, s)
+    #z <- gi0_sample(mu, alpha1, L, s)
+    TestStat <- sd(z) / mean(z)
+    TestStatistics <- c(TestStatistics, TestStat)  
+  }
+}
+
+save(TestStatistics, file = "./Data/rTestStatistics_gamma_49.Rdata")
+```
+
+```{r Plot_cv_gamma, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with CV data from Gamma SAR, with  $n=49$, $L=5$ and $\\mu=1$.", fig.width=8, fig.height=6}
+
+
+load("./Data/rTestStatistics_gamma_49.Rdata")
+
+# Ajustar las distribuciones a los datos
+fln <- fitdist(TestStatistics, "lnorm")
+fg <- fitdist(TestStatistics, "gamma")
+fn <- fitdist(TestStatistics, "norm")  # Ajuste para la distribución normal
+fw <- fitdist(TestStatistics, "weibull")
+
+# Graficar las comparaciones
+par(mfrow = c(2, 2), mar = c(4, 4, 2, 1))
+plot.legend <- c( "Lognormal", "Gamma", "Normal", "Weibull") 
+denscomp(list( fln, fg, fn,fw), legendtext = plot.legend, fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlab = "CV")
+qqcomp(list(fln, fg, fn,fw), legendtext = plot.legend,fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlegend = "topleft", ylegend = NULL)
+cdfcomp(list(fln, fg, fn,fw), legendtext = plot.legend, fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlab = "CV")
+ppcomp(list(fln, fg, fn,fw), legendtext = plot.legend,fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlegend = "topleft", ylegend = NULL)
+
+```
+
+```{r Simulated_cv_gi0, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1234567890, kind = "Mersenne-Twister")
+
+sample.size <- c(49)
+R <- 15000
+mu <- 1
+L <- 5
+B <- 5
+alpha1 <- -2
+
+TestStatistics <- numeric(0)  
+
+for (s in sample.size) {
+  for (r in 1:R) {
+    z <- gi0_sample(mu, alpha1, L, s)
+    TestStat <- sd(z) / mean(z)
+    TestStatistics <- c(TestStatistics, TestStat)  
+  }
+}
+
+save(TestStatistics, file = "./Data/rTestStatistics_gi0_49.Rdata")
+```
+
+```{r Plot_cv, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with $\\text{CV}_{\\text{MnAD}}$ data from $G_I^0$, with  $n=49$, $L=5$, $\\mu=1$ and $\\alpha=-2$.", fig.width=8, fig.height=6}
+
+
+load("./Data/rTestStatistics_gi0_49.Rdata")
+
+#
+fln <- fitdist(TestStatistics, "lnorm")
+fg <- fitdist(TestStatistics, "gamma")
+fn <- fitdist(TestStatistics, "norm")  
+fw <- fitdist(TestStatistics, "weibull")
+
+# 
+par(mfrow = c(2, 2), mar = c(4, 4, 2, 1))
+plot.legend <- c( "Lognormal", "Gamma", "Normal", "Weibull") 
+denscomp(list( fln, fg, fn,fw), legendtext = plot.legend, fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlab = "CV")
+qqcomp(list(fln, fg, fn,fw), legendtext = plot.legend,fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlegend = "topleft", ylegend = NULL)
+cdfcomp(list(fln, fg, fn,fw), legendtext = plot.legend, fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlab = "CV")
+ppcomp(list(fln, fg, fn,fw), legendtext = plot.legend,fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlegend = "topleft", ylegend = NULL)
+
+```
+
+
+```{r Simulated_MnADmedian_gamma, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1234567890, kind = "Mersenne-Twister")
+
+sample.size <- c(49)
+R <- 15000
+mu <- 1
+L <- 5
+B <- 5
+alpha1 <- -2
+
+MnADmedian <- function(x){
+  mdn <- median(x)
+  MnAD <- mean(abs(x - mdn))
+  MnAD/mdn
+}
+
+TestStatistics <- numeric(0)  
+
+for (s in sample.size) {
+  for (r in 1:R) {
+    z <- gamma_sar_sample(L, mu, s)
+    #z <- gi0_sample(mu, alpha1, L, s)
+    TestStat <- MnADmedian(z)
+    TestStatistics <- c(TestStatistics, TestStat)  
+  }
+}
+
+save(TestStatistics, file = "./Data/rTestStatistics_gamma_49_MnADmedian.Rdata")
+```
+
+```{r Plot_MnADmedian_gamma, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with $\\text{CV}_{\\text{MnAD}}$ data from Gamma SAR, with  $n=49$, $L=5$ and $\\mu=1$.", fig.width=8, fig.height=6}
+
+
+load("./Data/rTestStatistics_gamma_49_MnADmedian.Rdata")
+
+# Ajustar las distribuciones a los datos
+fln <- fitdist(TestStatistics, "lnorm")
+fg <- fitdist(TestStatistics, "gamma")
+fn <- fitdist(TestStatistics, "norm")  # Ajuste para la distribución normal
+fw <- fitdist(TestStatistics, "weibull")
+
+# Graficar las comparaciones
+par(mfrow = c(2, 2), mar = c(4, 4, 2, 1))
+plot.legend <- c( "Lognormal", "Gamma", "Normal", "Weibull") 
+denscomp(list( fln, fg, fn,fw), legendtext = plot.legend, fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlab = "CV")
+qqcomp(list(fln, fg, fn,fw), legendtext = plot.legend,fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlegend = "topleft", ylegend = NULL)
+cdfcomp(list(fln, fg, fn,fw), legendtext = plot.legend, fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlab = "CV")
+ppcomp(list(fln, fg, fn,fw), legendtext = plot.legend,fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlegend = "topleft", ylegend = NULL)
+
+```
+
+
+```{r Simulated_MnADmedian_gi0, echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1234567890, kind = "Mersenne-Twister")
+
+sample.size <- c(49)
+R <- 12000
+mu <- 1
+L <- 5
+#B <- 5
+alpha1 <- -5
+
+
+MnADmedian <- function(x){
+  mdn <- median(x)
+  MnAD <- mean(abs(x - mdn))
+  MnAD/mdn
+}
+
+TestStatistics_mad <- numeric(0)  
+
+for (s in sample.size) {
+  for (r in 1:R) {
+    z <- gi0_sample(mu, alpha1, L, s)
+    madmed <- MnADmedian(z)
+    TestStatistics_mad <- c(TestStatistics_mad, madmed)  
+  }
+}
+
+save(TestStatistics_mad, file = "./Data/rTestStatistics_MnADmedian_gi0_49.Rdata")
+```
+
+```{r Plot_madmed_gi0_MnADmedian, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.pos="hbt",  fig.cap="Goodness of fit plots for evaluating the best distribution with $CV_{\\text{MnAD}}$ data from $G_I^0$, with  $n=49$, $L=5$, $\\mu=1$ and $\\alpha=-5$.", fig.width=8, fig.height=6}
+
+
+load("./Data/rTestStatistics_MnADmedian_gi0_49.Rdata")
+
+#
+fln <- fitdist(TestStatistics_mad, "lnorm")
+fg <- fitdist(TestStatistics_mad, "gamma")
+fn <- fitdist(TestStatistics_mad, "norm")  
+fw <- fitdist(TestStatistics_mad, "weibull")
+
+# 
+par(mfrow = c(2, 2), mar = c(4, 4, 2, 1))
+plot.legend <- c( "Lognormal", "Gamma", "Normal", "Weibull") 
+denscomp(list( fln, fg, fn,fw), legendtext = plot.legend, fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlab = "CV")
+qqcomp(list(fln, fg, fn,fw), legendtext = plot.legend,fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlegend = "topleft", ylegend = NULL)
+cdfcomp(list(fln, fg, fn,fw), legendtext = plot.legend, fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlab = "CV")
+ppcomp(list(fln, fg, fn,fw), legendtext = plot.legend,fitcol = c("darkblue", "#637029","indianred3","#FDA75F"), fitlwd=c(3,3,3,3),xlegend = "topleft", ylegend = NULL)
 
 ```
 
 
 
+# Simulation Results {#sec:Results} 
+
+This section presents simulations performed to obtain an assessment of the performances of the proposed test statistics.
+
+## Simulated Data
+
+Figure 1a shows the phantom used for a simulated image with dimensions of $250\times 250$ pixels to illustrate the differences between heterogeneous (dark, $\alpha=-2$) and homogeneous (light, $\alpha=-10$) regions, with $L = 5$. 
+The areas are formed by independent draws from the $G^0_I$ distribution.
+
+The three test statistics are applied to the simulated image using local sliding windows of size $7\times 7$.
+
+The resulting $p$-values for the tests $S_H$, $T_{\text{CV}}$, and $T_{\text{CV}_{\text{MnAD}}}$ are shown in Figures&nbsp;\ref{fig:sim_SAR_Images}(b)-(d) and Figures&nbsp;\ref{fig:sim_SAR_Images_p05}(a)-(c), respectively. 
+The new images reveal that a darker background indicates homogeneity, while lighter backgrounds represent heterogeneous areas.
+
+```{r sim_SAR_Images, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H', fig.cap='Results of applying the test statistics. (a) Simulated image; $P$-values from the entropy-based test; (c) $P$-values from the CV test; (d) $P$-values from the   $\\text{CV}_{\\text{MnAD}}$ test; ',  fig.subcap=c('', '', '', ''), out.width = c("40mm", "40mm","40mm", "40mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/simulated7x7.png")
+knitr::include_graphics("../Figures/PNG/sim_pvalue7x7_total_H.png")
+knitr::include_graphics("../Figures/PNG/sim_pvalue7x7_total_cv.png")
+knitr::include_graphics("../Figures/PNG/sim_pvalue7x7_total_mnad.png")
+```
+```{r sim_SAR_Images_p05, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H', fig.cap='Results of tests on simulated data with a threshold of $0.1$ of the $p$-value. (a) Entropy-based test; (b) CV test; (c) $\\text{CV}_{\\text{MnAD}}$ test.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("40mm", "40mm","40mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/sim_pvalue7x7_H.png")
+knitr::include_graphics("../Figures/PNG/sim_pvalue7x7_cv.png")
+knitr::include_graphics("../Figures/PNG/sim_pvalue7x7_mnad.png")
+
+```
+
+## Real Data
+
+
+We applied the proposed test statistics in actual SAR images acquired over cities, including Flevoland, Netherlands and Ottawa, Canada.   
+These images were captured by the Sentinel-1A satellite operating in the C band,  with  VV polarization, intensity format, and $L=5$ nominal looks.
+Both images have dimensions of $512 \times 512$ pixels and contain urban areas, water forest regions, as shown in  Figures&nbsp;\ref{fig:real_SAR_Images_coe}(a)-(b).
+
+The $p$-values obtained for the $S_H$, $T_{\text{CV}}$, and $T_{\text{CV}_{\text{MnAD}}}$ tests are presented in Figures&nbsp;\ref{fig:sim_SAR_Images_Frankfurt}-\ref{fig:sim_SAR_Images_01_Ottawa}, respectively. 
+
+```{r real_SAR_Images_coe, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H', fig.cap='SAR images. (a) Frankfurt; (b) Ottawa. ',  fig.subcap=c(' ', ' ',' ' ), out.width = c("40mm", "40mm"),  fig.ncol=2, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/Intensity_Frankfurt_512_n.png")
+knitr::include_graphics("../Figures/PNG/Intensity_Ottawa_512_n.png")
+#knitr::include_graphics("../Figures/PNG/sim_pvalue7x7_mnad.png")
+
+```
+```{r sim_SAR_Images_Frankfurt, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H', fig.cap='Results of applying the test statistics, Frankfurt. (a) $P$-values from the entropy-based test; (b) $P$-values from the CV test; (c) $P$-values from the   $\\text{CV}_{\\text{MnAD}}$ test; ',  fig.subcap=c(' ', ' ',' ' ), out.width = c("40mm", "40mm","40mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/Frankfurt_512_pvalue7x7_total_H.png")
+knitr::include_graphics("../Figures/PNG/Frankfurt_512_pvalue7x7_total_CV.png")
+knitr::include_graphics("../Figures/PNG/Frankfurt_512_mnad_7_total.png")
+
+```
+```{r sim_SAR_Images_01Frankfurt, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H', fig.cap='Results of tests on simulated data with a threshold of $0.1$ of the $p$-value, Frankfurt. (a) Entropy-based test; (b) CV test; (c) $\\text{CV}_{\\text{MnAD}}$ test.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("40mm", "40mm","40mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/Frankfurt_512_pvalue7x7_H_01.png")
+knitr::include_graphics("../Figures/PNG/Frankfurt_512_pvalue7x7_CV.png")
+knitr::include_graphics("../Figures/PNG/Frankfurt_512_mnad_7_0.1.png")
+
+```
+
+
+```{r sim_SAR_Images_Ottawa, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H', fig.cap='Results of applying the test statistics, Ottawa. (a) $P$-values from the entropy-based test; (b) $P$-values from the CV test; (c) $P$-values from the   $\\text{CV}_{\\text{MnAD}}$ test; ',  fig.subcap=c(' ', ' ',' ' ), out.width = c("40mm", "40mm","40mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/Ottawa_512_pvalue7x7_total_H.png")
+knitr::include_graphics("../Figures/PNG/Ottawa_512_CV_pvalue7x7_total_CV.png")
+knitr::include_graphics("../Figures/PNG/Ottawa_512_mnad_7_total.png")
+
+```
+```{r sim_SAR_Images_01_Ottawa, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H', fig.cap='Results of tests on simulated data with a threshold of $0.1$ of the $p$-value, Ottawa. (a) Entropy-based test; (b) CV test; (c) $\\text{CV}_{\\text{MnAD}}$ test.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("40mm", "40mm","40mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/Ottawa_512_pvalue7x7_H_01.png")
+knitr::include_graphics("../Figures/PNG/Ottawa_512_CV_pvalue7x7_CV.png")
+knitr::include_graphics("../Figures/PNG/Ottawa_512_mnad_7_0.1.png")
+
+```
+
 
 # Conclusion {#sec:conclusion} 
 
-
+In this article,...
 
 
