@@ -217,8 +217,8 @@ Our work aims to improve the identification of potential roughness features in S
 <!-- ACF The following sentence is misleading: the gamma law is a consequence of infinitely many backscatterers with none dominating the return, not the other way aroud. Rephrase. -->
 Physical modeling of SAR data allows to take advantage of the gamma distribution in the presence of fully-developed speckle and to create a scenario with an infinite number of independent backscatterers per resolution unit, often referred to as homogeneous regions.
 
-In this context, we present a set of three novel test statistics that aim to distinguish between homogeneous and non-homogeneous domains, in particular between gamma and \(\mathcal{G}^0\) distributed data, each with a known number of looks. 
-To understand the core ideas behind our approach, we explore the use of properties such as entropy and coefficient of variation.
+In this context, we present a set of three novel test statistics that aim to distinguish between homogeneous and non-homogeneous return, in particular between gamma and \(\mathcal{G}^0\) distributed data, assuming the number of looks is known. 
+We use properties such as entropy and coefficient of variation.
 
 Entropy is a fundamental concept in information theory with far-reaching applications in pattern recognition, statistical physics, image processing, edge detection and SAR image analysis&nbsp;\cite{Presse2013,MohammadDjafari2015,Avval2021, Nascimento2014,Nascimento2019}. 
 Shannon introduced it in 1948&nbsp;\cite{Shannon1948} for a random variable as a measure of information and uncertainty.
