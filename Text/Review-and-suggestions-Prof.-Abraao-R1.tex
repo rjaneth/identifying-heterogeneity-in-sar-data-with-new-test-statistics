@@ -129,16 +129,26 @@ Pernambuco, Recife 50670-901, PE, Brazil; \\
 %\conference{} % An extended version of a conference paper
 
 % Abstract (Do not insert blank lines, i.e. \\)
-\abstract{
-This paper presents a statistical approach to identify the underlying roughness properties in synthetic aperture radar (SAR) intensity data. 
-The physical modeling of this type of data allows the use of the gamma distribution in the presence of fully developed speckle, i.e. when there are infinitely many independent backscatters per resolution cell. This situation is often referred to as ``homogeneous'' or ``textureless'' regions. 
-The \(\mathcal{G}_I^0\) distribution is also a widely accepted law for heterogeneous and extremely heterogeneous regions. 
-We propose three test statistics to distinguish between homogeneous and inhomogeneous regions, i.e. between gamma and \(\mathcal{G}_I^0\) distributed data, both with a known number of looks. 
-The first test statistic uses a bootstrapped nonparametric estimator of Shannon entropy, which provides a robust assessment in the face of uncertain distributional assumptions.
-The second test uses the classical coefficient of variation. 
-The third test uses an alternative form of estimating the CV based on the ratio of the mean absolute deviation from the median to the median. 
-We apply our test statistic to create maps of \(p\) values for the hypothesis of homogeneity. These maps identify different types of targets. 
-We show that our proposal outperforms its competitors using simulated and SAR data.}
+\abstract{This paper presents a statistical approach to identify the
+underlying roughness characteristics in synthetic aperture radar (SAR)
+intensity data. The physical modeling of this kind of data allows to use
+the Gamma distribution in the presence of fully-developed speckle, i.e.,
+when there are infinitely many independent backscatterers per resolution
+cell. This situation is often called ``homogeneous'' or ``textureless''
+areas. The \(\mathcal{G}_I^0\) distribution is also a widely accepted
+law for heterogeneous and extremely heterogeneous areas. We propose
+three test statistics for discriminating between homogeneous and
+non-homogeneous areas, i.e., between Gamma and GI0 distributed data,
+both with a known number of looks. The first test statistic utilizes a
+bootstrapped non-parametric estimator of the Shannon entropy, offering a
+robust evaluation in the face of uncertain distributional assumptions.
+The second test uses the classic coefficient of variation. The third
+test employs an alternative form of estimating the CV based on the ratio
+of the mean absolute deviation from the median to the median. We apply
+our test statistic to produce maps of \(p\)-values for the hypothesis of
+homogeneity. These maps identify different types of targets. We show
+that our proposal outperforms its competitors using simulated and SAR
+data.}
 
 
 % Keywords
@@ -242,37 +252,91 @@ hypothesis tests}
 \hypertarget{sec:Introduction}{%
 \section{Introduction}\label{sec:Introduction}}
 
-Synthetic Aperture Radar (SAR) technology has become an important tool for environmental monitoring and disaster management. It provides valuable images under various conditions, including day or night and different weather situations~\cite{Moreira2013,Mu2019}. However, the effective use of SAR data depends on a thorough understanding of its statistical properties, especially the impact of speckle effects inherent in SAR data due to the coherent nature of the imaging process~\cite{Argenti2013}.
+Synthetic Aperture Radar (SAR) technology has become an important tool
+for environmental monitoring and disaster management, providing valuable
+imagery in different conditions, including day or night and diverse
+weather situations~\cite{Moreira2013,Mu2019}. However, the effective
+utilization of SAR data depends on a thorough understanding of its
+statistical properties, especially the impact of speckle effects, which
+are inherent in SAR data due to the coherent nature of the imaging
+process~\cite{Argenti2013}.
 
-In the presence of non-Gaussian speckle interference, SAR data requires a reliable statistical model for accurate processing. The
-\(\mathcal{G}^0\) distribution, which is suitable for SAR data, includes the
-Gamma law as the limiting case for fully developed speckle~\cite{Ferreira2020} and provides flexibility with fewer parameters for analysis.
+In the presence of non-Gaussian speckle interference, SAR data requires
+a reliable statistical model for accurate processing. The
+\(\mathcal{G}^0\) distribution, suitable for SAR data, includes the
+Gamma law as a limit case for fully developed
+speckle~\cite{Ferreira2020}, providing flexibility with fewer parameters
+for analysis.
 
-Our work aims to improve the identification of potential roughness features in SAR intensity data. Physical modeling of SAR data allows to take advantage of the gamma distribution in the presence of fully developed speckles and to create a scenario with an infinite number of independent backscatterers per resolution unit, often referred to as homogeneous regions.
+Our work is motivated to improve the identification of potential
+roughness features in SAR intensity data. Physical modeling of SAR data
+allows to take advantage of the gamma distribution in the presence of
+fully developed speckle, creating a scenario with an infinite number of
+independent backscatterers per unit of resolution, often referred to as
+homogeneous areas.
 
-In this context, we present a set of three novel test statistics that aim to distinguish between homogeneous and non-homogeneous domains, in particular between gamma and
-\(\mathcal{G}^0\) distributed data, each with a known number of looks. To understand the core ideas behind our approach, we explore the use of properties such as entropy and coefficient of variation.
+In this context, we present a set of three novel test statistics
+designed to discriminate between homogeneous and non-homogeneous areas,
+specifically aimed at differentiating between Gamma and
+\(\mathcal{G}^0\) distributed data, each with a known number of
+appearances. Hence, to understand the core ideas behind our approach, we
+explore into the use of properties such as entropy and coefficient of
+variation.
 
-Entropy is a fundamental concept in information theory with far-reaching applications in pattern recognition, statistical physics, stochastic dynamics and statistics. Shannon introduced it in 1948~\cite{Shannon1948} for a random variable as a measure of information and uncertainty.\\
-In statistics, Shannon entropy is a crucial descriptive parameter, especially for evaluating data dispersion and performing tests for normality, exponentiality and uniformity~\cite{Wieczorkowski1999,Zamanzade2012}. Entropy estimation is associated with some practical difficulties, especially when the model is unknown. In these cases, non-parametric methods are used.
-Spacing methods have been discussed as a non-parametric approach in~\cite{AlizadehNoughabi2010,Subhash2021}. This strategy provides the flexibility to consider a wide range of models without enforcing certain parametric constraints.
+The entropy is a fundamental concept in information theory with broad
+applications to pattern recognition, statistical physics, stochastic
+dynamics, and statistics. Shannon introduced it for a random variable in
+1948~\cite{Shannon1948} as a measure of information and uncertainty.\\
+In statistics, Shannon entropy is a crucial descriptive parameter,
+particularly for assessing data dispersion and conducting tests for
+normality, exponentiality, and
+uniformity~\cite{Wieczorkowski1999,Zamanzade2012}. Entropy estimation
+involves several practical difficulties, especially when the model is
+unknown; in these cases, non-parametric methods are used.
 
-The coefficient of variation (CV), introduced in 1896 by Pearson~\cite{Pearson1896}, is a relative dispersion measure widely used in various fields of applied statistics, including sampling, biostatistics, medical and biological research, climatology and other fields
-\cite{hendricks1936sampling, Tian2005,SubrahmanyaNairy2003,Chankham2024}.
-It facilitates the comparison of variability between different populations and is particularly valuable for comparing variables with different units. This is because when the main purpose is to compare the variations of several variables, the standard deviation can only serve as an adequate measure of variation if all variables are expressed in the same unit of measurement and have identical means. If these conditions are not met for the variables under investigation, the CV is the relative measure that is usually used in real applications. The variable with the highest CV value is the one with the largest relative dispersion around the mean value~\cite{Banik2011}.
+Spacing methods have been discussed as a non-parametric approach
+in~\cite{AlizadehNoughabi2010,Subhash2021}. This strategy offers
+flexibility to address a wide range of models without imposing specific
+parametric restrictions.
 
-In our study, entropy serves as a fundamental parameter that allows a robust evaluation using a bootstrapped nonparametric estimator of the
+In our study, entropy serves as the fundamental parameter, providing a
+robust assessment by means of a bootstrapped non-parametric estimator of
 Shannon entropy.
-At the same time, we use the classical CV and an alternative form based on the ratio between the median absolute deviation and the median. 
-The CV is known as an efficient and robust index for texture information and measures the homogeneity of the image~\cite{Lopes1990}.
-Applying these test statistics to generate maps of \(p\) values facilitates testing the homogeneity hypothesis and reveals different types of targets in the SAR data. 
-Through extensive experiments with real and simulated SAR data, we demonstrate the superiority of our proposed method over existing approaches.
+
+Simultaneously, we use the classic coefficient of variation (CV) and an
+alternative form based on the ratio between the median absolute
+deviation and the median. The CV is known as an efficient and robust
+index of textural information, measures the homogeneity of the
+image~\cite{Lopes1990}.
+
+The CV, introduced by Pearson~\cite{Pearson1896} in 1896, is a relative
+measure of dispersion widely used in various areas of applied statistics
+including sampling, biostatistics, medical and biological research,
+climatology, and other fields
+\cite{hendricks1936sampling, Tian2005,SubrahmanyaNairy2003,Chankham2024}.
+It facilitates the comparison of variability between different
+populations and is especially valuable for comparing variables with
+different units. This is because when the main purpose is to compare
+variations of several variables, the standard deviation cannot serve as
+an adequate measure of variation unless all variables are expressed in
+the same unit of measurement and have identical mean values. When these
+requirements are not hold for the variables under study, CV is the
+relative measure typically used in real applications. The variable with
+the highest CV value is the one with the highest relative dispersion
+around the mean~\cite{Banik2011}.
+
+Applying these test statistics to generate \(p\)-value maps facilitates
+testing of the homogeneity hypothesis, revealing diverse types of
+targets within the SAR data. Through extensive experimentation involving
+real and simulated SAR data, we demonstrate the superiority of our
+proposed methodology over existing approaches.
 
 The article is structured as follows: Section~\ref{sec:Background}
-deals with statistical modeling and entropy estimation for intensity SAR
-data. Section~\ref{sec:test} outlines hypothesis tests based on nonparametric entropy estimators and coefficients of variation. In
-Section~\ref{sec:Results} we present experimental results. Finally, in
-Section~\ref{sec:conclusion} the conclusions are presented.
+covers statistical modeling and entropy estimation for Intensity SAR
+data. Section~\ref{sec:test} outlines hypothesis testing based on
+non-parametric entropy estimators and and coefficient of variation. In
+Section~\ref{sec:Results}, we present experimental results. Finally, in
+Section~\ref{sec:conclusion} conclusions are exhibited.
 
 \hypertarget{sec:Background}{%
 \section{Background}\label{sec:Background}}
@@ -281,48 +345,50 @@ Section~\ref{sec:conclusion} the conclusions are presented.
 \subsection{Statistical Modeling of Intensity SAR
 data}\label{statistical-modeling-of-intensity-sar-data}}
 
-The primary models used for SAR intensity data include the gamma and the
-\(\mathcal{G}_I^0\) distributions~\citep{Frery1997}. The first model is suitable for fully developed speckle and is a limiting case of the second model, which is interesting due to its versatility in accurately representing regions with different roughness properties~\citep{Cassetti2022}.
-We denote
+The primary models used for intensity SAR data include the Gamma and
+\(\mathcal{G}_I^0\) distributions~\citep{Frery1997}. The first is
+suitable for fully developed speckle and is a limiting case of the
+second, which is appealing due to its versatility in accurately
+representing regions with various roughness
+characteristics~\citep{Cassetti2022}. We denote
 \(Z \sim \Gamma_{\text{SAR}}(L, \mu)\) and
 \(Z \sim G_I^0(\alpha, \gamma, L)\) to indicate that \(Z\) follows the
 distributions characterized by the respective probability density
-functions (pdfs): 
-\begin{align}
-    f_Z(z;L, \mu)&=\frac{L^L}{\Gamma(L)\mu^L}z^{L-1}\exp\left\{-Lz/\mu\right\} \mathbbm 1_{\mathbbm R_+}(z)\label{E:gamma1}\\
-    \intertext{ and }
+functions: \begin{align}
+    f_Z(z;L, \mu)&=\frac{L^L}{\Gamma(L)\mu^L}z^{L-1}\exp\left\{-Lz/\mu\right\} \mathbbm 1_{\mathbbm R_+}(z),\label{E:gamma1}\\
     f_Z(z; \alpha, \gamma, L)&=\frac{L^L\Gamma(L-\alpha)}{\gamma^{\alpha}\Gamma(-\alpha)\Gamma(L)}\cdot\frac{z^{L-1}}{(\gamma+Lz)^{L-\alpha}} \mathbbm 1_{\mathbbm R_+}(z),\label{E:gi01}
-\end{align} 
-where \(\mu > 0\) is the mean, \(\gamma > 0\) is the scale, \(\alpha < -1\) measures
+\end{align} where, in~\eqref{E:gamma1} \(\mu > 0\) is the mean;
+in~\eqref{E:gi01} \(\gamma > 0\) is the scale, \(\alpha < -1\) measures
 the roughness, \(L \geq 1\) is the number of looks, \(\Gamma(\cdot)\) is
 the gamma function, and \(\mathbbm 1_{A}(z)\) is the indicator function
 of the set \(A\).
 
-If we take the law with the density~\eqref{E:gi01}, the \(r\)th non-central moment of \(Z\) is expressed as follows:
+From \eqref{E:gi01}, the \(r\)th moment of \(Z\) is expressed as:
 \begin{align}
-    E_{G_I^0}\left(Z^r\right)=\left(\frac{\gamma}{L}\right)^r\frac{\Gamma(-\alpha-r)}{\Gamma(-\alpha)}\cdot\frac{\Gamma(L+r)}{\Gamma(L)}, \quad \alpha <-r. 
+    E_{G_I^0}\left(Z^r\right)=\left(\frac{\gamma}{L}\right)^r\frac{\Gamma(-\alpha-r)}{\Gamma(-\alpha)}\cdot\frac{\Gamma(L+r)}{\gamma(L)}, \quad \alpha <-r. 
     \label{E:rmom}
 \end{align}
 
-Although the \(\mathcal{G}_I^0\) distribution is defined by the parameters \(\alpha\) and \(\gamma\), in the SAR literature~\cite{Nascimento2010} the texture \(\alpha\) and the mean \(\mu\) are usually used. In this way, we calculate the expected value \(\mu\) using the expression in~\eqref{E:rmom}, and we reparametrize~\eqref{E:gi01} with \(\mu\),
-\(\alpha\), and \(L\).
-Then \begin{align*}
+Even though the \(\mathcal{G}_I^0\) distribution is defined by the
+parameters \(\alpha\) and \(\gamma\), SAR literature commonly utilizes
+the texture \(\alpha\) and the mean \(\mu\)~\cite{Nascimento2010}. In
+this way, we compute the expected value \(\mu\) using the expression
+in~\eqref{E:rmom}, and we reparametrize~\eqref{E:gi01} using \(\mu\),
+\(\alpha\), and \(L\). Then \begin{align*}
     \mu=\left(\frac{\gamma}{L}\right)\frac{\Gamma(-\alpha-1)}{\Gamma(-\alpha)}\cdot\frac{\Gamma(L+1)}{\gamma(L)}=-\frac{\gamma}{\alpha+1}.
-\end{align*} 
-The reparametrized pdf that characterizes the law \(G_I^0(\mu, \alpha, L)\) is thus
-\begin{equation}
-        f_Z(z; \mu, \alpha, L)=\frac{L^L\Gamma(L-\alpha)}{\big[-\mu(\alpha+1)\big]^{\alpha}\Gamma(-\alpha)\Gamma(L)} \frac{z^{L-1}}{\big[-\mu(\alpha+1)+Lz\big]^{L-\alpha}}.\label{E:gi02}
+\end{align*} Thus, the probability density function that characterize
+the \(G_I^0(\mu, \alpha, L)\) law is \begin{equation}
+        f_Z(z; \mu, \alpha, L)=\frac{L^L\Gamma(L-\alpha)}{\big(-\mu(\alpha+1)\big)^{\alpha}\Gamma(-\alpha)\Gamma(L)} \frac{z^{L-1}}{\big(-\mu(\alpha+1)+Lz\big)^{L-\alpha}}.\label{E:gi02}
 \end{equation}
 
 \hypertarget{the-shannon-entropy}{%
 \subsection{The Shannon Entropy}\label{the-shannon-entropy}}
 
-The parametric representation of the Shannon entropy for a system described by a continuous random variable is:
-\begin{equation}
+The parametric representation of Shannon entropy for a system described
+by a continuous random variable is: \begin{equation}
   \label{E:entropy2}
   H(Z)=-\int_{-\infty }^\infty \ f(z)\ln f(z)\, \mathrm{d}z,
-\end{equation} 
-here, \(f(\cdot)\) is the pdf
+\end{equation} here, \(f(\cdot)\) is the probability density function
 that characterizes the distribution of the real-valued random variable
 \(Z\).
 
@@ -337,12 +403,11 @@ H_{\Gamma_{\text{SAR}}}(L, \mu) =   L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) + \
 H_{G_I^0}(\mu, \alpha, L) =L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) +\ln \mu -\ln\Gamma(L-\alpha)\\
 + (L-\alpha) \psi^{(0)}(L-\alpha)-(1-\alpha)\psi^{(0)}(-\alpha)+\ln (-1-\alpha)+\ln\Gamma(-\alpha)-L,
 \end{multline} where \(\psi^{(0)}(\cdot)\) is the digamma function.
-Figure~\ref{fig:Plot_GI0_to_gamma1}, shows the behavior of the entropy of \(G_I^0\) when
-\(\alpha \in \left\{-\infty, -20, -8, -3\right\}\), where the approximation to the entropy of \(\Gamma_{\text{SAR}}\) can be observed when \(\alpha\)
-assumes large negative values.
-In an interpretative sense, we can conclude that the more heterogeneous (high values of $\alpha$) the SAR region is, the higher the value of entropy (or degree of disorder).
-It is worth noting that this conclusion confirms what is written in the SAR literature.
-
+Figure~\ref{fig:Plot_GI0_to_gamma1}, shows the behaviour of the entropy
+of \(G_I^0\) when when
+\(\alpha \in \left\{-\infty, -20, -8, -3\right\}\), observing its
+convergence towards the entropy of \(\Gamma_{\text{SAR}}\) as \(\alpha\)
+takes large negative values.
 
 \begin{figure}[hbt]
 \includegraphics[width=0.7\linewidth]{Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_GI0_to_gamma1-1} \caption{$H_{ G_I^0}$ converges to the $H_{\Gamma_{\text{SAR}}}$ with $L=8$.}\label{fig:Plot_GI0_to_gamma1}
@@ -352,12 +417,15 @@ It is worth noting that this conclusion confirms what is written in the SAR lite
 \subsection{Estimation of the Shannon
 Entropy}\label{estimation-of-the-shannon-entropy}}
 
-The problem of non-parametric estimation of \(H(Z)\) has been considered by many authors, including~\cite{vasicek1976test, Wieczorkowski1999,correa1995new,AlOmari2019},
-who have proposed estimators based on spacings.
+The problem of non-parametric estimating of \(H(Z)\) has been considered
+by many authors
+including~\cite{vasicek1976test, Wieczorkowski1999,correa1995new,AlOmari2019},
+who proposed estimators based on spacings.
 
-One of the first non-parametric estimators based on spacings was introduced by Vasicek~\cite{vasicek1976test}. Under the assumption that
-\(\bm{Z}=(Z_1, Z_2,\ldots,Z_n)\) is a random sample from the distribution \(F(z)\), the estimator is defined as:
-\begin{equation*}
+One of the earliest non-parametric estimators relying on spacings was
+introduced by Vasicek~\cite{vasicek1976test}. Assuming that
+\(\bm{Z}=(Z_1, Z_2,\ldots,Z_n)\) is a random sample from the
+distribution \(F(z)\), the estimator is defined as: \begin{equation*}
 \label{E:Vas}
     \widehat{H}_{\text{V}}(\bm{Z})=\frac{1}{n}\sum_{i=1}^{n}\ln\left[\frac{n}{2m}\left(Z_{(i+m)}-Z_{(i-m)}\right)\right],
     \end{equation*} where \(m<n/2\) is a positive integer,
@@ -365,43 +433,63 @@ One of the first non-parametric estimators based on spacings was introduced by V
 \(Z_{(1)}\leq Z_{(2)}\leq\ldots\leq Z_{(n)}\) are the order statistics
 and \(Z_{(i)}= Z_{(1)}\) if \(i<1\), \(Z_{(i)}= Z_{(n)}\) if \(i>n\).
 
-Several authors have explored adaptations to Vasicek's estimator. 
-We consider three estimators known for their superior performance~\cite{Cassetti2022}:
-Correa~\cite{correa1995new}, \(\widehat{H}_{\text{C}}\);
-Ebrahimi et al~\cite{Ebrahimi1994}, \(\widehat{H}_{\mathrm{E}}\);
-and Al Omary~\cite{IbrahimAlOmari2014}, \(\widehat{H}_{\mathrm{AO}}\).
+Several authors have explored adaptations to Vasicek's estimator. We
+consider three estimators known for their superior
+performance~\cite{Cassetti2022}:
+
+\begin{itemize}
+\item
+  Correa~\cite{correa1995new}: \(\widehat{H}_{\text{C}}\).
+\item
+  Ebrahimi et al~\cite{Ebrahimi1994}: \(\widehat{H}_{\mathrm{E}}\).
+\item
+  Al Omary~\cite{IbrahimAlOmari2014}: \(\widehat{H}_{\mathrm{AO}}\).
+\end{itemize}
 
 \hypertarget{enhanced-bootstrap-technique}{%
 \subsection{Enhanced Bootstrap
 Technique}\label{enhanced-bootstrap-technique}}
 
-We use the bootstrap technique to refine the accuracy of existing nonparametric entropy estimators. In this approach, new data sets are generated by replicate sampling from an existing data set~\cite{Michelucci2021}.
+We employ the bootstrap technique to refine the precision of existing
+non-parametric entropy estimators. This approach involves generating new
+datasets through resampling with repetition from an existing
+one~\cite{Michelucci2021}.
 
-Let us assume that non-parametric entropy estimators
-\(\widehat{H}=\widehat{\theta}(\bm{Z})\) are inherently biased, i.e:\begin{equation}
+Let's assume that non-parametric entropy estimators
+\(\widehat{H}=\widehat{\theta}(\bm{Z})\) are inherently biased, that is:
+\begin{equation}
 \label{Eq:bias1}
 \operatorname{Bias}\big(\widehat{\theta}(\bm{Z})\big) = E\big[\widehat{\theta}(\bm{Z})\big] - \theta \neq 0.
 \end{equation} Our bootstrap-improved estimators are of the form:
 \begin{align*}
 \widetilde{H} &= 2\widehat{\theta}(\bm{Z}) - \frac{1}{B}\sum_{b=1}^B \widehat{\theta}_b(\bm{Z}^{(b)}),
-\end{align*} 
-where \(B\) is the number of replications in the bootstrap
-technique. 
-Applying this methodology, the original estimators of Correa,
-Ebrahimi and Al-Omari are now referred to as the proposed bootstrap-enhanced versions:
-\(\widetilde{H}_{\text{C}}\),
+\end{align*} where \(B\) is the number of replications in the bootstrap
+technique. Applying this methodology, the original estimators by Correa,
+Ebrahimi, and Al-Omari are now denoted as the proposed
+bootstrap-enhanced versions: \(\widetilde{H}_{\text{C}}\),
 \(\widetilde{H}_{\text{E}}\), and \(\widetilde{H}_{\text{AO}}\),
 respectively.
 
-We analyzed the performance of these estimators with a Monte Carlo study: \(500\) samples of \(G_I^0\) of size
-\(n\in\left\{9, 25, 49, 81, 121\right\}\) and different values for mean, number of looks and roughness. We present the results with
-\(\mu\in\left\{1, 10\right\}\), \(\alpha=-10\) and \(L=5\). The results are also adherent for the other situations. In the bootstrap technique, each sample is replicated a hundred times with replacement. We use the following heuristic formula for spacing,
+We analyzed the performance of these estimators with a Monte Carlo
+study: \(500\) samples of \(G_I^0\) of size
+\(n\in\left\{9, 25, 49, 81, 121\right\}\) and several values of the
+mean, number of looks and roughness. We present the results with
+\(mu\in\left\{1, 10\right\}\), \(\alpha=-10\), and \(L=5\). The results
+are consistent for the other situations. In the case of the bootstrap
+technique, each sample is replicated \(100\) times with replacement. We
+choose to use the following heuristic formula for spacing,
 \(m=\left[\sqrt{n}+0.5\right]\).
 
-In Figure~\ref{fig:Plot_bias_mse_gi0} we show comparisons of bias and mean squared error (MSE) between the original non-parametric entropy estimators and their respective bootstrap-enhanced versions. The use of the bootstrap technique shows higher precision, lower bias and MSE, and improved convergence. The results of the simulation can be found in
+In Figure~\ref{fig:Plot_bias_mse_gi0} we depict comparisons of bias and
+mean squared error (MSE) between the original non-parametric entropy
+estimators and their respective bootstrap-enhanced versions. The use of
+the bootstrap technique exhibits more precision, reduced bias and MSE,
+and improved convergence. The results of simulation are exhibited in
 Table~\ref{tab:table2}.
 
-The precision of the estimators resulting from the comparison of bias and MSE benefits significantly from the bootstrap technique, especially for sample sizes below 81.
+The precision of estimators, as evidenced by bias and MSE comparisons,
+benefits significantly from the bootstrap technique, particularly for
+sample sizes below 81.
 
 \begin{figure}[hbt]
 \includegraphics[width=0.8\linewidth]{Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_bias_mse_gi0-1} \caption{Bias and MSE, $L=5$ and  $\alpha=-10$.}\label{fig:Plot_bias_mse_gi0}
@@ -444,44 +532,52 @@ The precision of the estimators resulting from the comparison of bias and MSE be
 \subsection{Coefficient of variation and a robust
 alternative}\label{coefficient-of-variation-and-a-robust-alternative}}
 
-The population CV is defined as the ratio of the population standard deviation \((\sigma)\) to the population mean \((\mu)\):
+The population CV is defined as a ratio of the population standard
+deviation \((\sigma)\) to the population mean \((\mu)\):
 
 \begin{align}
-    \text{CV}=\frac{\sigma}{\mu}, \quad \text{ for }\mu \neq 0.
+    \text{CV}=\frac{\sigma}{\mu}, \quad \mu \neq 0.
 \end{align}
 
-We explore a robust alternative to CV, as described in
-\cite{Ospina2019}, which incorporates the ratio between the mean absolute deviation from the median (MnAD) and the median, two well-known robust measures of
-scale and location, respectively. The sample version for the MnAD is defined as
+We explore a robust alternative to the CV as discussed in
+\cite{Ospina2019}, involving the ratio of the mean absolute deviation
+from the median (MnAD) to the median, two well-known robust measures of
+scale and location, respectively. The MnAD is defined as
 \(n^{-1}\sum_{i=1}^n|x_i-\widehat{Q}_2|\), where \(\widehat{Q}_2\)
-is an estimate for the median of the population, which can be approximated by the median of the sample.
+represents an estimate of the population median, which can be
+approximated by the sample median.
 
 \hypertarget{sec:test}{%
 \section{Hypothesis Testing}\label{sec:test}}
 
 We aim at testing the following hypotheses:
+
 \[
  \begin{cases}\mathcal{H}_0: \text{ The data comes from the } \Gamma_{\text{SAR}}\\ 
   \mathcal{H}_1:\text{ The data comes from the } G_I^0.\end{cases}
-\] 
-In the physical sense, we are testing the hypothesis that the data are fully developed speckle.
-As for the parametric problem, once it is not possible to define the hypothesis $\mathcal{H}_0=\alpha=-\infty$, it is impossible to solve this problem with the parametric statistical inference alternatives (such as likelihood ratio, score, grandient and Wald hypothesis test).
-The proposed tests to solve this physical problem in SAR systems are described below.
+\] In other words, we verify the hypothesis that the data are
+fully-developed speckle. The proposed tests are described below.
 
 \hypertarget{the-proposed-test-based-on-non-parametric-entropy}{%
 \subsection{The Proposed Test Based on Non-parametric
 Entropy}\label{the-proposed-test-based-on-non-parametric-entropy}}
 
-The first test statistic evaluates the behavior of the data under the null hypothesis using the empirical distribution: 
-\begin{equation}\label{Eq:test_e}
+The first test statistic assess the behavior of the data under the null
+hypothesis, through the empirical distribution. \begin{equation}
+\label{Eq:test_e}
 S_H= \widetilde{H}-\left[H_{\Gamma_{\text{SAR}}}(L)+\ln \overline{Z}\right].
-\end{equation} 
-The values should be zero under the null hypothesis and otherwise far from it.
+\end{equation} The values should be around zero under the null
+hypothesis and far otherwise.
 
-Figure~\ref{fig:Plot_density} shows the empirical test statistic densities for different sample sizes, and Table~\ref{tab:table_stat_combined}
-summarizes the main descriptive statistics, including mean, SD, variance (Var), skewness
-(SK), excessive kurtosis (EK) and Anderson--Darling \(p\) values for normality. Results with \(p\) values greater than \(0.05\) do not indicate a violation of the normality assumption. A low variance as well as a skewness and an excessive kurtosis of almost zero indicate limited dispersion, symmetry and a slight tail.\\
-Normal QQ plots confirm that there is no evidence against a normal distribution.
+Figure~\ref{fig:Plot_density} depicts empirical test statistic densities
+for various sample sizes, and Table~\ref{tab:table_stat_combined}
+summarizes key statistics, including mean, SD, variance (Var), skewness
+(SK), excess kurtosis (EK), and Anderson--Darling \(p\)-values for
+normality. Results with \(p\)-values larger than \(0.05\) indicate no
+evidence against normality. Small variance and near-zero skewness and
+excess kurtosis suggest limited spread, symmetry, and light tails.\\
+Normal QQ-plots, confirm that there is no evidence to reject the normal
+distribution.
 
 \begin{figure}[hbt]
 \includegraphics[width=0.8\linewidth]{Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_density-1} \caption{Empirical density  under the null hypothesis.}\label{fig:Plot_density}
@@ -533,21 +629,22 @@ Normal QQ plots confirm that there is no evidence against a normal distribution.
 \includegraphics[width=0.8\linewidth]{Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_normality_qq-1} \caption{Normal QQ-plots for  $n=121$.}\label{fig:Plot_normality_qq}
 \end{figure}
 
-After checking the normality of the data, we examined the possibilities of the proposed test in terms of size and power.
-Under \(\mathcal{H}_0\), the distribution of the test statistic is asymptotically normal.
-Therefore, the \(p\) value is calculated as
+After verifying the normality of the data, we proceeded to explore the
+capabilities of the proposed test in terms of size and power. Under
+\(\mathcal{H}_0\), the distribution of test statistic is asymptotically
+normal. Therefore, the \(p\)-value is calculated as
 \(2\Phi(-\mid \varepsilon\mid)\), where \(\Phi\) is the standard
-Gaussian cumulative distribution and \(\varepsilon\) is the standardized test statistic given by :
-\[
+Gaussian cumulative distribution and \(\varepsilon\) is the standardized
+test statistic given by: \[
 \varepsilon=\frac{\tilde{H}-H_{\Gamma_{\text{SAR}}}}{\hat\sigma}.
 \]
 
-We have nominal levels of \SI{1}{\ percent}, \SI{5}{\ percent}, and
-\SI{10}{\percent}. 
-In terms of size, \(1000\) simulations were used for different sample sizes with satisfactory results. 
-In all cases, the nominal level was achieved. 
-The power generally improves with increasing sample size and number of looks.
-The results are shown in Table~\ref{tab:table_size_power}.
+We considered nominal levels of \SI{1}{\percent}, \SI{5}{\percent}, and
+\SI{10}{\percent}. In reference to the size, \(1000\) simulations have
+been used for various sample sizes with satisfactory results. In all
+cases, the nominal level has been achieved. The power, in general,
+improves with the increase in the sample size and the number of looks.
+The results are presented in Table~\ref{tab:table_size_power}.
 
 \hypertarget{the-proposed-test-based-on-coefficient-of-variation-and-a-robust-alternative}{%
 \subsection{The Proposed Test Based on Coefficient of Variation and a
@@ -555,37 +652,34 @@ Robust
 Alternative}\label{the-proposed-test-based-on-coefficient-of-variation-and-a-robust-alternative}}
 
 In addition to the entropy-based test, we also propose a test statistic
-based on the classical CV. 
-This test statistic is defined as follows:
+based on the classical CV. This test statistic is defined as follows:
 \begin{align}
     T_{\text{CV}}=\frac{S}{\overline{Z}},
-\end{align} 
-where \(S\) and \(\overline{Z}\) are the sample standard deviation and the sample mean, respectively.
+\end{align} where \(S\) and \(\overline{Z}\) are the sample standard
+deviation and the sample mean, respectively.
 
-Similarly, we use another test statistic based on the ratio between the MnAD and the median.
-This statistic is given by:
-\begin{align}
+Similarly, we use another test statistic based on the ratio of the MnAD
+to the median. This statistic is given by: \begin{align}
     T_{\text{CV}_{\text{MnAD}}}=\frac{\text{MnAD}}{\text{Median}}.
 \end{align} These test statistics allow assessing the variability of the
 data.
 
-The situations in which the use of CV and \(\text{CV}_{\text{MnAD}}\) may be appropriate, i.e.~when the observations are positive, the log-normal
-(LN) and the inverse Gaussian distribution (IG) are often more appropriate than the Gamma and Weibull distributions
+The situations where the use of CV and \(\text{CV}_{\text{MnAD}}\) may
+be appropriate, i.e.~where the observations are positive, the log-normal
+(LN) and inverse Gaussian (IG) distribution are often more justified
+compared to Gamma and Weibull distributions
 \cite{Chaubey2017,takagi1997application}.
 
-It is shown that the IG distribution is well approximated by the log-normal distribution, which means that the
-IG distribution also does not share the problem of the non-existence of a fixed-width confidence interval with the Gaussian case \cite{whitmore1978}.
+The inverse Gaussian distribution is shown to be well approximated by
+the log-normal distribution \cite{whitmore1978} which implies that the
+IG distribution also does not share the problem of non-existence of
+fixed width confidence interval with the Gaussian case.
 
 The LN distribution in two parameters has the following density
-function. 
-\begin{align}
-    f_Z(z;\mu_{\text{LN}}, \sigma )=\frac{1}{\sigma z\sqrt{2\pi}}\exp\left\{-\frac{(\ln z- \mu_{\text{LN}})^2}{2\sigma^2}\right\}\mathbbm 1_{\mathbbm R_+}(z),
-\end{align} here, $\sigma>0$, $-\infty < \mu_{\text{LN}} < \infty$, \(\mu\) is the log-scale parameter and \(\sigma\) is
+function. \begin{align}
+    f_Z(z;\mu, \sigma )=\frac{1}{\sigma z\sqrt{2\pi}}\exp\left\{-\frac{(\ln z- \mu)^2}{2\sigma^2}\right\}, \quad z>0, \sigma>0, -\infty < \mu < \infty,
+\end{align} here, \(\mu\) is the log-scale parameter and \(\sigma\) is
 the shape parameter.
-
-\vskip+1ex
-{\color{red} ADCN: Fiz uma diferen\c{c}a entre as nota\c{c}\~oes para m\'edia da G0I e da LN. Por favor, verifique se faz sentido, isto \'e se ela n\~ao \'e encaixada a G0I neste contexto.}
-\vskip+1ex
 
 \hypertarget{model-selection-criterion}{%
 \subsection{Model Selection Criterion}\label{model-selection-criterion}}
@@ -604,22 +698,20 @@ as the best.
 
 The AIC and BIC results in
 Tables~\ref{tab:table_aic_gamma}-\ref{tab:table_aic_gio_MnADmedian}
-indicate that the CV and \(\text{CV}_{\text{MnAD}}\) data from different distributed gamma and \(G_I^0\) synthetic sample sizes match the properties of an LN distribution.
-{\color{green}
-It is important to note that this conclusion was drawn empirically based on a dictionary of distributions that are anlaytically tractable and well-defined under biparametric, unimodal, asymmetric, and positive distributions.
-}
-\vskip+1ex
-{\color{red} ADCN: 
-Caros, esse \'e o ponto mais delicado da excelente ideia desse paper em minha opini\~ao. N\~ao me oponho a colocarmos a lognormal como uma possibilidade, mas \'e preciso deixar claro que \'e uma possibilidade emp\'irica. 
-Uma alternativa empirica para uma solu\c{c}\~ao do momento usando distribui\c{c}\~oes mais densenvolvidas na literatura e que sejam analiticamente trat\'aveis. Estou pensando corretamente? Se sim, por que n\~ao log-t-student, log-Laplace, power exponential, Log-hyperbolic,.... (e a lista segue). Sugiro talvez indicar (i) a dedu\c{c}\~ao da distribui\c{c}\~ao assint\'otica das estat\'isticas em fun\c{c}\~ao de CV e MNAD dando com entrada G0I ($\mathcal{H}_1$) e a Gamma ($\mathcal{H}_0$) como trabalho futuro. Do que eu entendi, a suposi\c{c}\~ao da normal assint\'otica para entropia vem de uma cole\c{c}\~ao de trabalhos te\'oricos. 
-J\'a a LN, do que percebi, n\~ao.
-Coloquei um coment\'ario em verde. Vejam se est\~ao de acordo.
-}
-\vskip+1ex
-The AIC and BIC values of the IG distribution and the LN distribution are not significantly different, as both distributions are based on the right-skewed characteristic. In this situation, the model for the LN distribution was considered the best, as it has the lowest AIC and BIC values.
+indicate that the CV and \(\text{CV}_{\text{MnAD}}\) data from different
+synthetic sample sizes, extracted from the Gamma SAR and \(G_I^0\)
+distributions, respectively, adhere to the characteristics of an LN
+distribution. The AIC and BIC values of the IG distribution and the LN
+distribution are not significantly different because both distributions
+are based on the right-skewed characteristic. In this situation, the
+model for the LN distribution was considered to be the best due to it
+providing the lowest AIC and BIC values.
 
-Figures~\ref{fig:Plot_cv}-\ref{fig:Plot_madmed_gi0_MnADmedian} show empirical and fitted density plots, Q-Q plots, P-P plots as well as empirical and fitted cumulative distribution functions.
-They provide qualitative sources that confirm that the LN distribution is the most appropriate distribution.
+Figures~\ref{fig:Plot_cv}-\ref{fig:Plot_madmed_gi0_MnADmedian} present
+density plots, Q-Q plots, P-P plots, and Cumulative Distribution
+Function plots, which offer an additional measure of goodness-of-fit and
+confirm that the most suitable distribution to be considered is the LN
+distribution.
 
 \begin{table}[H]
 
@@ -759,14 +851,17 @@ They provide qualitative sources that confirm that the LN distribution is the mo
 \hypertarget{sec:Results}{%
 \section{Simulation Results}\label{sec:Results}}
 
-This section presents simulations that were performed to obtain an evaluation of the performance of the proposed test statistics.
+This section presents simulations performed to obtain an assessment of
+the performances of the proposed test statistics.
 
 \hypertarget{simulated-data}{%
 \subsection{Simulated Data}\label{simulated-data}}
 
-Figure~\ref{fig:sim_SAR_Images}(a) shows the phantom used for a simulated image with dimensions of \(250\times 250\) pixels to show the differences between heterogeneous (dark, \(\alpha=-2\))
-and homogeneous (light, \(\alpha=-10\)) regions, with \(L = 5\). 
-The regions are formed by independent draws from the \(G^0_I\) distribution.
+Figure~\ref{fig:sim_SAR_Images}(a) shows the phantom used for a
+simulated image with dimensions of \(250\times 250\) pixels to
+illustrate the differences between heterogeneous (dark, \(\alpha=-2\))
+and homogeneous (light, \(\alpha=-10\)) regions, with \(L = 5\). The
+areas are formed by independent draws from the \(G^0_I\) distribution.
 
 The three test statistics are applied to the simulated image using local
 sliding windows of size \(7\times 7\).
@@ -774,8 +869,9 @@ sliding windows of size \(7\times 7\).
 The resulting \(p\)-values for the tests \(S_H\), \(T_{\text{CV}}\), and
 \(T_{\text{CV}_{\text{MnAD}}}\) are shown in
 Figures~\ref{fig:sim_SAR_Images}(b)-(d) and
-Figures~\ref{fig:sim_SAR_Images_p05}(a)-(c), respectively. 
-The new images reveal that a darker background indicates homogeneity, while lighter backgrounds represent heterogeneous areas.
+Figures~\ref{fig:sim_SAR_Images_p05}(a)-(c), respectively. The new
+images reveal that a darker background indicates homogeneity, while
+lighter backgrounds represent heterogeneous areas.
 
 \begin{figure}[H]
 
@@ -797,25 +893,20 @@ The new images reveal that a darker background indicates homogeneity, while ligh
 \hypertarget{real-data}{%
 \subsection{Real Data}\label{real-data}}
 
-We evaluated the proposed test statistic using two real SAR images. 
-For our analysis, we used images of the city of Frankfurt, Germany, and of
-Ottawa, Canada. 
-These images were acquired by the Sentinel-1A satellite operating in C-band, with VV polarization, intensity format and
+We assessed the proposed test statistics using two real SAR images. For
+our analysis, we selected images of the city of Frankfurt, Germany, and
+Ottawa, Canada. These images were acquired by the Sentinel-1A satellite
+operating in the C band, with VV polarization, intensity format, and
 \(L=5\) nominal looks.
-Both images have a size of \(512 \times 512\) pixels and contain urban areas, water and forest regions, as shown in
+
+Both images have dimensions of \(512 \times 512\) pixels and contain
+urban areas, water and forest regions, as shown in
 Figures~\ref{fig:real_SAR_Images_coe}(a)-(b).
 
 The \(p\)-values obtained for the \(S_H\), \(T_{\text{CV}}\), and
 \(T_{\text{CV}_{\text{MnAD}}}\) tests are presented in
 Figures~\ref{fig:sim_SAR_Images_Frankfurt}-\ref{fig:sim_SAR_Images_01_Ottawa},
 respectively.
-
-In general, using the original and robust CV is more meaningful than using Shannon entropy to capture texturelessness.
-It is justified that the dark areas of the maps based on the $\text{CV}$ and $\text{CV}_{\text{MnAD}}$ tests cover the areas reported for the Shannon entropy-based map.
-Both CV-based tools predicted textureless regions as well as boundaries where the statistical properties of texture vary.
-Assuming $10\%$ as the threshold for the $p$ values, the dark region produced by the $\text{CV}$ test was higher than that produced by the $\text{CV}_{\text{MnAD}}$ and entropy test.
-The latter observation is to be expected as the latter tests are robust alternatives to the former test, which is essentially based on the expected value operator that reacts to outliers.
-
 
 \begin{figure}[H]
 
@@ -862,12 +953,7 @@ The latter observation is to be expected as the latter tests are robust alternat
 \hypertarget{sec:conclusion}{%
 \section{Conclusion}\label{sec:conclusion}}
 
-In this article, we have provided a practical and theoretical answer to the following physical question: How to detect texturelessness in SAR images, assuming that the SAR intensity follows the $\mathcal{G}^0_I$ distribution.
-Solving this problem is not easy, considering that the texturelessness in the parametric space of $\mathcal{G}^0_I$ means the infinity value, which is neither analitically tractable nor practically provable.
-To this end, we proposed three novel hypothesis tests, one from the Shannon entropy and two others from the variation coefficient variants.
-The performance of our proposals was evaluated using a Monte Carlo study. The results showed that they were conservative in estimating the probability of a type I error (false alarm rate) and the test power (probability of detection), which increases with sample size.
-An application to two recent SAR images was performed. The results showed that the $\text{CV}_{\text{MnAD}}$ and Shannon entropy-based tests were more robust than the CV-based tests. In addition, the CV-based tests were able to recognize both images without texture and those where the type of texture changes.
-
+In this article,\ldots{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
