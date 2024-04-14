@@ -39,13 +39,16 @@ status: submit
   #A Simple summary goes here.
 abstract: |
   This paper presents a statistical approach to identify the underlying roughness characteristics in synthetic aperture radar (SAR) intensity data. 
-  The physical modeling of this kind of data allows to use the Gamma distribution in the presence of fully-developed speckle, i.e., when there are infinitely many independent backscatterers per resolution cell. This situation is often called "homogeneous" or  "textureless" regions. 
-  The $\mathcal{G}_I^0$ distribution is also a widely accepted law for heterogeneous and extremely heterogeneous regions. We propose three test statistics to distinguish between homogeneous and inhomogeneous regions, i.e. between gamma and \(\mathcal{G}_I^0\) distributed data, both with a known number of looks. 
+  The physical modeling of this kind of data allows to use the Gamma distribution in the presence of fully-developed speckle, i.e., when there are infinitely many independent backscatterers per resolution cell, and none dominates the return. This situation is often called "homogeneous" or  "textureless" regions. 
+  The $\mathcal{G}_I^0$ distribution is also a widely accepted law for heterogeneous and extremely heterogeneous regions, i.e., areas in which the fully-developed speckle hypotheses do not hold. 
+  We propose three test statistics to distinguish between homogeneous and inhomogeneous regions, i.e. between gamma and \(\mathcal{G}_I^0\) distributed data, both with a known number of looks. 
   The first test statistic uses a bootstrapped nonparametric estimator of Shannon entropy, which provides a robust assessment in the face of uncertain distributional assumptions.
   The second test uses the classical coefficient of variation. 
   The third test uses an alternative form of estimating the CV based on the ratio of the mean absolute deviation from the median to the median. 
-  We apply our test statistic to create maps of \(p\) values for the hypothesis of homogeneity. These maps identify different types of targets. 
+  We apply our test statistic to create maps of \(p\) values for the homogeneity hypothesis.
+  These maps identify different types of targets. 
   We show that our proposal outperforms its competitors using simulated and SAR data.
+# ACF Which is "our proposal" and which are the "competitors"?
 keywords: |
   SAR; heterogeneity; entropy;  coefficient of variation; hypothesis tests
 acknowledgement: |
@@ -111,7 +114,6 @@ header-includes:
    - \usepackage{multirow}
    - \usepackage{subcaption}
    - \captionsetup[sub]{labelfont=bf,textfont=bf}
-
 
 bibliography: references.bib
 #appendix: appendix.tex
@@ -204,15 +206,16 @@ source("../Code/R/Programs/read_ENVI_images.R")
 # Introduction {#sec:Introduction}
 
 Synthetic Aperture Radar (SAR) technology has become an important tool for environmental monitoring and disaster management. It provides valuable images under various conditions, including day or night and different weather situations&nbsp;\cite{Moreira2013,Mu2019}.
-However, the effective use of SAR data depends on a thorough understanding of its statistical properties, especially the impact of speckle effects inherent in SAR data due to the coherent nature of the imaging process&nbsp;\cite{Argenti2013}.
+However, the effective use of SAR data depends on a thorough understanding of their statistical properties because they are corrupted by speckle.
+This noise-like interference effect is inherent in SAR data due to the coherent nature of the imaging process&nbsp;\cite{Argenti2013}.
 
-In the presence of non-Gaussian speckle interference, SAR data requires a reliable statistical model for accurate processing. 
+Speckle is non-Gaussian speckle, thus SAR data require reliable statistical models for accurate processing. 
 The $\mathcal{G}^0$ distribution, which is suitable for SAR data, includes the
-Gamma law as the limiting case for fully developed speckle&nbsp;\cite{Ferreira2020} and provides flexibility with fewer parameters for analysis.
+Gamma law as the limiting case for fully-developed speckle&nbsp;\cite{Ferreira2020} and provides flexibility with fewer parameters for analysis.
 
-
-Our work aims to improve the identification of potential roughness features in SAR intensity data. 
-Physical modeling of SAR data allows to take advantage of the gamma distribution in the presence of fully developed speckles and to create a scenario with an infinite number of independent backscatterers per resolution unit, often referred to as homogeneous regions.
+Our work aims to improve the identification of potential roughness features in SAR intensity data.
+<!-- ACF The following sentence is misleading: the gamma law is a consequence of infinitely many backscatterers with none dominating the return, not the other way aroud. Rephrase. -->
+Physical modeling of SAR data allows to take advantage of the gamma distribution in the presence of fully-developed speckle and to create a scenario with an infinite number of independent backscatterers per resolution unit, often referred to as homogeneous regions.
 
 In this context, we present a set of three novel test statistics that aim to distinguish between homogeneous and non-homogeneous domains, in particular between gamma and \(\mathcal{G}^0\) distributed data, each with a known number of looks. 
 To understand the core ideas behind our approach, we explore the use of properties such as entropy and coefficient of variation.
@@ -250,7 +253,7 @@ Finally, in Section&nbsp;\ref{sec:conclusion} the conclusions are presented.
 ## Statistical Modeling of Intensity SAR data 
 
 The primary models used for intensity SAR data include the Gamma and $\mathcal{G}_I^0$  distributions&nbsp;[@Frery1997]. 
-The first is suitable for fully developed speckle and is a limiting case of the second model, which is interesting due to its versatility in accurately representing regions with different roughness properties&nbsp;[@Cassetti2022].
+The first is suitable for fully-developed speckle and is a limiting case of the second model, which is interesting due to its versatility in accurately representing regions with different roughness properties&nbsp;[@Cassetti2022].
 We denote $Z \sim \Gamma_{\text{SAR}}(L, \mu)$ and $Z \sim \mathcal{G}_I^0(\alpha, \gamma, L)$ to indicate that $Z$ follows the distributions characterized by the respective probability density
 functions (pdfs): 
 \begin{align}
@@ -557,7 +560,7 @@ $$
  \begin{cases}\mathcal{H}_0: \text{ The data comes from the } \Gamma_{\text{SAR}}\\ 
   \mathcal{H}_1:\text{ The data comes from the } G_I^0.\end{cases}
 $$
-In the physical sense, we are testing the hypothesis that the data are fully developed speckle.
+In the physical sense, we are testing the hypothesis that the data are fully-developed speckle.
 As for the parametric problem, once it is not possible to define the hypothesis $\mathcal{H}_0=\alpha=-\infty$, it is impossible to solve this problem with the parametric statistical inference alternatives (such as likelihood ratio, score, grandient and Wald hypothesis test).
 The proposed tests to solve this physical problem in SAR systems are described below.
 
