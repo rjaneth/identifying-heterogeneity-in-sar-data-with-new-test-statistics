@@ -834,6 +834,7 @@ In terms of size, \(1000\) simulations were used for different sample sizes with
 In all cases, the nominal level was achieved. 
 The power generally improves with increasing sample size and number of looks.
 The results are shown in Table&nbsp;\ref{tab:table_size_power}.
+<!-- ACF Please clarify which alternatives you used for the power -->
 
 ```{r Simulated_error_type_I, echo=FALSE, message=FALSE}
 set.seed(1234567890, kind = "Mersenne-Twister")
