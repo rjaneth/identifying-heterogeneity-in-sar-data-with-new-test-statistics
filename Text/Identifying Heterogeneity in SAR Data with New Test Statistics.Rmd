@@ -570,6 +570,7 @@ The proposed tests to solve this physical problem in SAR systems are described b
 ## The Proposed Test Based on Non-parametric Entropy
 
 The first test statistic evaluates the behavior of the data under the null hypothesis using the empirical distribution: 
+<!-- ACF This is an important contribution. Highlight the rationale: under H0, \widetilde{H} (estimated) and H_{\Gamma_{\text{SAR}}}(L) (fixed) should be close. Therefore, their difference should be small. Explain why you need \widebar{Z} -->
 \begin{equation}
 \label{Eq:test_e}
 S_H= \widetilde{H}-\left[H_{\Gamma_{\text{SAR}}}(L)+\ln \widebar{Z}\right].
