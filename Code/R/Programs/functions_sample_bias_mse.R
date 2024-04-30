@@ -270,9 +270,9 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
     plot_bias <- ggplot(df_filtered, aes(x = n, y = Bias, color = Estimator)) +
       geom_hline(yintercept = 0) +
       geom_point(size = 2.5) +
-      geom_line(linetype = "solid", linewidth = 1.5) +
+      geom_line(linetype = "solid", linewidth = 1.3) +
       labs(y = "Bias", x = expression(italic(n))) +
-      scale_x_continuous(breaks = c(9, 25, 49, 81, 121)) +  # Añadir esta línea para escala personalizada
+      scale_x_continuous(breaks = c(9, 25, 49, 81, 121)) +  # AC1adir esta lC-nea para escala personalizada
       scale_color_manual(values = pal_jama()(7)[1:6], labels = TeX(df_filtered$Estimator)) + # Eliminar labels y TeX
       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
       coord_cartesian(clip = 'off') +
@@ -282,9 +282,9 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
     plot_mse <- ggplot(df_filtered, aes(x = n, y = MSE, color = Estimator)) +
       geom_hline(yintercept = 0) +
       geom_point(size = 2.5) +
-      geom_line(linetype = "solid", linewidth = 1.5) +
+      geom_line(linetype = "solid", linewidth = 1.3) +
       labs(y = "MSE", x = expression(italic(n))) +
-      scale_x_continuous(breaks = c(9, 25, 49, 81, 121)) +  # Añadir esta línea
+      scale_x_continuous(breaks = c(9, 25, 49, 81, 121)) +  # AC1adir esta lC-nea
       scale_color_manual(values = pal_jama()(7)[1:6], labels = TeX(df_filtered$Estimator)) + # Eliminar labels y TeX
       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
       coord_cartesian(clip = 'off') +
@@ -302,7 +302,7 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
 
 
 # generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, ncol = 2, nrow = 2) {
-#   # Lista para almacenar los gráficos
+#   # Lista para almacenar los grC!ficos
 #   plot_list <- list()
 # 
 #   for (mu_val in mu_values) {
@@ -312,7 +312,7 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
 #     # Filtrar el dataframe para incluir solo los estimadores seleccionados
 #     df_filtered <- df[df$Estimator %in% names(selected_estimators), ]
 # 
-#     # Actualizar los nombres de los estimadores en notación LaTeX
+#     # Actualizar los nombres de los estimadores en notaciC3n LaTeX
 #     df_filtered$Estimator <- selected_estimators[df_filtered$Estimator]
 # 
 #     plot_bias <- ggplot(df_filtered, aes(x = n, y = Bias, color = as.character(Estimator))) +
@@ -324,7 +324,7 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
 #       coord_cartesian(clip = 'off')
 # 
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_bias = plot_bias + theme(legend.position = "top")
 #     }
@@ -338,26 +338,26 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
 #       coord_cartesian(clip = 'off')
 # 
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_mse = plot_mse + theme(legend.position = "top")
 #     }
 # 
-#     # Agregar los gráficos a la lista
+#     # Agregar los grC!ficos a la lista
 #     plot_list[[as.character(mu_val)]] <- plot_bias + plot_mse
 #   }
 # 
-#   # Organizar los gráficos en una sola figura y añadir leyenda común en la parte inferior
+#   # Organizar los grC!ficos en una sola figura y aC1adir leyenda comC:n en la parte inferior
 #   combined_plot <- wrap_plots(plot_list, ncol = ncol, nrow = nrow) +
 #     plot_layout(guides = "collect")
 # 
-#   # No mostrar la figura aquí, devolver el objeto combined_plot
+#   # No mostrar la figura aquC-, devolver el objeto combined_plot
 #   return(combined_plot)
 # }
 
 
 # generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, ncol = 2, nrow = 2) {
-#   # Lista para almacenar los gráficos
+#   # Lista para almacenar los grC!ficos
 #   plot_list <- list()
 #   
 #   for (mu_val in mu_values) {
@@ -376,7 +376,7 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
 #       coord_cartesian(clip = 'off')
 #     
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_bias = plot_bias + theme(legend.position = "top")
 #     }
@@ -390,25 +390,25 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
 #       coord_cartesian(clip = 'off')
 #     
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_mse = plot_mse + theme(legend.position = "top")
 #     }
 #     
-#     # Agregar los gráficos a la lista
+#     # Agregar los grC!ficos a la lista
 #     plot_list[[as.character(mu_val)]] <- plot_bias + plot_mse
 #   }
 #   
-#   # Organizar los gráficos en una sola figura y añadir leyenda común en la parte inferior
+#   # Organizar los grC!ficos en una sola figura y aC1adir leyenda comC:n en la parte inferior
 #   combined_plot <- wrap_plots(plot_list, ncol = ncol, nrow = nrow) +
 #     plot_layout(guides = "collect")
 #   
-#   # No mostrar la figura aquí, devolver el objeto combined_plot
+#   # No mostrar la figura aquC-, devolver el objeto combined_plot
 #   return(combined_plot)
 # }
 
 generate_plot_gi0_new <- function(results_gi0, mu_values, ncol = 2, nrow = 2) {
-  # Lista para almacenar los gráficos
+  # Lista para almacenar los grC!ficos
   plot_list <- list()
   
   for (mu_val in mu_values) {
@@ -424,7 +424,7 @@ generate_plot_gi0_new <- function(results_gi0, mu_values, ncol = 2, nrow = 2) {
       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
       coord_cartesian(clip = 'off')
     
-    # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+    # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
     if (mu_val != mu_values[1]) {
       plot_bias = plot_bias + theme(legend.position = "top")
     }
@@ -438,26 +438,26 @@ generate_plot_gi0_new <- function(results_gi0, mu_values, ncol = 2, nrow = 2) {
       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
       coord_cartesian(clip = 'off')
     
-    # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+    # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
     if (mu_val != mu_values[1]) {
       plot_mse = plot_mse + theme(legend.position = "top")
     }
     
-    # Agregar los gráficos a la lista
+    # Agregar los grC!ficos a la lista
     plot_list[[as.character(mu_val)]] <- plot_bias + plot_mse
   }
   
-  # Organizar los gráficos en una sola figura y añadir leyenda común en la parte inferior
+  # Organizar los grC!ficos en una sola figura y aC1adir leyenda comC:n en la parte inferior
   combined_plot <- wrap_plots(plot_list, ncol = ncol, nrow = nrow) +
     plot_layout(guides = "collect")
   
-  # No mostrar la figura aquí, devolver el objeto combined_plot
+  # No mostrar la figura aquC-, devolver el objeto combined_plot
   return(combined_plot)
 }
 
 
 generate_plot_gi0 <- function(sample_sizes, R, B, mu_values, alpha, L, estimators, ncol = 2, nrow = 2) {
-  # Lista para almacenar los gráficos
+  # Lista para almacenar los grC!ficos
   plot_list <- list()
   
   #
@@ -479,7 +479,7 @@ generate_plot_gi0 <- function(sample_sizes, R, B, mu_values, alpha, L, estimator
       guides(color = guide_legend(title = "Estimator")) +
       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
       coord_cartesian(clip = 'off')
-    # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+    # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
     if (mu_val != mu_values[1]) {
       plot_bias = plot_bias + theme(legend.position = "top")
     }
@@ -495,20 +495,20 @@ generate_plot_gi0 <- function(sample_sizes, R, B, mu_values, alpha, L, estimator
       coord_cartesian(clip = 'off')
     
     
-    # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+    # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
     if (mu_val != mu_values[1]) {
       plot_mse = plot_mse + theme(legend.position = "top")
     }
     
-    # Agregar los gráficos a la lista
+    # Agregar los grC!ficos a la lista
     plot_list[[as.character(mu_val)]] <- plot_bias + plot_mse
   }
   
-  # Organizar los gráficos en una sola figura y añadir leyenda común en la parte inferior
+  # Organizar los grC!ficos en una sola figura y aC1adir leyenda comC:n en la parte inferior
   combined_plot <- wrap_plots(plot_list, ncol = ncol, nrow = nrow) +
     plot_layout(guides = "collect")
   
-  # No mostrar la figura aquí, devolver el objeto combined_plot
+  # No mostrar la figura aquC-, devolver el objeto combined_plot
   return(combined_plot)
 }
 
@@ -594,7 +594,7 @@ calculate_bias_mse <- function(sample_sizes, R, B, mu, L, estimators) {
 
 # 
 generate_plot <- function(sample_sizes, R, B, mu_values, L, estimators, ncol = 2, nrow = 2) {
-  # Lista para almacenar los gráficos
+  # Lista para almacenar los grC!ficos
   plot_list <- list()
 
   #
@@ -616,7 +616,7 @@ generate_plot <- function(sample_sizes, R, B, mu_values, L, estimators, ncol = 2
       guides(color = guide_legend(title = "Estimator")) +
       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 4.0, vjust = -0.1, size = 3) +
       coord_cartesian(clip = 'off')
-    # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+    # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
     if (mu_val != mu_values[1]) {
       plot_bias = plot_bias + theme(legend.position = "top")
     }
@@ -632,20 +632,20 @@ generate_plot <- function(sample_sizes, R, B, mu_values, L, estimators, ncol = 2
       coord_cartesian(clip = 'off')
 
 
-    # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+    # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
     if (mu_val != mu_values[1]) {
       plot_mse = plot_mse + theme(legend.position = "top")
     }
 
-    # Agregar los gráficos a la lista
+    # Agregar los grC!ficos a la lista
     plot_list[[as.character(mu_val)]] <- plot_bias + plot_mse
   }
 
-  # Organizar los gráficos en una sola figura y añadir leyenda común en la parte inferior
+  # Organizar los grC!ficos en una sola figura y aC1adir leyenda comC:n en la parte inferior
   combined_plot <- wrap_plots(plot_list, ncol = ncol, nrow = nrow) +
     plot_layout(guides = "collect")
 
-  # No mostrar la figura aquí, devolver el objeto combined_plot
+  # No mostrar la figura aquC-, devolver el objeto combined_plot
   return(combined_plot)
 }
 
@@ -653,7 +653,7 @@ generate_plot <- function(sample_sizes, R, B, mu_values, L, estimators, ncol = 2
 
 # 
 # generate_plot <- function(sample_sizes, R, B, mu_values, L, estimators, ncol = 2, nrow = 2) {
-#   # Lista para almacenar los gráficos
+#   # Lista para almacenar los grC!ficos
 #   plot_list <- list()
 # 
 #   for (mu_val in mu_values) {
@@ -661,11 +661,11 @@ generate_plot <- function(sample_sizes, R, B, mu_values, L, estimators, ncol = 2
 #     results <- calculate_bias_mse(sample_sizes, R, B, mu_val, L, estimators)
 #     df <- as.data.frame(results)
 # 
-#     # Dividir estimadores en dos grupos (sólidos y punteados)
+#     # Dividir estimadores en dos grupos (sC3lidos y punteados)
 #     solid_estimators <- names(estimators)[1:(length(estimators) / 2)]
 #     dashed_estimators <- names(estimators)[-c(1:(length(estimators) / 2))]
 # 
-#     # Filtrar dataframes para cada tipo de línea
+#     # Filtrar dataframes para cada tipo de lC-nea
 #     solid_data <- df[df$Estimator %in% solid_estimators, ]
 #     dashed_data <- df[df$Estimator %in% dashed_estimators, ]
 # 
@@ -739,7 +739,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
     # Calcular resultados para el valor actual de mu
     results <- calculate_bias_mse(sample_sizes, R, B, mu_val, L, estimators)
     
-    # Agregar una columna con el valor actual de mu en la primera posición
+    # Agregar una columna con el valor actual de mu en la primera posiciC3n
     results <- cbind(mu = mu_val, results)
     
     # Combina los resultados con la tabla principal
@@ -776,7 +776,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 # }
 # 
 # # generate_plot <- function(sample_sizes, R, mu_values, L, estimators, ncol = 2, nrow = 2) {
-#   # Lista para almacenar los gráficos
+#   # Lista para almacenar los grC!ficos
 #   plot_list <- list()
 # 
 #   # Bucle para iterar sobre cada valor de mu
@@ -790,7 +790,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 # 
 #     df <- as.data.frame(results)
 # 
-#     # Plot Bias y MSE en subgráficos separados
+#     # Plot Bias y MSE en subgrC!ficos separados
 #     plot_bias <- ggplot(df, aes(x = SampleSize, y = Bias, color = Estimator)) +
 #       geom_hline(yintercept = 0) +
 #       geom_point(size = 2) +
@@ -799,7 +799,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #       guides(color = guide_legend(title = "Estimator")) +
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 1.08, vjust = 1.3, size = 3)
 # 
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_bias = plot_bias + theme(legend.position = "top")
 #     }
@@ -812,20 +812,20 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #       guides(color = guide_legend(title = "Estimator")) +
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 1.08, vjust = 1.3, size = 3)
 # 
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_mse = plot_mse + theme(legend.position = "top")
 #     }
 # 
-#     # Agregar los gráficos a la lista
+#     # Agregar los grC!ficos a la lista
 #     plot_list[[as.character(mu_val)]] <- plot_bias + plot_mse
 #   }
 # 
-#   # Organizar los gráficos en una sola figura y añadir leyenda común en la parte inferior
+#   # Organizar los grC!ficos en una sola figura y aC1adir leyenda comC:n en la parte inferior
 #   combined_plot <- wrap_plots(plot_list, ncol = ncol, nrow = nrow) +
 #     plot_layout(guides = "collect")
 # 
-#   # No mostrar la figura aquí, devolver el objeto combined_plot
+#   # No mostrar la figura aquC-, devolver el objeto combined_plot
 #   return(combined_plot)
 # }
 # 
@@ -833,7 +833,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 
 
 # generate_plot <- function(sample_sizes, R, mu_values, L, estimators, ncol = 2, nrow = 2) {
-#   # Lista para almacenar los gráficos
+#   # Lista para almacenar los grC!ficos
 #   plot_list <- list()
 #   
 #   # Bucle para iterar sobre cada valor de mu
@@ -847,7 +847,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #     
 #     df <- as.data.frame(results)
 #     
-#     # Plot Bias y MSE en subgráficos separados
+#     # Plot Bias y MSE en subgrC!ficos separados
 #     plot_bias <- ggplot(df, aes(x = SampleSize, y = Bias, color = Estimator)) +
 #       geom_hline(yintercept = 0) +
 #       geom_point(size = 2) +
@@ -856,7 +856,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #       guides(color = guide_legend(title = "Estimator")) +
 #       annotate("text", x = Inf, y = Inf, label = bquote(mu == .(mu_val)), hjust = 1.08, vjust = 1.3, size = 3)
 #     
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_bias = plot_bias + theme(legend.position = "top")
 #     }
@@ -869,20 +869,20 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #       guides(color = guide_legend(title = "Estimator")) +
 #       annotate("text", x = Inf, y = Inf, label = bquote(mu == .(mu_val)), hjust = 1.08, vjust = 1.3, size = 3)
 #     
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_mse = plot_mse + theme(legend.position = "top")
 #     }
 #     
-#     # Agregar los gráficos a la lista
+#     # Agregar los grC!ficos a la lista
 #     plot_list[[as.character(mu_val)]] <- plot_bias + plot_mse
 #   }
 #   
-#   # Organizar los gráficos en una sola figura y añadir leyenda común en la parte inferior
+#   # Organizar los grC!ficos en una sola figura y aC1adir leyenda comC:n en la parte inferior
 #   combined_plot <- wrap_plots(plot_list, ncol = ncol, nrow = nrow) +
 #     plot_layout(guides = "collect")
 #   
-#   # No mostrar la figura aquí, devolver el objeto combined_plot
+#   # No mostrar la figura aquC-, devolver el objeto combined_plot
 #   return(combined_plot)
 # }
 
@@ -892,7 +892,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 
 
 # generate_plot <- function(sample_sizes, R, mu_values, L, estimators) {
-#   # Lista para almacenar los gráficos
+#   # Lista para almacenar los grC!ficos
 #   plot_list <- list()
 #   
 #   # Bucle para iterar sobre cada valor de mu
@@ -906,7 +906,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #     
 #     df <- as.data.frame(results)
 #     
-#     # Plot Bias y MSE en subgráficos separados
+#     # Plot Bias y MSE en subgrC!ficos separados
 #     plot_bias <- ggplot(df, aes(x = SampleSize, y = Bias, color = Estimator)) +
 #       geom_hline(yintercept = 0) +
 #       geom_point(size = 2) +
@@ -915,7 +915,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #       guides(color = guide_legend(title = "Estimator")) +
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 1.08, vjust = 1.3, size = 3)
 #     
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_bias = plot_bias + theme(legend.position = "top")
 #     }
@@ -928,21 +928,21 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #       guides(color = guide_legend(title = "Estimator")) +
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 1.08, vjust = 1.3, size = 3)
 #     
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_mse = plot_mse + theme(legend.position = "top")
 #     }
 #     
-#     # Agregar los gráficos a la lista
+#     # Agregar los grC!ficos a la lista
 #     plot_list[[as.character(mu_val)]] <- list(plot_bias, plot_mse)
 #   }
 #   
-#   # Devolver la lista de gráficos
+#   # Devolver la lista de grC!ficos
 #   return(plot_list)
 # }
 
 # generate_plot <- function(sample_sizes, R, mu_values, L, estimators) {
-#   # Lista para almacenar los gráficos
+#   # Lista para almacenar los grC!ficos
 #   plot_list <- list()
 # 
 #   # Bucle para iterar sobre cada valor de mu
@@ -956,7 +956,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 # 
 #     df <- as.data.frame(results)
 # 
-#     # Plot Bias y MSE en subgráficos separados
+#     # Plot Bias y MSE en subgrC!ficos separados
 #     plot_bias <- ggplot(df, aes(x = SampleSize, y = Bias, color = Estimator)) +
 #       geom_hline(yintercept = 0) +
 #       geom_point(size = 2) +
@@ -965,7 +965,7 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #       guides(color = guide_legend(title = "Estimator")) +
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 1.08, vjust = 1.3, size = 3)
 # 
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_bias = plot_bias + theme(legend.position = "top")
 #     }
@@ -978,16 +978,16 @@ generate_table2 <- function(sample_sizes, R, B, mu_values, L, estimators) {
 #       guides(color = guide_legend(title = "Estimator")) +
 #       annotate("text", x = Inf, y = Inf, label = parse(text = sprintf("mu == %s", mu_val)), hjust = 1.08, vjust = 1.3, size = 3)
 # 
-#     # Eliminar la leyenda para todos los gráficos excepto el primero de cada fila
+#     # Eliminar la leyenda para todos los grC!ficos excepto el primero de cada fila
 #     if (mu_val != mu_values[1]) {
 #       plot_mse = plot_mse + theme(legend.position = "top")
 #     }
 # 
-#     # Agregar los gráficos a la lista
+#     # Agregar los grC!ficos a la lista
 #     plot_list[[as.character(mu_val)]] <- plot_bias + plot_mse
 #   }
 # 
-#   # Organizar los gráficos en una sola figura y añadir leyenda común en la parte inferior
+#   # Organizar los grC!ficos en una sola figura y aC1adir leyenda comC:n en la parte inferior
 #   combined_plot <- wrap_plots(plot_list, ncol = 2, nrow = 2) +
 #     plot_layout(guides = "collect")
 # 
