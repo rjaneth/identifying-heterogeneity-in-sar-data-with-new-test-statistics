@@ -270,7 +270,7 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
     plot_bias <- ggplot(df_filtered, aes(x = n, y = Bias, color = Estimator)) +
       geom_hline(yintercept = 0) +
       geom_point(size = 2.5) +
-      geom_line(linetype = "solid", linewidth = 1.3) +
+      geom_line(linetype = "solid", linewidth = 1.2) +
       labs(y = "Bias", x = expression(italic(n))) +
       scale_x_continuous(breaks = c(9, 25, 49, 81, 121)) +  # AC1adir esta lC-nea para escala personalizada
       scale_color_manual(values = pal_jama()(7)[1:6], labels = TeX(df_filtered$Estimator)) + # Eliminar labels y TeX
@@ -282,7 +282,7 @@ generate_plot_gi0_esp <- function(results_gi0, mu_values, selected_estimators, n
     plot_mse <- ggplot(df_filtered, aes(x = n, y = MSE, color = Estimator)) +
       geom_hline(yintercept = 0) +
       geom_point(size = 2.5) +
-      geom_line(linetype = "solid", linewidth = 1.3) +
+      geom_line(linetype = "solid", linewidth = 1.2) +
       labs(y = "MSE", x = expression(italic(n))) +
       scale_x_continuous(breaks = c(9, 25, 49, 81, 121)) +  # AC1adir esta lC-nea
       scale_color_manual(values = pal_jama()(7)[1:6], labels = TeX(df_filtered$Estimator)) + # Eliminar labels y TeX
