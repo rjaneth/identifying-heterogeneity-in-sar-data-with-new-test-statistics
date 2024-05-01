@@ -2034,29 +2034,27 @@ This section presents the simulations we performed to evaluate the performance o
 ## Simulated Data
 
 
-Figure&nbsp;\ref{fig:sim_Phantom}(a) shows the phantom  with dimensions of $500\times500$ pixels. It was proposed by&nbsp;\citet{Gomez2017}.
+Figure&nbsp;\ref{fig:sim_Phantom}(a) shows the phantom  with dimensions of $500\times500$ pixels. It was proposed by&nbsp;\citet{Gomez2017} as a tool to assess the performance of speckle-reduction filters.
 
 Figure&nbsp;\ref{fig:sim_Phantom}(b) shows the simulated image, where each small phantom displaying texture variations. 
 The observations are independent draws from the $G^0_I$ distribution&nbsp;\eqref{E:gi02}, with $L = 5$ and varying $\alpha$ and $\mu$, annotated in the image for each quadrant. 
 Light regions correspond to textured observations (heterogeneous), while darker regions represent textureless areas (homogeneous).
 
-
 The $\alpha$ parameter of the $G_I^0$ distribution is essential for interpreting texture characteristics. 
 Values close to zero greater than $-3$ suggest extremely textured targets, such as urban zones&nbsp;\cite{Frery2019a}. 
-As the value decreases, it indicates regions with moderate texture (in $\left[-6,-3\right]$), related to forest zones, while values below $-6$ correspond to textureless regions, such as pasture, agricultural fields, and water bodies&nbsp;\cite{Neto2023}.
+As the value decreases, it indicates regions with moderate texture (in the $\left[-6,-3\right]$ region), related to forest zones, while values below $-6$ correspond to textureless regions, such as pasture, agricultural fields, and water bodies&nbsp;\cite{Neto2023}.
 
-
-
-```{r sim_Phantom, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Synthetic dataset: (\\textbf{a}) Phantom. (\\textbf{b}) Simulated image varying the $\\alpha$ and $\\mu$ values of each quadrant, with $L=5$. ',  fig.subcap=c('', ''), out.width = c( "60mm","80mm"),  fig.ncol=2, fig.width = 20, fig.height = 10}
+```{r sim_Phantom, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Synthetic dataset: (\\textbf{a}) Phantom. (\\textbf{b}) Simulated image, varying $\\alpha$ and $\\mu$, with $L=5$. ',  fig.subcap=c('', ''), out.width = c( "60mm","80mm"),  fig.ncol=2, fig.width = 20, fig.height = 10}
 knitr::include_graphics("../Figures/PNG/Phantom1.png")
 knitr::include_graphics("../Figures/PNG/Phantom_label/Phantom_labels.pdf")
 
 ```
 
-The three test statistics (\(S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L)\), $T_\text{CV}$, and $T_{\text{CV}_{\text{MnAD}}}$) are applied to the simulated image using local sliding windows of size $7\times 7$, as shown in Figures&nbsp;\ref{fig:sim_results}(a)--(c). 
+We applied the three test statistics, namely \(S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L)\), $T_\text{CV}$, and $T_{\text{CV}_{\text{MnAD}}}$, 
+to the simulated image using local sliding windows of size $7\times 7$, as shown in Figures&nbsp;\ref{fig:sim_results}(a)--(c). 
 
 
-```{r sim_results, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b})  $T_\\text{CV}$. (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+```{r sim_results, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b})  $T_\\text{CV}$, and (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 
 knitr::include_graphics("../Figures/PNG/Entropy_Phantom_4_z1_200.png")
 knitr::include_graphics("../Figures/PNG/cv_Phantom_4_z1.png")
@@ -2064,9 +2062,12 @@ knitr::include_graphics("../Figures/PNG/mnad_Phantom_z1.png")
 ```
 
 The resulting $p$-values for each test  are shown in Figures&nbsp;\ref{fig:sim_SAR_Images}(a)--(c). 
-In Figures&nbsp;\ref{fig:sim_SAR_Images_p05}(a)--(c), maps are depicted using a linear gradient composed of two colors: black and white. All $p$-values above $0.05$ are represented in white (indicating no evidence to reject the null hypothesis), while those below 0.05 are shown in black (indicating evidence to reject the hypothesis). It is evident that
+In Figures&nbsp;\ref{fig:sim_SAR_Images_p05}(a)--(c), maps are depicted using a color table between black, gray levels, and white. 
+All $p$-values above $0.05$ are represented in white (indicating no evidence to reject the null hypothesis), while those below $0.05$ are shown in black (indicating evidence to reject the hypothesis). 
+We notice that
 the $S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L)$ performs significantly better than the other tests in identifying heterogeneous areas in the simulated image.
-```{r sim_SAR_Images, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Map of $p$-values: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$; (\\textbf{b})  $T_\\text{CV}$. (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+
+```{r sim_SAR_Images, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Map of $p$-values: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b})  $T_\\text{CV}$, and (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 
 knitr::include_graphics("../Figures/PNG/H_pvalue_Phantom_4_z1_200b.png")
 knitr::include_graphics("../Figures/PNG/cv_pvalues_Phantom_4_z1.png")
@@ -2094,17 +2095,15 @@ knitr::include_graphics("../Figures/PNG/lake_512.png")
 knitr::include_graphics("../Figures/PNG/Illinois_1024_36L.png")
 
 ```
+
 The three statistical tests are applied to the SAR images using $7\times 7$ local sliding windows, as illustrated in Figures&nbsp;\ref{fig:real_images_test_Mexico}, \ref{fig:test_lake} and&nbsp;\ref{fig:real_images_test_Illinois}.
 
 The $p$-values obtained for each test are presented in Figures&nbsp;\ref{fig:Mexico_pvalue}, \ref{fig:lake_pvalue} and&nbsp;\ref{fig:Illinois_crops_pvalue}, respectively. 
 
-In Figures &nbsp;\ref{fig:Mexico_crops_0.05}, \ref{fig:lake_0.05} and&nbsp;\ref{fig:Illinois_crops_0.05}, the maps of $p$-values composed of a linear gradient of black and white colors, represent the decisions at a $5\%$ significance level. 
+In Figures &nbsp;\ref{fig:Mexico_crops_0.05}, \ref{fig:lake_0.05} and&nbsp;\ref{fig:Illinois_crops_0.05}, the maps of $p$-values composed of a linear gradient of black and white colors, represent the decisions at a \SI{5}{\percent} significance level. 
 Values below  $0.05$  are represented by dark areas, indicating evidence to reject the null hypothesis and suggesting heterogeneity in these regions. 
 In contrast, values above 0.05 are represented as white areas, indicating no evidence to reject the fully-developed speckle hypothesis.
-```{r real_images_test_Mexico, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics, Coast of Jalisco: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b})  $T_\\text{CV}$. (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
-
-
-
+```{r real_images_test_Mexico, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics, Coast of Jalisco: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b})  $T_\\text{CV}$, and (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 
 knitr::include_graphics("../Figures/PNG/Entropy_Mexico_512_18L_AO_200b.png")
 knitr::include_graphics("../Figures/PNG/cv_mexico_512.png")
@@ -2119,7 +2118,7 @@ knitr::include_graphics("../Figures/PNG/mnad_p_values_mexico_512.png")
 
 ```
 
-```{r Mexico_crops_0.05, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results for a threshold of $0.05$ of the $p$-value, Coast of Jalisco. (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b}) $T_\\text{CV}$.\\quad \\quad \\quad (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+```{r Mexico_crops_0.05, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results for a threshold of $0.05$ of the $p$-value, Coast of Jalisco. (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b}) $T_\\text{CV}$, and (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 knitr::include_graphics("../Figures/PNG/H_005__Mexico_512_18L_AO_200b.png")
 knitr::include_graphics("../Figures/PNG/cv_005_pvalues_mexico_512.png")
 knitr::include_graphics("../Figures/PNG/mnad_005_mexico_512.png")
@@ -2127,7 +2126,7 @@ knitr::include_graphics("../Figures/PNG/mnad_005_mexico_512.png")
 ```
 
 
-```{r test_lake, echo=FALSE, message=FALSE, warning=FALSE,fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics, Illinois-Region 1: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b})  $T_\\text{CV}$. (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+```{r test_lake, echo=FALSE, message=FALSE, warning=FALSE,fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics, Illinois-Region 1: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b})  $T_\\text{CV}$, and (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 
 knitr::include_graphics("../Figures/PNG/Entropy_lake_512_36L_AO_100b.png")
 knitr::include_graphics("../Figures/PNG/cv_lake_512.png")
@@ -2135,34 +2134,36 @@ knitr::include_graphics("../Figures/PNG/mnad_lake_512.png")
 ```
 
 
-```{r lake_pvalue, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Map of $p$-values, Illinois-Region 1: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$; (\\textbf{b}) $T_\\text{CV}$. (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+```{r lake_pvalue, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Map of $p$-values, Illinois-Region 1: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b}) $T_\\text{CV}$, and (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+
 knitr::include_graphics("../Figures/PNG/H_pvalue_lake_512_36L_AO_100b.png")
 knitr::include_graphics("../Figures/PNG/cv_pvalues_lake_512.png")
 knitr::include_graphics("../Figures/PNG/mnad_p_values_lake_512.png")
 
 ```
 
-```{r lake_0.05, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results for a threshold of $0.05$ of the $p$-value, Illinois-Region 1. (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b}) $T_\\text{CV}$.\\quad \\quad \\quad (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+```{r lake_0.05, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results for a threshold of $0.05$ of the $p$-value, Illinois-Region 1. (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b}) $T_\\text{CV}$, and (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.', fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+
 knitr::include_graphics("../Figures/PNG/H_005_lake_512_36L_AO_100b.png")
 knitr::include_graphics("../Figures/PNG/cv_005_pvalues_lake_512.png")
 knitr::include_graphics("../Figures/PNG/mnad_005_lake_512.png")
 
 ```
 
-```{r real_images_test_Illinois, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics, Illinois-Region 2: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b}) $T_\\text{CV}$. (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+```{r real_images_test_Illinois, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics, Illinois-Region 2: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b}) $T_\\text{CV}$, and (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 
 knitr::include_graphics("../Figures/PNG/Entropy_Illinois_1024_36L_AO_200b.png")
 knitr::include_graphics("../Figures/PNG/cv_Illinois_crops_1024.png")
 knitr::include_graphics("../Figures/PNG/mnad_Illinois_crops_1024.png")
 ```
 
-```{r Illinois_crops_pvalue, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Map of $p$-values, Illinois-Region 2: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b})  $T_\\text{CV}$. (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+```{r Illinois_crops_pvalue, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Map of $p$-values, Illinois-Region 2: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b})  $T_\\text{CV}$, and (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 knitr::include_graphics("../Figures/PNG/H_pvalue_Illinois_1024_36L_AO_200b.png")
 knitr::include_graphics("../Figures/PNG/cv_pvalues_Illinois_crops_1024.png")
 knitr::include_graphics("../Figures/PNG/mnad_p_values_Illinois_crops_1024.png")
 
 ```
-```{r Illinois_crops_0.05, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results for a threshold of $0.05$ of the $p$-value, Illinois-Region 2. (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b}) $T_\\text{CV}$.\\quad \\quad \\quad  (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),fig.ncol=3, fig.width = 20, fig.height = 10}
+```{r Illinois_crops_0.05, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results for a threshold of $0.05$ of the $p$-value, Illinois-Region 2. (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b}) $T_\\text{CV}$, and  (\\textbf{c}) $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),fig.ncol=3, fig.width = 20, fig.height = 10}
 knitr::include_graphics("../Figures/PNG/H_005_pvalues_Illinois_1024_36L_AO_200b.png")
 knitr::include_graphics("../Figures/PNG/cv_005_pvalues_Illinois_crops_1024.png")
 knitr::include_graphics("../Figures/PNG/mnad_005_Illinois_crops_1024.png")
@@ -2177,12 +2178,7 @@ It is noticeable that the entropy and CV-based tools predicted heterogeneity reg
 The $T_{\text{CV}_{\text{MnAD}}}$ test was shown to be an effective edge detector. It emerges as a robust alternative to the classical CV test, making it less susceptible to the influence of outliers and allowing it to produce more precise edges.
 Considering a higher significance level may increase the sensitivity to edge detection, but it may also increase the risk of detecting false heterogeneous regions.
 
-Additionally, assuming a $5\%$ threshold for $p$-values, in most cases, the heterogeneous regions detected by the $S_{\widetilde{H}{\text{AO}}}(\bm{Z}; L)$ test were more extensive than those detected by the $T_\text{CV}$ and $T_{\text{CV}_{\text{MnAD}}}$ tests. This was mainly observable in Figures&nbsp;\ref{fig:sim_SAR_Images_p05}(a), &nbsp;\ref{fig:Mexico_crops_0.05}(a), and &nbsp;\ref{fig:lake_0.05}(a).
-
-
-
-
-
+Additionally, assuming a \SI{5}{\percent} threshold for $p$-values, in most cases, the heterogeneous regions detected by the $S_{\widetilde{H}{\text{AO}}}(\bm{Z}; L)$ test were more extensive than those detected by the $T_\text{CV}$ and $T_{\text{CV}_{\text{MnAD}}}$ tests. This was mainly observable in Figures&nbsp;\ref{fig:sim_SAR_Images_p05}(a), &nbsp;\ref{fig:Mexico_crops_0.05}(a), and &nbsp;\ref{fig:lake_0.05}(a).
 
 # Conclusion {#sec:conclusion} 
 

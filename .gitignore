@@ -669,3 +669,8 @@ Text/Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure
 Text/Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_madmed_gi0_MnADmedian-1.pdf
 Text/Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_MnADmedian_gamma-1.pdf
 Text/Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_normality_qq-1.pdf
+*.Rdata
+Text/Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_bias_mse_gi0-1.pdf
+Text/Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_cv-1.pdf
+Text/Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_cv_gamma-1.pdf
+Text/Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_density-1.pdf

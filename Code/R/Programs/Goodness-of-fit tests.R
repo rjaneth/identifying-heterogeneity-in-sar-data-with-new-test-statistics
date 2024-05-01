@@ -65,19 +65,37 @@ plot.legend <- c("Lognormal", "Gamma", "Normal", "Weibull")
 
 denscomp(list(fln, fg, fn, fw), legendtext = plot.legend, 
          fitcol = c("darkblue", "#637029", "indianred3", "#FDA75F"), 
-         fitlwd = c(3, 3, 3, 3), xlab = "CV")
+         fitlwd = c(3, 3, 3, 3), xlab = "CV", plotstyle="ggplot") +
+  ggplot2::theme_set(ggplot2::theme_minimal() +
+                       ggplot2::theme(text=element_text(family="serif"),
+                    legend.position = "top")
+  )
 
 
 qqcomp(list(fln, fg, fn, fw), legendtext = plot.legend, 
        fitcol = c("darkblue", "#637029", "indianred3", "#FDA75F"), 
-       fitlwd = c(3, 3, 3, 3), xlegend = "topleft", ylegend = NULL)
+       fitlwd = c(3, 3, 3, 3), xlegend = "topleft", ylegend = NULL, plotstyle="ggplot") +
+  ggplot2::theme_set(ggplot2::theme_minimal() +
+                       ggplot2::theme(text=element_text(family="serif"),
+                                      legend.position = "top")
+  )
 
 
 cdfcomp(list(fln, fg, fn, fw), legendtext = plot.legend, 
         fitcol = c("darkblue", "#637029", "indianred3", "#FDA75F"), 
-        fitlwd = c(3, 3, 3, 3), xlab = "CV")
+        fitlwd = c(3, 3, 3, 3), xlab = "CV", plotstyle="ggplot") +
+  ggplot2::theme_set(ggplot2::theme_minimal() +
+                       ggplot2::theme(text=element_text(family="serif"),
+                                      legend.position = "top")
+  )
+)
 
 
 ppcomp(list(fln, fg, fn, fw), legendtext = plot.legend, 
        fitcol = c("darkblue", "#637029", "indianred3", "#FDA75F"), 
-       fitlwd = c(3, 3, 3, 3), xlegend = "topleft", ylegend = NULL)
+       fitlwd = c(3, 3, 3, 3), xlegend = "topleft", ylegend = NULL, plotstyle="ggplot") +
+  ggplot2::theme_set(ggplot2::theme_minimal() +
+                       ggplot2::theme(text=element_text(family="serif"),
+                                      legend.position = "top")
+  )
+)
