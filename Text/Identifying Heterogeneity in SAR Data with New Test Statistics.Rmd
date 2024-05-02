@@ -260,7 +260,7 @@ where $\psi^{(0)}(\cdot)$ is the digamma function. Figure&nbsp;\ref{fig:Plot_GI0
 Notice that it converges to the entropy of \(\Gamma_{\text{SAR}}\) when \(\alpha\to-\infty\), as expected.
 The more heterogeneous (large $\alpha$ values) the SAR region is, the larger the entropy (or degree of disorder) is.
 
-```{r Plot_GI0_to_gamma1, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="80%",  fig.pos="hbt", fig.cap="$H_{ G_I^0}$ converges to the $H_{\\Gamma_{\\text{SAR}}}$, with $L=8$."}
+```{r Plot_GI0_to_gamma1, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="85%",  fig.pos="hbt", fig.cap="$H_{ G_I^0}$ converges to the $H_{\\Gamma_{\\text{SAR}}}$ when $\\alpha\\to-\\infty$, with $L=8$."}
 
 L <- c(8)
 alphas <- c(  -3, -8, -20, -1000)
@@ -293,7 +293,7 @@ ggplot(muEntropy.molten, aes(x = mu, y = Entropy, col = alpha)) +
   geom_line(data = Entropy_gamma.molten, aes(x = mu, y = `Entropy Gamma`), color = "blue", linetype = "solid",linewidth = 1.5) + 
   geom_line(linetype = "longdash",  linewidth = 2, alpha=.7) +
   annotate("text", x = max(mu)+0.2, y = max(Entropy_gamma.molten$`Entropy Gamma`), 
-           label = TeX("$\\Gamma_{\\tiny{SAR}}$"), vjust = 0.9, hjust = 0.1, color = "blue")+
+           label = TeX("$H_{\\Gamma_{\\tiny{SAR}}}$"), vjust = 0.9, hjust = 0.2, color = "blue")+
   theme_minimal() +
   scale_color_manual(values = brewer.pal(7, "Dark2")[1:5], labels = alpha_labels) +
   #scale_color_manual(values = pal_jama()(7)[2:5], labels = alpha_labels) +
@@ -687,7 +687,7 @@ excessive kurtosis&nbsp;(EK) and
 Anderson--Darling \(p\) values for normality. 
 Results with \(p\) values greater than \(0.05\) do not indicate a violation of the normality assumption.
 A low variance, skewness, and excessive kurtosis of almost zero indicate limited dispersion, asymmetry, and a light tail.
-Normal QQ plots confirm no evidence against a normal distribution, as shown in Figure&nbsp;\ref{fig:Plot_normality_qq}.
+Normal Q--Q plots confirm no evidence against a normal distribution, as shown in Figure&nbsp;\ref{fig:Plot_normality_qq}.
 
 ```{r Simulated_density, echo=FALSE, message=FALSE}
 #, cache = TRUE, autodep = TRUE
@@ -855,7 +855,7 @@ table_result_combined <- knitr::kable(
 print(table_result_combined)
 ```
 
-```{r Plot_normality_qq, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="90%", fig.pos="H",  fig.cap="Normal QQ-plots for  $n=121$.", fig.width=6, fig.height=5}
+```{r Plot_normality_qq, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="90%", fig.pos="H",  fig.cap="Normal Q--Q plots for  $n=121$.", fig.width=6, fig.height=5}
 
 
 
@@ -1125,7 +1125,7 @@ It is shown that the IG distribution is well approximated by the log-normal dist
 IG distribution also does not share the problem of the non-existence of a fixed-width confidence interval with the Gaussian case&nbsp;\cite{whitmore1978}.
 
 
-The LN distribution in two parameters has the following density function.
+The biparametric LN distribution has density:
 
 \begin{align}
     f_Z(z;\mu_{\text{LN}}, \sigma_{\text{LN}} )=\frac{1}{\sigma_{\text{LN}} z\sqrt{2\pi}}\exp\left\{-\frac{(\ln z- \mu_{\text{LN}})^2}{2\sigma_{\text{LN}}^2}\right\}\mathbbm 1_{\mathbbm R_+}(z),
@@ -1145,8 +1145,11 @@ The model with the lowest BIC value is chosen as the best.
 The AIC and BIC results in Tables&nbsp;\ref{tab:table_aic_gamma}--\ref{tab:table_aic_gio_MnADmedian} indicate that the CV and \(\text{CV}_{\text{MnAD}}\) data from different distributed $\Gamma_{\text{SAR}}$ and \(G_I^0\) synthetic sample sizes match the properties of an LN distribution.
 It is important to note that this conclusion was drawn empirically based on a dictionary of analytically tractable distributions and well-defined under biparametric, unimodal, asymmetric, and positive distributions.
 
-Figures&nbsp;\ref{fig:Plot_cv}--\ref{fig:Plot_madmed_gi0_MnADmedian} show empirical and fitted density plots, Q-Q plots, P-P plots, as well as empirical and fitted cumulative distribution functions.
-They provide qualitative sources confirming that the LN distribution is the most appropriate.
+Figures&nbsp;\ref{fig:Plot_cv}--\ref{fig:Plot_madmed_gi0_MnADmedian} show empirical and fitted density plots, Q--Q plots, P--P plots, as well as empirical and fitted cumulative distribution functions.
+They provide qualitative sources that confirm that the LN distribution is the most appropriate distribution.
+As expected, both test statistics work well under the null hypothesis.
+Under the alternative hypothesis, the P--P plot shows that \(\text{CV}_{\text{MnAD}}\) is more robust than CV, although both statistics suffer from the tail effect caused by the distributed $G_I^0$ data. 
+
 
 ```{r Simulated_AIC_BIC_gamma, echo=FALSE, message=FALSE, warning=FALSE}
 set.seed(1234567890, kind = "Mersenne-Twister")
@@ -1356,7 +1359,7 @@ for (s in sample.sizes) {
                                                InverseGaussian = BIC_manual))
 }
 
-# Guardar los resultados en un archivo .Rdata
+
 save(results_AIC, results_BIC, file = "./Data/results_AIC_BIC.Rdata")
 ```
 
@@ -1690,7 +1693,7 @@ for (s in sample.size) {
 save(TestStatistics, file = "./Data/rTestStatistics_gamma_49.Rdata")
 ```
 
-```{r Plot_cv_gamma, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with CV data from $\\Gamma_{\\text{SAR}}$, with  $n=49$, $L=5$ and $\\mu=1$.", fig.width=8, fig.height=6}
+```{r Plot_cv_gamma, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with CV data from $\\Gamma_{\\text{SAR}}$ (under the null hypothesis), with $n=49$, $L=5$, and $\\mu=1$.", fig.width=8, fig.height=6}
 
 
 load("./Data/rTestStatistics_gamma_49.Rdata")
@@ -1760,7 +1763,7 @@ for (s in sample.size) {
 save(TestStatistics, file = "./Data/rTestStatistics_gi0_49.Rdata")
 ```
 
-```{r Plot_cv, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with $\\text{CV}$ data from $G_I^0$, with  $n=49$, $L=5$, $\\mu=1$ and $\\alpha=-3$.", fig.width=8, fig.height=6}
+```{r Plot_cv, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with $\\text{CV}$ data from $G_I^0$ (under the alternative hypothesis), with  $n=49$, $L=5$, $\\mu=1$, and $\\alpha=-3$.", fig.width=8, fig.height=6}
 
 load("./Data/rTestStatistics_gi0_49.Rdata")
 
@@ -1838,7 +1841,7 @@ for (s in sample.size) {
 save(TestStatistics, file = "./Data/rTestStatistics_gamma_49_MnADmedian.Rdata")
 ```
 
-```{r Plot_MnADmedian_gamma, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with $\\text{CV}_{\\text{MnAD}}$ data from $\\Gamma_{\\text{SAR}}$, with  $n=49$, $L=5$ and $\\mu=1$.", fig.width=8, fig.height=6}
+```{r Plot_MnADmedian_gamma, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.show="hold", fig.align="center",fig.pos = 'H',  fig.cap="Goodness of fit plots for evaluating the best distribution with $\\text{CV}_{\\text{MnAD}}$ data from $\\Gamma_{\\text{SAR}}$ (under the null hypothesis), with  $n=49$, $L=5$, and $\\mu=1$.", fig.width=8, fig.height=6}
 
 
 load("./Data/rTestStatistics_gamma_49_MnADmedian.Rdata")
@@ -1913,7 +1916,7 @@ for (s in sample.size) {
 save(TestStatistics_mad, file = "./Data/rTestStatistics_MnADmedian_gi0_49.Rdata")
 ```
 
-```{r Plot_madmed_gi0_MnADmedian, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.pos="hbt",  fig.cap="Goodness of fit plots for evaluating the best distribution with $CV_{\\text{MnAD}}$ data from $G_I^0$, with  $n=49$, $L=5$, $\\mu=1$ and $\\alpha=-3$.", fig.width=8, fig.height=6}
+```{r Plot_madmed_gi0_MnADmedian, echo=FALSE, message=FALSE, warning=FALSE, out.width="100%", fig.pos="hbt",  fig.cap="Goodness of fit plots for evaluating the best distribution with $CV_{\\text{MnAD}}$ data from $G_I^0$ (under the alternative hypothesis), with  $n=49$, $L=5$, $\\mu=1$, and $\\alpha=-3$.", fig.width=8, fig.height=6}
 
 
 load("./Data/rTestStatistics_MnADmedian_gi0_49.Rdata")
