@@ -41,7 +41,7 @@ abstract: |
   The first test statistic uses a bootstrapped non-parametric estimator of Shannon entropy, providing a robust assessment in uncertain distributional assumptions.
   The second test uses the classical coefficient of variation (CV). 
   The third test uses an alternative form of estimating the CV based on the ratio of the mean absolute deviation from the median to the median. 
-  We apply our test statistic to create maps of \(p\) values for the homogeneity hypothesis.
+  We apply our test statistic to create maps of \(p\)-values for the homogeneity hypothesis.
   Finally, we show that our proposal, the entropy-based test, outperforms existing methods, such as the classical CV and its alternative variant, in identifying heterogeneity when applied to both simulated and actual data.
 keywords: |
   SAR; heterogeneity; entropy;  coefficient of variation; hypothesis tests
@@ -337,7 +337,6 @@ where
 $$
 c_i=\begin{cases}1+(i-1) / m & \text { if } \quad 1 \leq i \leq m, \\ 2 & \text { if }\quad m+1 \leq i \leq n-m,\\ 1+(n-i) / m & \text { if }\quad n-m+1 \leq i \leq n.\end{cases}
 $$
-The authors proved that $\widehat{H}_{\text{E}}(\bm{Z})\xrightarrow{p}H[Z]$, when $m,n\rightarrow\infty$ and  $m/n\rightarrow0$.
 
 * Al-Omari&nbsp;\cite{IbrahimAlOmari2014}:
 $$
@@ -349,8 +348,7 @@ $$
 $$
 in which $Z_{(i-m)}=Z_{(1)}$ for $i \leq m$, and $Z_{(i+m)}=Z_{(n)}$ for $i \geq n-m$.
 
-
-These estimators are asymptotically consistent. 
+These estimators are asymptotically consistent, i.e., they converge in probability to the true value when $m,n\rightarrow\infty$ and  $m/n\rightarrow0$.
 However, we will use improved bootstrap-improved versions because we need them to perform well with small samples.
 
 ## Enhanced estimators with Bootstrap
