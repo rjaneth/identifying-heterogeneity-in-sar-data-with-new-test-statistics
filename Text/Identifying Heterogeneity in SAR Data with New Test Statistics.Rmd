@@ -545,59 +545,61 @@ The test accuracy is evaluated through 1000 simulated samples of different sizes
 
 The processing time is an important feature, especially considering the application of these estimators to large datasets of SAR images, as seen in Section&nbsp;\ref{sec:Results}. 
 
-```{r Simulated_comparative_time2, echo=FALSE, message=FALSE}
+```{r Simulated_comparative_time3, echo=FALSE, message=FALSE}
 set.seed(1234567890, kind = "Mersenne-Twister")
-
 R <- 1000
 mu <- 1
-B <- 40#100
+B <- 40
 
 sample.size <- c(25,49, 81, 121)
-L_values <- c( 2, 8)
+L_values <- c(2, 8)
 
 bootstrap_estimators <- list(
   "$\\widetilde{H}_{\\text{C}}$" = bootstrap_correa_estimator,
   "$\\widetilde{H}_{\\text{E}}$" = bootstrap_ebrahimi_estimator,
   "$\\widetilde{H}_{\\text{AO}}$" = bootstrap_al_omari_1_estimator
 )
-
-all_TestStatistics <- list()
-
-execution_times <- list()
-
-for (estimator_name in names(bootstrap_estimators)) {
-
-  TestStatistics <- list()
+if (!file.exists("./Data/results_data_time_3.Rdata")) {#Deactivate this line to regenerate the file
+  set.seed(1234567890, kind = "Mersenne-Twister")
   
-  for (L in L_values) {
-    TestStat <- list()
+  all_TestStatistics <- list()
+  execution_times <- list()
+  
+  for (estimator_name in names(bootstrap_estimators)) {
+    TestStatistics <- list()
     
-    for (s in sample.size) {
-      TestStat1 <- numeric(R)
-      start_time <- Sys.time() # start time
+    for (L in L_values) {
+      TestStat <- list()
       
-      for (r in 1:R) {
-        z <- gamma_sar_sample(L, mu, s)
-        TestStat1[r] <- bootstrap_estimators[[estimator_name]](z, B) - (log(mean(z)) + (L - log(L) + lgamma(L) + (1 - L) * digamma(L)))
+      for (s in sample.size) {
+        TestStat1 <- numeric(R)
+        start_time <- Sys.time() # start time
+        
+        for (r in 1:R) {
+          z <- gamma_sar_sample(L, mu, s)
+          TestStat1[r] <- bootstrap_estimators[[estimator_name]](z, B) - (log(mean(z)) + (L - log(L) + lgamma(L) + (1 - L) * digamma(L)))
+        }
+        
+        TestStatistics[[as.character(s)]] <- data.frame("SampleSize" = rep(s, R), "Test_Statistics" = TestStat1)
+        
+        end_time <- Sys.time() # end time
+        execution_time <- end_time - start_time # total time
+        execution_times[[paste(estimator_name, L, s)]] <- execution_time # save time
       }
       
-      TestStatistics[[as.character(s)]] <- data.frame("SampleSize" = rep(s, R), "Test_Statistics" = TestStat1)
-      
-      end_time <- Sys.time() # end time
-      execution_time <- end_time - start_time # total time
-      execution_times[[paste(estimator_name, L, s)]] <- execution_time # save time
+      all_TestStatistics[[paste(estimator_name, L)]] <- TestStatistics
     }
-    
-    all_TestStatistics[[paste(estimator_name, L)]] <- TestStatistics
   }
+  
+  save(all_TestStatistics, execution_times, file = "./Data/results_data_time_3.Rdata")
 }
 
-save(all_TestStatistics, execution_times, file = "./Data/results_data_time2.Rdata")
+
 ```
 
-```{r Table_statistic_time2, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+```{r Table_statistic_time3, echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
 
-load("./Data/results_data_time2.Rdata")
+load("./Data/results_data_time_3.Rdata")
 
 combined_results <- data.frame(Estimator = character(),
                                L = numeric(),
