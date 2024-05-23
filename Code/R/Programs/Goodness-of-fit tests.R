@@ -67,24 +67,28 @@ density_plots <- list(
   denscomp(list(fln, fg, fn, fw), n = num_bins, legendtext = c("Lognormal", "Gamma", "Normal", "Weibull"), 
            fitcol = c("darkblue", "#56B4E9", "#FC4E07", "#009E80"), fitlwd = c(1.6, 1.3, 1.2, 1.0),
            fitlty = 1, xlab = expression(CV), plotstyle = "ggplot") +
+    geom_line(alpha = 0.7) +
     theme_minimal() +
     theme(text = element_text(family = "serif"), legend.position = "bottom"),
   
   qqcomp(list(fln, fg, fn, fw), legendtext = c("Lognormal", "Gamma", "Normal", "Weibull"), 
          fitcol = c("darkblue", "#56B4E9", "#FC4E07", "#009E80"), fitlwd = c(1.6, 1.3, 1.2, 1.0),
          plotstyle = "ggplot") +
+    geom_line(alpha = 0.7) +
     theme_minimal() +
     theme(text = element_text(family = "serif"), legend.position = "bottom"),
   
   cdfcomp(list(fln, fg, fn, fw), legendtext = c("Lognormal", "Gamma", "Normal", "Weibull"), 
           fitcol = c("darkblue", "#56B4E9", "#FC4E07", "#009E80"), fitlwd = c(1.6, 1.3, 1.2, 1.0),
           fitlty = 1, xlab = expression(CV), plotstyle = "ggplot") +
+    geom_line(alpha = 0.7) +
     theme_minimal() +
     theme(text = element_text(family = "serif"), legend.position = "bottom"),
   
   ppcomp(list(fln, fg, fn, fw), legendtext = c("Lognormal", "Gamma", "Normal", "Weibull"), 
          fitcol = c("darkblue", "#56B4E9", "#FC4E07", "#009E80"), fitlwd = c(1.6, 1.3, 1.2, 1.0),
          plotstyle = "ggplot") +
+    geom_line(alpha = 0.7) +
     theme_minimal() +
     theme(text = element_text(family = "serif"), legend.position = "bottom")
 )
