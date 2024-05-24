@@ -169,9 +169,11 @@ We use properties such as entropy and coefficient of variation.
 Entropy is a fundamental concept in information theory with far-reaching applications in pattern recognition, statistical physics, image processing, edge detection and SAR image analysis&nbsp;\cite{Presse2013,MohammadDjafari2015,Avval2021, Nascimento2014,Nascimento2019}. 
 Shannon introduced it in 1948&nbsp;\cite{Shannon1948} for a random variable to measure information and uncertainty.
 Shannon entropy is a crucial descriptive parameter in statistics, especially for evaluating data dispersion and performing tests for normality, exponentiality and uniformity&nbsp;\cite{Wieczorkowski1999,Zamanzade2012}. 
-Entropy estimation is challenging, especially when the model is unknown. In these cases, non-parametric methods are used.
-Spacing methods have been discussed as a non-parametric approach in Refs.&nbsp;\cite{AlizadehNoughabi2010,Subhash2021}. 
+Entropy estimation is challenging, especially when the model is unknown;
+in these cases, non-parametric methods, as those based on spacings&nbsp;\cite{AlizadehNoughabi2010,Subhash2021}, can be used.
 This strategy is flexible and robust because it does not enforce a model or parametric constraints.
+Different roughness levels, which materialize as different models for SAR data, have different entropy values.
+We designed a bootstrap-improved non-parametric estimator for the Shannon entropy.
 
 The coefficient of variation (CV), introduced in 1896 by Pearson&nbsp;\cite{Pearson1896}, is a relative dispersion measure widely used in various fields of applied statistics, including sampling, biostatistics, medical and biological research, climatology and other fields&nbsp;\cite{hendricks1936sampling,Tian2005,SubrahmanyaNairy2003,Chankham2024}.
 It facilitates the comparison of variability between different populations and is particularly valuable for relating variables with different units. 
@@ -180,10 +182,6 @@ If these conditions are not met, then the CV is the relative measure that is usu
 The variable with the highest CV value has the largest relative dispersion around the mean value&nbsp;\cite{Banik2011}.
 The coefficient of variation is the primary measure of heterogeneity in SAR data&nbsp;\cite{Ulaby1986,Touzi1988}.
 We study two ways of estimating the coefficient of variation.
-
-The other parameter we study is the Shannon entropy.
-Different roughness levels materialized as models for SAR data, have different entropy values, but this fundamental quantity can also be estimated in a model-agnostic way.
-We exploit this property and design a bootstrap-improved non-parametric estimator for the Shannon entropy.
 
 We devise test statistics based on these three estimators: 
 the classical coefficient of variation, 
@@ -216,7 +214,7 @@ functions (pdfs):
 where \(\mu > 0\) is the mean, 
 \(\gamma > 0\) is the scale, 
 \(\alpha < 0\) measures the roughness, 
-\(L \geq 1\) is the number of looks, 
+\(L \geq 1\) is the number of looks (either nominal or estimated, thus not restricted to integer values), 
 \(\Gamma(\cdot)\) is
 the gamma function, 
 and \(\mathbbm 1_{A}(z)\) is the indicator function

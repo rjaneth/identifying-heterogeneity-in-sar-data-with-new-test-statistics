@@ -74,12 +74,29 @@ I have only a few comments and suggestions for clarification that, hopefully, wi
 \end{reviewbox}
 
 \begin{responsebox}{Response}
-
+We agree.
+We have merged the third-to-last paragraph with the one that discusses the Shannon entropy.
+The new paragraph is
+\begin{quote}
+	\textcolor{blue}{Entropy is a fundamental concept in information theory with far-reaching applications in pattern recognition, statistical physics, image processing, edge detection and SAR image analysis~\cite{Presse2013,MohammadDjafari2015,Avval2021, Nascimento2014,Nascimento2019}. 
+		Shannon introduced it in 1948~\cite{Shannon1948} for a random variable to measure information and uncertainty.
+		Shannon entropy is a crucial descriptive parameter in statistics, especially for evaluating data dispersion and performing tests for normality, exponentiality and uniformity~\cite{Wieczorkowski1999,Zamanzade2012}. 
+		Entropy estimation is challenging, especially when the model is unknown;
+		in these cases, non-parametric methods, as those based on spacings~\cite{AlizadehNoughabi2010,Subhash2021}, can be used.
+		This strategy is flexible and robust because it does not enforce a model or parametric constraints.
+		Different roughness levels, which materialize as different models for SAR data, have different entropy values.
+		We designed a bootstrap-improved non-parametric estimator for the Shannon entropy.}
+\end{quote}
+Please note that the references are correctly numbered and formatted in the revised manuscript.
 \end{responsebox}
 
 \begin{reviewbox}{Comment 2}
 2. In Eq. (8), the limit of alpha -> -inf is not transparent. The first 5 terms match eq. (7), and the ln(gamma) \& digamma terms seem to cancel, however, that leaves the ln(-1-alpha) \& L factors. A short discussion, or footnote, would help the reader. 
 \end{reviewbox}
+
+\begin{responsebox}{Response}
+	content...
+\end{responsebox}
 
 \begin{reviewbox}{Comment 3}
 3. Fig. 4 Q-Q plots: Are the dashed green lines fits or theoretical estimates of the distributions? What do the different scales imply? (Perhaps a larger variance in one of the distributions?) A short note in the caption or clarification in the text would help. (The later Q-Q plots all show an x=y line for reference. Why the change here?)
@@ -93,6 +110,8 @@ I have only a few comments and suggestions for clarification that, hopefully, wi
 The mathematics is, by necessity, a bit dense, therefore I've concentrated my comments on the flow of the paper so that the casual reader may readily follow. To fully follow, comprehend \& replicate this work will require effort on the reader's part, nonetheless clarification of the above points will assist in understanding the gist of the paper. 
 \end{reviewbox}
 
+\bibliographystyle{plain}
+\bibliography{../references}
 
 \end{document}
 
