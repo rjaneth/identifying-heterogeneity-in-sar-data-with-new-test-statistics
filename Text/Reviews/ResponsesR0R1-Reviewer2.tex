@@ -1,0 +1,98 @@
+\documentclass[11pt]{report}
+
+\usepackage[pdftex]{geometry}
+\geometry{a4paper,left=2.8cm,right=2.8cm,top=1.5cm,bottom=1.5cm,twoside}
+
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{graphicx}
+	\graphicspath{./Comments/}
+\usepackage[many]{tcolorbox}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{bm,bbm}
+\usepackage{float}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\newtcolorbox{reviewbox}[1]{
+colback = white!5!white,
+colframe = purple!75!black,
+fonttitle=\bfseries,
+title=#1
+}
+
+\newtcolorbox{responsebox}[1]{
+	colback = white!5!white,
+	colframe = white!75!black,
+	fonttitle=\bfseries,
+	title=#1
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+
+\begin{center}
+\large{\textbf{Response Letter to Reviewer \# 1}}
+
+\vglue 0.3cm
+
+\huge{ Identifying Heterogeneity in SAR Data with New Test Statistics\\ (remotesensing-3021303 )}
+\end{center}
+
+%\authors
+\begin{center}
+\textbf{Alejandro C.\ Frery, Janeth Alpala, Abraao D.\ C.\ Nascimento }
+\end{center}
+
+\date{\today}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{2cm}
+\noindent Dear Editors
+\bigskip
+
+\noindent We are grateful to the reviewers for the valuable comments and the time spent on checking our manuscript. 
+We have addressed their comments towards improving the paper contents and presentation. 
+Below we detail the changes and updates incorporated into the manuscript in this round of review.
+
+\medskip
+
+
+%-------------------------------------
+\begin{reviewbox}{Comment 1}
+The paper estimates homogeneous areas, and conversely heterogeneous areas, in SAR imagery via speckle statistics by exploiting variations in scattering at the pixel level. Teasing out information from this statistical behavior remains an intricate, delicate process; one which you appear to have accomplished. 
+
+I have only a few comments and suggestions for clarification that, hopefully, will enhance the readability \& ultimate applicability of the ideas presented.
+
+1. The 3rd to the last paragraph in the Introduction seems redundant. First entropy is discussed and then the 2 CV estimates, so why return again to entropy? (Perhaps some of this paragraph could be incorporated into the previous entropy discussion.)
+\end{reviewbox}
+
+\begin{responsebox}{Response}
+
+\end{responsebox}
+
+\begin{reviewbox}{Comment 2}
+2. In Eq. (8), the limit of alpha -> -inf is not transparent. The first 5 terms match eq. (7), and the ln(gamma) \& digamma terms seem to cancel, however, that leaves the ln(-1-alpha) \& L factors. A short discussion, or footnote, would help the reader. 
+\end{reviewbox}
+
+\begin{reviewbox}{Comment 3}
+3. Fig. 4 Q-Q plots: Are the dashed green lines fits or theoretical estimates of the distributions? What do the different scales imply? (Perhaps a larger variance in one of the distributions?) A short note in the caption or clarification in the text would help. (The later Q-Q plots all show an x=y line for reference. Why the change here?)
+\end{reviewbox}
+
+\begin{reviewbox}{Comment 4}
+4. What does 'nominal levels of 1\%, 5\%, and 10\%' mean? And, how are these 'achieved' in all cases? This paragraph is the only place where 'nominal levels' are mentioned, please clarify their meaning \& significance.
+\end{reviewbox}
+
+\begin{reviewbox}{Comment 5}
+The mathematics is, by necessity, a bit dense, therefore I've concentrated my comments on the flow of the paper so that the casual reader may readily follow. To fully follow, comprehend \& replicate this work will require effort on the reader's part, nonetheless clarification of the above points will assist in understanding the gist of the paper. 
+\end{reviewbox}
+
+
+\end{document}
+

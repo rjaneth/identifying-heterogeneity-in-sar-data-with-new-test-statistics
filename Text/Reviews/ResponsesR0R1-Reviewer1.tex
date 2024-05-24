@@ -1,0 +1,107 @@
+\documentclass[11pt]{report}
+
+\usepackage[pdftex]{geometry}
+\geometry{a4paper,left=2.8cm,right=2.8cm,top=1.5cm,bottom=1.5cm,twoside}
+
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{graphicx}
+	\graphicspath{./Comments/}
+\usepackage[many]{tcolorbox}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{bm,bbm}
+\usepackage{float}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\newtcolorbox{reviewbox}[1]{
+colback = white!5!white,
+colframe = purple!75!black,
+fonttitle=\bfseries,
+title=#1
+}
+
+\newtcolorbox{responsebox}[1]{
+	colback = white!5!white,
+	colframe = white!75!black,
+	fonttitle=\bfseries,
+	title=#1
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+
+\begin{center}
+\large{\textbf{Response Letter to Reviewer \# 1}}
+
+\vglue 0.3cm
+
+\huge{ Identifying Heterogeneity in SAR Data with New Test Statistics\\ (remotesensing-3021303 )}
+\end{center}
+
+%\authors
+\begin{center}
+\textbf{Alejandro C.\ Frery, Janeth Alpala, Abraao D.\ C.\ Nascimento }
+\end{center}
+
+\date{\today}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{2cm}
+\noindent Dear Editors
+\bigskip
+
+\noindent We are grateful to the reviewers for the valuable comments and the time spent on checking our manuscript. 
+We have addressed their comments towards improving the paper contents and presentation. 
+Below we detail the changes and updates incorporated into the manuscript in this round of review.
+
+\medskip
+
+
+%-------------------------------------
+\begin{reviewbox}{Comment 1}
+Page 2, line 81. When defining L, do you refer to the number of looks or to the equivalent number of looks?
+
+\end{reviewbox}
+
+\begin{responsebox}{Response}
+
+\end{responsebox}
+
+\begin{reviewbox}{Comment 2}
+Page 15, line 266. Could you please better define the intensity format? Does it refer to GRD? In that case, which acquisition mode and which final equivalent number of looks? How does this information relates with the L values in Figure 13 caption? It would also be useful to complement the description with the images acquisition date.
+\end{reviewbox}
+
+\begin{reviewbox}{Comment 3}
+Page 15, Figure 13. In order to ease the interpretation of the results for the 3 sites, it would be useful to show an optical image (the closest's Sentinel-2 available for example) of the corresponding SAR images.
+\end{reviewbox}
+
+\begin{reviewbox}{Comment 4}
+Page 15, Figure 13 caption. In reference to the L values 18, 36 and 36. Could you please provide more information about how you get those values?
+\end{reviewbox}
+
+\begin{reviewbox}{Comment 5}
+Page 16, line 269. Could you comment on why you selected a 7x7 window?
+\end{reviewbox}
+
+\begin{reviewbox}{Comment 6}
+As a suggestion, in order to conduct a more quantitative analysis of the results for each estimator, would you consider comparing the mean and standard deviation values of the different tests among some reference areas in the images? Ideally, a land cover map would serve. Alternatively, you may use some polygons with a clear land cover label (water, vegetation, urban). This would also serve to evaluate the sensitivity of the estimators for classification purposes.
+\end{reviewbox}
+
+\begin{reviewbox}{Comment 7}
+Some general comments:
+\begin{itemize}
+	\item in the case you chose an GRD image. Wouldn't it make more sense to apply the operators on an Single Look Complex image so in native SAR coordinates?
+	\item could you comment what to expect if doing the same tests employing higher resolution images such as TerraSAR-X's?
+	\item could you comment what would be the impact of your work in classification applications with SAR images?
+\end{itemize}
+\end{reviewbox}
+
+\end{document}
+
