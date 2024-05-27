@@ -81,17 +81,65 @@ We have clarified that
 Page 15, line 266. Could you please better define the intensity format? Does it refer to GRD? In that case, which acquisition mode and which final equivalent number of looks? How does this information relates with the L values in Figure 13 caption? It would also be useful to complement the description with the images acquisition date.
 \end{reviewbox}
 
+\begin{responsebox}{Response}
+
+We have clarified the intensity format to refer to Ground Range Detected (GRD) data. Also, we have added Table 9 that provides a detailed overview of the SAR images selected.
+
+We have clarified (line 264) that
+\begin{quote}
+	\textcolor{blue}{
+	We evaluated the proposed test statistics using four SAR images: one of Rotterdam, 
+Netherlands, acquired by the TerraSAR-X satellite with Single-look Slant-range Complex 
+(SSC) and high-resolution Spotlight-mode (HS); another of the Coast of Jalisco, Mexico; and
+two of Illinois, USA, acquired by the Sentinel-1B in Ground Range Detected (GRD) format, 
+with ExtraWide-swath mode (EW) and Strip Map mode (SM). Table 9 provides detailed
+parameters of the selected SAR images.
+}
+\end{quote}
+
+\end{responsebox}
+
 \begin{reviewbox}{Comment 3}
 Page 15, Figure 13. In order to ease the interpretation of the results for the 3 sites, it would be useful to show an optical image (the closest's Sentinel-2 available for example) of the corresponding SAR images.
+\begin{responsebox}{Response}
+ We have added the optical images obtained from Sentinel-2 for the corresponding SAR images. These optical images are now shown in Figure 14. This addition helps to facilitate the interpretation of the results and more clearly differentiate the homogeneous and heterogeneous regions.
+\end{responsebox}
 \end{reviewbox}
-
 \begin{reviewbox}{Comment 4}
 Page 15, Figure 13 caption. In reference to the L values 18, 36 and 36. Could you please provide more information about how you get those values?
 \end{reviewbox}
+\begin{responsebox}{Response}
+
+In reference to the $L$ values 18, 36, and 36 in the caption of Figure 13, these values represent the number of looks used in our analysis. 
+
+We have clarified (line 271) that
+\begin{quote}
+	\textcolor{blue}{
+The number of looks, $L$, was determined from the metadata in SNAP (Sentinel Application Platform), consisting of azimuth looks multiplied by range looks. This value also approximates the equivalent number of looks (ENL), calculated through the ratio of the squared sample mean to the sample variance in textureless areas.
+}
+\end{quote}
+
+\end{responsebox}
+
 
 \begin{reviewbox}{Comment 5}
 Page 16, line 269. Could you comment on why you selected a 7x7 window?
 \end{reviewbox}
+\begin{responsebox}{Response}
+
+In SAR image processing, the selection of window size is crucial. Very large windows can average out local details, reducing sensitivity to fine-scale variations, while very small windows may not provide enough data for reliable statistical estimates. Our choice of a 7x7 window strikes a balance, capturing detailed local information while ensuring sufficient data points for robust analysis. Additionally, practical scenarios in SAR image processing often involve small sample sizes, typically obtained over windows of size 7x7. 
+
+We have clarified (line 280) that
+
+\begin{quote}
+	\textcolor{blue}{The three statistical tests are applied to the SAR images using 7 x 7 local sliding 
+windows (This window size is commonly used in practical scenarios, which strikes a balance between capturing detailed local information and ensuring a sufficient number of data points to solid analysis)}
+\end{quote}
+
+
+
+\end{responsebox}
+
 
 \begin{reviewbox}{Comment 6}
 As a suggestion, in order to conduct a more quantitative analysis of the results for each estimator, would you consider comparing the mean and standard deviation values of the different tests among some reference areas in the images? Ideally, a land cover map would serve. Alternatively, you may use some polygons with a clear land cover label (water, vegetation, urban). This would also serve to evaluate the sensitivity of the estimators for classification purposes.
@@ -105,6 +153,28 @@ Some general comments:
 	\item could you comment what would be the impact of your work in classification applications with SAR images?
 \end{itemize}
 \end{reviewbox}
+
+
+\begin{responsebox}{Response}
+\begin{itemize}
+ \item We chose to use GRD images for our analysis due to their preprocessing, which includes multilooking, making them suitable for statistical analysis over larger areas. While SLC images offer higher resolution, our focus on intensity-based heterogeneity detection is effectively addressed with GRD images. 
+Future work could explore the application of our methods on SLC images to potentially leverage their higher resolution.
+We focused on Sentinel-1B GRD images. Our results indicated that the Shannon entropy-based test performed better than the CV-based tests in detecting heterogeneity but with a higher number of looks.
+
+\item In response to your comment, we extended our analysis to include a high-resolution TerraSAR-X image of Rotterdam, acquired in Spotlight mode with a single look and a resolution of 0.85x0.85 meters.
+Our findings showed that the entropy test was less effective in detecting heterogeneity in this high-resolution single-look image compared to the Sentinel-1B images. 
+The performance of the entropy test appears to be influenced significantly by the number of looks.
+In contrast, for the TerraSAR-X image with a single look, the classical CV test was more effective in identifying heterogeneous regions.
+
+\item Our work focuses on identifying heterogeneity in SAR images, which is a crucial aspect of image classification. 
+The entropy-based test and coefficient of variation metrics we propose can improve the differentiation between homogeneous and heterogeneous areas, thus improving the accuracy of classification algorithms. 
+By providing robust measures of heterogeneity, our methods can be integrated into classification workflows to better distinguish between different land cover types and detect subtle changes within classes. This could be especially beneficial in applications such as environmental monitoring and urban planning.
+\end{itemize}
+
+
+
+
+\end{responsebox}
 
 \end{document}
 

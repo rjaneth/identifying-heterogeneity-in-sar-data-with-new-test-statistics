@@ -95,16 +95,70 @@ Please note that the references are correctly numbered and formatted in the revi
 \end{reviewbox}
 
 \begin{responsebox}{Response}
-	content...
+
+This proof has been included as Appendix A1.
+
+We have clarified (line 98) that
+\begin{quote}
+	\textcolor{blue}{
+		In order to clarify the limit behavior when \(\alpha \to -\infty\) in Equation (8), we show in Appendix A.1 that, for \(L=1\) and in the general case, the expression simplifies and the terms involving \(\alpha\) cancel out. Thus, the entropy of \(G_I^0\) converges to the entropy \(\Gamma_{\text{SAR}}\).
+}
+\end{quote}
+
 \end{responsebox}
 
 \begin{reviewbox}{Comment 3}
 3. Fig. 4 Q-Q plots: Are the dashed green lines fits or theoretical estimates of the distributions? What do the different scales imply? (Perhaps a larger variance in one of the distributions?) A short note in the caption or clarification in the text would help. (The later Q-Q plots all show an x=y line for reference. Why the change here?)
 \end{reviewbox}
 
+\begin{responsebox}{Response}
+
+Regarding the Q-Q plots in Fig. 4, the dashed green lines represent theoretical expected quantiles for a normal distribution, serving as a reference for comparison with the observed quantiles. The different scales on the axes imply variations in the range of values across different datasets. For datasets that exhibit larger variance or different distributions, the scales on the axes may change accordingly to accommodate the range of observed values. 
+
+We include a note in the caption to clarify this aspect.
+
+
+\begin{quote}
+	\textcolor{blue}{
+		Caption Note: The dashed green lines in the Q-Q plots represent theoretical expected quantiles for a normal distribution. Variations in the scales of the axes reflect differences in the range of values across datasets.
+}
+\end{quote}
+	
+\end{responsebox}
 \begin{reviewbox}{Comment 4}
 4. What does 'nominal levels of 1\%, 5\%, and 10\%' mean? And, how are these 'achieved' in all cases? This paragraph is the only place where 'nominal levels' are mentioned, please clarify their meaning \& significance.
 \end{reviewbox}
+\begin{responsebox}{Response}
+The term "nominal levels of 1\%, 5\%, and 10\%" refers to the  pre-established significance levels ($\alpha$) at which the hypothesis test is conducted. 
+These levels indicate the probability of committing a Type I error, which is the error of rejecting the null hypothesis when it is actually true. 
+
+In hypothesis testing, a test's size (or Type I error rate) is the probability of incorrectly rejecting the null hypothesis. 
+We conducted simulations to evaluate whether the test's actual Type I error rates matched the nominal levels. Specifically, we performed $1000$ simulations under the null hypothesis ($\mathcal{H}_0$), where the data follows a $\Gamma_{\text{SAR}}$ distribution. For each simulation, we calculated the p-values and determined the proportion of tests that incorrectly rejected the null hypothesis. 
+
+The phrase "achieved in all cases" means that the proportion of Type I errors observed in the simulations closely matched the nominal levels ($1\%, 5\%, 10\%$), demonstrating that the test correctly maintains the specified significance levels.
+
+Additionally, we assessed the power of the test, which relates to the Type II error (the error of failing to reject a false null hypothesis). 
+Power is the probability of correctly rejecting the null hypothesis when the alternative hypothesis is true. We performed $1000$ simulations under the alternative hypothesis ($\mathcal{H}_A$), where the data follows a $G_I^0$ distribution. The power of the test was found to improve with increasing sample size and number of looks, as shown in Table 4.
+
+
+We have clarified (line 192) that
+\begin{quote}
+	\textcolor{blue}{
+		After checking the data's normality, we examined the proposed test's abilities in terms of size (Type I error rate) and power (probability of correctly rejecting the null hypothesis when the alternative hypothesis is true).
+Under \(\mathcal{H}_0\), the distribution of the test statistic is asymptotically normal.
+Therefore, the \(p\) values are calculated as
+\(2\Phi(-|\varepsilon|)\), where \(\Phi\) is the standard
+%$$\varepsilon=\frac{\widetilde{H}_{\text{AO}}(\bm{Z})-\left[H_{\Gamma_{\text{SAR}}}(L)+\ln \widebar{\bm{Z}}\right]}{\widehat\sigma}.$$
+We conducted the test at nominal significance levels of $1\%$, $5\%$, and $10\%$. 
+These levels represent the probability of rejecting the null hypothesis when it is actually true (Type I error rates). 
+To verify that the test maintains these nominal levels, we performed $1000$ simulations under the null hypothesis ($\Gamma_{\text{SAR}}$ distribution), with different sample sizes and values of $L$, and $\mu=1$. In all cases, the observed Type I error rates were consistent with the nominal levels, indicating that the test maintains the specified significance levels.
+We also evaluated the test's power by performing $1000$ simulations under the alternative hypothesis ($G_I^0$ distribution) with $\mu=1$ and $\alpha=-2$.
+The power generally improves with increasing sample size and number of looks.
+The results are shown in Table 4.
+}
+\end{quote}
+
+\end{responsebox}
 
 \begin{reviewbox}{Comment 5}
 The mathematics is, by necessity, a bit dense, therefore I've concentrated my comments on the flow of the paper so that the casual reader may readily follow. To fully follow, comprehend \& replicate this work will require effort on the reader's part, nonetheless clarification of the above points will assist in understanding the gist of the paper. 

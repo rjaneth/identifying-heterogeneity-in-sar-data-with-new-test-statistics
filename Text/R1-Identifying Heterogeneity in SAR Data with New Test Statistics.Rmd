@@ -77,7 +77,15 @@ header-includes:
    - \usepackage{amsmath}
    - \usepackage{multirow}
    - \usepackage{subcaption}
-   - \captionsetup[subfigure]{labelformat=parens, justification=centering}
+   # - \captionsetup[subfigure]{labelformat=parens, justification=centering}
+   - \captionsetup[sub]{position=bottom,
+        labelfont={bf, small, stretch=1.17},
+        labelsep=space,
+        textfont={small, stretch=1.5},
+        aboveskip=1pt, 
+        belowskip=1pt,
+        singlelinecheck=off,
+        justification=centering}   
    - \usepackage{placeins}
 
 bibliography: references.bib
@@ -302,6 +310,8 @@ ggplot(muEntropy.molten, aes(x = mu, y = Entropy, col = alpha)) +
   theme(text = element_text(family = "serif"),
         legend.position = "bottom")
 ```
+
+In order to clarify the limit behavior when \(\alpha \to -\infty\) in Equation \eqref{E:E-GIO}, we show in Appendix&nbsp;\ref{app:1} that, for \(L=1\) and in the general case, the expression simplifies and the terms involving \(\alpha\) cancel out. Thus, the entropy of \(G_I^0\) converges to the entropy \(\Gamma_{\text{SAR}}\).
 
 ## Estimation of the Shannon Entropy
 
@@ -853,7 +863,7 @@ table_result_combined <- knitr::kable(
 print(table_result_combined)
 ```
 
-```{r Plot_normality_qq, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="90%", fig.pos="H",  fig.cap="Normal Q--Q plots for  $n=121$.", fig.width=6, fig.height=5}
+```{r Plot_normality_qq, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="90%", fig.pos="H",  fig.cap="Normal Q--Q plots for  $n=121$. The dashed green lines in the Q--Q plots represent theoretical expected quantiles for a normal distribution. Variations in the scales of the axes reflect differences in the range of values across datasets.", fig.width=6, fig.height=5}
 
 
 
@@ -903,7 +913,8 @@ combined_plot1 <- wrap_plots(ggplot_list, ncol = 2, nrow = 2) +
 print(combined_plot1)
 ```
 
-After checking the data's normality, we examined the proposed test's abilities in terms of size and power.
+After checking the data's normality, we examined the proposed test's abilities in terms of size (Type I error rate) and power (probability of correctly rejecting the null hypothesis when the alternative hypothesis is true).
+
 Under \(\mathcal{H}_0\), the distribution of the test statistic is asymptotically normal.
 Therefore, the \(p\) values are calculated as
 \(2\Phi(-|\varepsilon|)\), where \(\Phi\) is the standard
@@ -912,11 +923,11 @@ Gaussian cumulative distribution function, and \(\varepsilon\) is the standardiz
 \varepsilon=\frac{\widetilde{H}_{\text{AO}}(\bm{Z})-\left[H_{\Gamma_{\text{SAR}}}(L)+\ln \widebar{\bm{Z}}\right]}{\widehat\sigma}.
 \]
 
-We have nominal levels of \SI{1}{\percent}, \SI{5}{\percent}, and
-\SI{10}{\percent}. 
-In terms of size, \(1000\) simulations were used for different sample sizes from the $\Gamma_{\text{SAR}}$ distribution, with varying values of $L$, and  $\mu=1$. 
-In all cases, the nominal level was achieved. 
-We assessed the test power using \(1000\) simulations for different sample sizes from the $G_I^0$ distribution, with  $\mu=1$, and $\alpha=-2$.
+We conducted the test at nominal significance levels of \SI{1}{\percent}, \SI{5}{\percent}, and \SI{10}{\percent}. 
+These levels represent the probability of rejecting the null hypothesis when it is actually true (Type I error rates). 
+To verify that the test maintains these nominal levels, we performed $1000$ simulations under the null hypothesis ($\Gamma_{\text{SAR}}$ distribution), with different sample sizes and values of $L$, and $\mu=1$. In all cases, the observed Type I error rates were consistent with the nominal levels, indicating that the test maintains the specified significance levels.
+
+We also evaluated the test's power by performing $1000$ simulations under the alternative hypothesis ($G_I^0$ distribution) with $\mu=1$ and $\alpha=-2$.
 The power generally improves with increasing sample size and number of looks.
 The results are shown in Table&nbsp;\ref{tab:table_size_power}.
 
@@ -2015,23 +2026,115 @@ knitr::include_graphics("../Figures/PNG/mnad_005_Phantom_7_z1.png")
 
 ## SAR Data
 
-We evaluated the proposed test statistics using three SAR images: one of the coast of Jalisco, Mexico (with a spatial resolution of 20 m both along azimuth and range directions) and two of Illinois, USA (with a spatial resolution of \SI{10}{\meter} both along azimuth and range directions),  acquired by the Sentinel-1B satellite operating in C-band, with VV polarization and intensity format.
-The first two images have a size of \(512 \times 512\) pixels, while the third has \(1024 \times 1024\) pixels, and they contain mountainous areas, agricultural regions, water bodies, and urban areas, as shown in  Figures&nbsp;\ref{fig:real_SAR_Images_coe}(a)--(c).
-  
-```{r real_SAR_Images_coe, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='SAR images: (\\textbf{a}) Coast of Jalisco, with $L=18$. (\\textbf{b}) Illinois-Region 1, with $L=36$. \\quad \\quad \\quad \\quad \\quad (\\textbf{c}) Illinois-Region 2, with $L=36$. ',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+<!-- We evaluated the proposed test statistics using three SAR images: one of the coast of Jalisco, Mexico (with a spatial resolution of 20 m both along azimuth and range directions) and two of Illinois, USA (with a spatial resolution of \SI{10}{\meter} both along azimuth and range directions),  acquired by the Sentinel-1B satellite operating in C-band, with VV polarization and intensity format. -->
+<!-- The first two images have a size of \(512 \times 512\) pixels, while the third has \(1024 \times 1024\) pixels, and they contain mountainous areas, agricultural regions, water bodies, and urban areas, as shown in  Figures&nbsp;\ref{fig:real_SAR_Images_coe}(a)--(d). -->
 
+We evaluated the proposed test statistics using four SAR images: one of Rotterdam, Netherlands, acquired by the TerraSAR-X satellite with Single-look Slant-range Complex (SSC) and high-resolution Spotlight-mode (HS); another of the Coast of Jalisco, Mexico; and two of Illinois, USA, acquired by the Sentinel-1B in Ground Range Detected (GRD) format, with Extra Wide-swath mode (EW) and Strip Map mode (SM). Table&nbsp;\ref{tab:table_param} provides detailed parameters of the selected SAR images. They contain mountainous areas, agricultural regions, water bodies, and urban areas, as shown in Figures&nbsp;\ref{fig:real_SAR_Images_coe}(a)--(d).
+
+The number of looks, $L$, was determined from the metadata in SNAP (Sentinel Application Platform), consisting of azimuth looks multiplied by range looks. This value also approximates the equivalent number of looks (ENL), calculated through the ratio of the squared sample mean to the sample variance in textureless areas.
+\renewcommand{\arraystretch}{2}   
+```{r parameters_sar, echo=FALSE, message=FALSE, warning=FALSE}
+
+SAR_data <- data.frame(
+  Site = c("Rotterdam", "Coast of Jalisco", "Illinois-Region 1", "Illinois-Region 2"),
+  Mission = c("TerraSAR-X", "Sentinel-1B", "Sentinel-1B", "Sentinel-1B"),
+  Mode = c("HS", "GRD EW", "GRD SM", "GRD SM"),
+  Band = c("X", "C", "C", "C"),
+  Polarization = c("HH", "VV", "VV", "VV"),
+   Size = c("$512\\times512$", "$512\\times512$", "$512\\times512$", "$1024\\times1024$"),
+  L = c(1, 18, 36, 36),
+   Resol = c("$0.85/0.85$", "$40/40$", "$10/10$", "$10/10$"),
+  Date = c("06-12-2018", "29-08-2021", "30-06-2020", "28-08-2021")
+)
+
+colnames(SAR_data) <- c("\\textbf{Site}", "\\textbf{Mission}", "\\textbf{Mode}", "\\textbf{Band}", "\\textbf{Polarization}", "\\textbf{Size}",  "$\\bm{L}$", "\\textbf{Resolution Rg/Az [m]} ", "\\textbf{Adquisition Date}")
+
+SAR_data[] <- lapply(SAR_data, function(x) {
+  if (is.numeric(x)) {
+    if (all(x %% 1 == 0)) {
+      formatted_numbers <- sprintf("$%d$", x)
+    } else {
+      formatted_numbers <- ifelse(x < 0, sprintf("$%.1f$", x), sprintf("$\\phantom{-}%.1f$", x))
+    }
+    return(formatted_numbers)
+  } else {
+    return(x)
+  }
+})
+
+kable(SAR_data, caption = "Parameters of selected SAR images.",
+      format = "latex",
+      booktabs = TRUE,
+      align = "ccccccccc",
+      escape = FALSE,
+      digits = 2,
+      label = "table_param",
+      centering = FALSE,
+      table.envir = "table", position = "H") %>%
+  row_spec(0, align = "c") %>%
+  kable_styling(latex_options = "scale_down", font_size = 13) %>% 
+  kable_styling(full_width = TRUE) %>%
+  column_spec(1, width = "3.5cm") %>%
+  column_spec(2, width = "3cm") %>%
+  column_spec(3, width = "2cm") %>%
+  column_spec(4, width = "1cm") %>%
+  column_spec(5, width = "2cm") %>%
+  column_spec(6, width = "2.5cm") %>%
+  column_spec(7, width = "1cm") %>%
+  column_spec(8, width = "3cm") %>%
+  column_spec(9, width = "3cm") 
+
+```
+
+Figures&nbsp;\ref{fig:optical_Images}(a)--(d) show the optical images obtained from Sentinel-2 L2A in true colors (composition of RGB channels) for the corresponding SAR images, with acquisition dates as follows: Rotterdam (20-12-2018), Coast of Jalisco (05-09-2021), Illinois-Region 1 (25-06-2020), and Illinois-Region 2 (01-08-2021). 
+These optical images facilitate the interpretation of the results, making it easier to distinguish between homogeneous and heterogeneous regions.
+
+
+  
+```{r real_SAR_Images_coe, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.align="center",fig.pos = 'H', fig.cap='SAR images: (\\textbf{a}) Rotterdam, (\\textbf{b}) Coast of Jalisco, (\\textbf{c}) Illinois-Region 1, (\\textbf{d}) Illinois-Region 2.',  fig.subcap=c(' ', ' ',' ','' ), out.width = c("45mm","45mm", "45mm", "45mm"),  fig.ncol=2, fig.width = 20, fig.height = 10,fig.hspace=1.5}
+knitr::include_graphics("../Figures/PNG/Rotterdam_1024.png")
 knitr::include_graphics("../Figures/PNG/Mexico_512.png")
 knitr::include_graphics("../Figures/PNG/lake_512.png")
 knitr::include_graphics("../Figures/PNG/Illinois_1024_36L.png")
+
 ```
 
-The three statistical tests are applied to the SAR images using $7\times 7$ local sliding windows, as illustrated in Figures&nbsp;\ref{fig:real_images_test_Mexico}, \ref{fig:test_lake} and&nbsp;\ref{fig:real_images_test_Illinois}.
 
-The $p$-values obtained for each test are presented in Figures&nbsp;\ref{fig:Mexico_pvalue}, \ref{fig:lake_pvalue} and&nbsp;\ref{fig:Illinois_crops_pvalue}, respectively. 
+```{r optical_Images, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.align="center",fig.pos = 'H', fig.cap='Optical images: (\\textbf{a}) Rotterdam, (\\textbf{b}) Coast Jalisco, (\\textbf{c}) Illinois-Region 1, (\\textbf{d}) Illinois-Region 2.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm","45mm", "47mm", "42mm"),  fig.ncol=2, fig.width = 40, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/Rotterdam.png")
+knitr::include_graphics("../Figures/PNG/Jalisco_o2.png")
+knitr::include_graphics("../Figures/PNG/Sentinel2_Illinois_lake.png")
+knitr::include_graphics("../Figures/PNG/Sentinel_2021_R2.png")
+```
 
-In Figures&nbsp;\ref{fig:Mexico_crops_0.05}, \ref{fig:lake_0.05} and&nbsp;\ref{fig:Illinois_crops_0.05}, the maps of $p$-values composed of a linear gradient of black and white colors, represent the decisions at a \SI{5}{\percent} significance level. 
+The three statistical tests are applied to the SAR images using $7\times 7$ local sliding windows (this window size is commonly used in practical scenarios, which strikes a balance between capturing detailed local information and ensuring a sufficient number of data points for solid analysis), as illustrated in Figures&nbsp;\ref{fig:test_Rotterdam}, \ref{fig:real_images_test_Mexico}, \ref{fig:test_lake} and&nbsp;\ref{fig:real_images_test_Illinois}.
+
+The $p$-values obtained for each test are presented in Figures&nbsp;\ref{fig:Rotterdam_pvalue}, \ref{fig:Mexico_pvalue}, \ref{fig:lake_pvalue} and&nbsp;\ref{fig:Illinois_crops_pvalue}, respectively. 
+
+In Figures&nbsp;\ref{fig:Rotterdam_0.05}, \ref{fig:Mexico_crops_0.05}, \ref{fig:lake_0.05} and&nbsp;\ref{fig:Illinois_crops_0.05}, the maps of $p$-values composed of a linear gradient of black and white colors, represent the decisions at a \SI{5}{\percent} significance level. 
 Dark areas represent values below  $0.05$, indicating evidence to reject the null hypothesis and suggesting heterogeneity in these regions. 
 In contrast, values above 0.05 are represented as white areas, indicating no evidence to reject the fully-developed speckle hypothesis.
+
+```{r test_Rotterdam, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics, Rotterdam: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b})  $T_\\text{CV}$, and (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+
+knitr::include_graphics("../Figures/PNG/Entropy_AO_Rotterdam_1024.png")
+knitr::include_graphics("../Figures/PNG/cv_Rotterdam.png")
+knitr::include_graphics("../Figures/PNG/mnad_Rotterdam.png")
+```
+
+```{r Rotterdam_pvalue, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Map of $p$-values, Rotterdam: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b})  $T_\\text{CV}$. (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/H_pvalue_AO_Rotterdam_1024.png")
+knitr::include_graphics("../Figures/PNG/cv_pvalues_Rotterdam.png")
+knitr::include_graphics("../Figures/PNG/mnad_p_values_Rotterdam.png")
+
+```
+
+```{r Rotterdam_0.05, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results for a threshold of $0.05$ of the $p$-value, Rotterdam. (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b}) $T_\\text{CV}$, and \\quad \\quad \\quad \\quad \\quad (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
+knitr::include_graphics("../Figures/PNG/H_005_AO_Rotterdam_1024.png")
+knitr::include_graphics("../Figures/PNG/cv_005_pvalues_Rotterdam.png")
+knitr::include_graphics("../Figures/PNG/mnad_005_Rotterdam.png")
+
+```
 
 ```{r real_images_test_Mexico, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Results of applying the test statistics, Coast of Jalisco: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$, (\\textbf{b})  $T_\\text{CV}$, and \\quad \\quad \\quad \\quad \\quad (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c('', '', ''), out.width = c( "45mm","45mm", "45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 
@@ -2039,6 +2142,8 @@ knitr::include_graphics("../Figures/PNG/Entropy_Mexico_512_18L_AO_200b.png")
 knitr::include_graphics("../Figures/PNG/cv_mexico_512.png")
 knitr::include_graphics("../Figures/PNG/mnad_mexico_512.png")
 ```
+
+
 
 ```{r Mexico_pvalue, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="100%",fig.pos = 'H', fig.cap='Map of $p$-values, Coast of Jalisco: (\\textbf{a}) $S_{\\widetilde{H}_{\\text{AO}}}(\\bm{Z}; L)$. (\\textbf{b})  $T_\\text{CV}$. (\\textbf{c})   $T_{\\text{CV}_{\\text{MnAD}}}$.',  fig.subcap=c(' ', ' ',' ' ), out.width = c("45mm", "45mm","45mm"),  fig.ncol=3, fig.width = 20, fig.height = 10}
 knitr::include_graphics("../Figures/PNG/H_pvalue_Mexico_512_18L_AO_200b.png")
@@ -2098,7 +2203,7 @@ knitr::include_graphics("../Figures/PNG/mnad_005_Illinois_crops_1024.png")
 
 ```
 
-Using Shannon entropy is more meaningful than using the original and robust CV  to capture heterogeneity.
+Using Shannon entropy is more meaningful than using the original and robust CV  to capture heterogeneity, particularly for Sentinel-1B images with a high number of looks.
 It is justified that the dark areas of the maps based on the $T_\text{CV}$ and $T_{\text{CV}_{\text{MnAD}}}$ show coverage patterns similar to those reported for the $S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L)$ map. 
 This suggests that although CV-based tests may produce slightly less pronounced results than the entropy-based test, they still demonstrate a comparable ability to detect heterogeneity within SAR images.
 
@@ -2108,14 +2213,111 @@ Considering a higher significance level may increase the sensitivity to edge det
 
 Additionally, assuming a \SI{5}{\percent} threshold for $p$-values, in most cases, the heterogeneous regions detected by the $S_{\widetilde{H}{\text{AO}}}(\bm{Z}; L)$ test were more extensive than those detected by the $T_\text{CV}$ and $T_{\text{CV}_{\text{MnAD}}}$ tests. This was mainly observable in Figures&nbsp;\ref{fig:sim_SAR_Images_p05}(a), &nbsp;\ref{fig:Mexico_crops_0.05}(a), and&nbsp;\ref{fig:lake_0.05}(a).
 
+Conversely, when applying the same tests to a high-resolution TerraSAR-X image of Rotterdam, with a single look, the $S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L)$ test detected less heterogeneity compared to the CV-based tests. This indicates that the performance of the entropy test depends significantly on the number of looks, performing better with a higher number of looks as in the Sentinel-1B images. 
+
+
+
 # Conclusion {#sec:conclusion} 
 
 This article provides a practical and theoretical answer to the following physical question: How to detect heterogeneity in SAR images, assuming that the SAR intensity follows the $\Gamma_{\text{SAR}}$ model.
 To this end, we proposed three novel hypothesis tests, one from the Shannon entropy and two from the variation coefficient variants.
 The performance of our proposals was evaluated using a Monte Carlo study. 
 The results showed that they were conservative in estimating the probability of a type I error (false alarm rate) and the test power (probability of detection), which increases with sample size.
-An application to three recent SAR images was performed. 
-The results showed that the Shannon entropy-based test was more robust than the CV-based tests. 
+An application to four recent SAR images was performed. 
+The results showed that the Shannon entropy-based test was more robust than the CV-based tests for Sentinel-1B images.
+For high-resolution images with a single look, such as the TerraSAR-X image, the classical CV test was more effective in detecting heterogeneous regions.
 In addition, all tests could recognize images with different textures and identify edges where the texture type changes.
 
+\appendixtitles{no} 
+\appendixstart
+\appendix
+\section[\appendixname~\thesection]{}
+
+
+## Limit Behavior of \(H_{G_I^0}\) as \(\alpha \to -\infty\) {#app:1}
+
+To verify that \(H_{G_I^0}(\mu, \alpha, L)\) converges to \(H_{\Gamma_{\text{SAR}}}(L, \mu)\) as \(\alpha \to -\infty\),  we show that the additional terms in \(H_{G_I^0}\) cancel in the limit.
+
+The Shannon entropy for the $G_I^0$ distribution is given by:
+\begin{multline*}
+H_{G_I^0}(\mu, \alpha, L) = H_{\Gamma_{\text{SAR}}}(L, \mu) - \ln \Gamma(L-\alpha) + (L-\alpha) \psi^{(0)}(L-\alpha) \\
+- (1-\alpha) \psi^{(0)}(-\alpha) + \ln (-1-\alpha) + \ln \Gamma(-\alpha) - L.
+\end{multline*}
+We aim to show:
+\[
+\lim_{\alpha \to -\infty} H_{G_I^0}(\mu, \alpha, L) = H_{\Gamma_{\text{SAR}}}(L, \mu).
+\]
+
+The additional terms in \(H_{G_I^0}\) compared to \(H_{\Gamma_{\text{SAR}}}\) are:
+\begin{align}
+\label{E:lim1} \lim_{\alpha\to-\infty} \left[-\ln\Gamma(L-\alpha) + (L-\alpha) \psi^{(0)}(L-\alpha)-(1-\alpha)\psi^{(0)}(-\alpha)+\ln (-1-\alpha)+\ln\Gamma(-\alpha) \right]-L. 
+ \end{align}
+
+For \(L=1\), this becomes:
+\begin{align}
+\label{E:lim}
+	 \lim_{\alpha\to-\infty} \bigg[\underbrace{-\ln\Gamma(1-\alpha) +\ln (-1-\alpha)+\ln\Gamma(-\alpha)}_{A} + \underbrace{(1-\alpha) \psi^{(0)}(1-\alpha)-(1-\alpha)\psi^{(0)}(-\alpha)}_{B}\bigg]-1.
+ \end{align}
+
+Simplifying \(A\) and \(B\):
+
+\begin{align*}
+	A=\ln\frac{(-1-\alpha)\cdot\Gamma(-\alpha)}{\Gamma(1-\alpha)}=\ln\frac{(-1-\alpha)\cdot\Gamma(-\alpha)}{-\alpha\Gamma(-\alpha)}=\ln\frac{-1-\alpha}{-\alpha}=\ln\left(1+\frac{1}{\alpha}\right).
+\end{align*}
+
+\begin{align*}
+	B=(1-\alpha)\left[\psi^{(0)}(1-\alpha)-\psi^{(0)}(-\alpha)\right]&=(1-\alpha)\Bigg[\psi^{(0)}\underbrace{(1-\alpha-1)+\frac{1}{1-\alpha-1}}_{\text{Because}\, \psi^{(0)}(x+1)=\psi^{(0)}(x)+\frac{1}{x}}-\psi^{(0)}(-\alpha)\Bigg]\\
+	&=(1-\alpha)\left[\psi^{(0)}(-\alpha)-\frac{1}{\alpha}-\psi^{(0)}(-\alpha)\right]\\
+	&=-\frac{1}{\alpha}+1.
+\end{align*}
+
+Substituting the simplified expressions of \(A\) and \(B\) into \eqref{E:lim} and taking the limit, we obtain:
+\begin{align*}
+	 \underbrace{\lim_{\alpha\to-\infty}\ln\bigg(1+\frac{1}{\alpha}\bigg)}_{\text{approaches}\,\, 0}-\underbrace{\lim_{\alpha\to-\infty}\frac{1}{\alpha}}_{ \text{approaches}\,\, 0}+\lim_{\alpha\to-\infty}1-1=0.
+ \end{align*}
+ 
+ For the general case for $L>1$, we use Stirling's approximation for large \(z\):
+ \[
+\Gamma(z) \sim \sqrt{2\pi z} \left(\frac{z}{e}\right)^z,
+\]
+and  \[
+\psi^{(0)}(z) \sim \ln(z) - \frac{1}{2z}. 
+\]
+
+Therefore, the terms of Equation \eqref{E:lim1} approximate to:
+\[
+-\ln\Gamma(L-\alpha) \sim -\frac{1}{2}\ln(2\pi(L-\alpha))-(L-\alpha)\ln(L-\alpha)+(L-\alpha).
+\]
+\[
+(L-\alpha) \psi^{(0)}(L-\alpha) \sim (L-\alpha) \left[\ln(L-\alpha) - \frac{1}{2(L-\alpha)}\right] \sim (L-\alpha) \ln(L-\alpha) - \frac{1}{2}.
+\]
+\[
+-(1-\alpha) \psi^{(0)}(-\alpha) \sim -(1-\alpha) \ln(-\alpha) - \frac{1-\alpha}{2\alpha}.
+\]
+\[\ln\Gamma(-\alpha)\sim \frac{1}{2}\ln(-2\pi\alpha)-\alpha\ln(-\alpha)+\alpha.\]
+
+Then, substituting  these terms in \eqref{E:lim1} and applying limit we obtain:
+
+\begin{multline*}
+  \lim_{\alpha\to-\infty}\bigg[-\frac{1}{2}\ln(2\pi(L-\alpha))-L\ln(L-\alpha)+\alpha\ln(L-\alpha)+L-\alpha+ L\ln(L-\alpha) -\alpha\ln(L-\alpha)\\- \frac{1}{2}
+-\ln(-\alpha)+\alpha\ln(-\alpha)- \frac{1-\alpha}{2\alpha}+ \ln (-1-\alpha)+ \frac{1}{2}\ln(-2\pi\alpha)-\alpha\ln(-\alpha)+\alpha\bigg]-L.
+\end{multline*}
+
+Simplifying each term:
+
+\begin{multline*}
+\lim_{\alpha\to-\infty}\bigg[-\frac{1}{2}\ln(2\pi(L-\alpha))+L- \frac{1}{2}-\ln(-\alpha)- \frac{1-\alpha}{2\alpha}
++ \ln (-(1+\alpha))+ \frac{1}{2}\ln(-2\pi\alpha)\bigg]-L.
+\end{multline*}
+
+\[
+\lim_{\alpha\to-\infty}\bigg[\frac{1}{2}\ln\frac{-\alpha}{L-\alpha}+L- \frac{1}{2}+\frac{\alpha-1}{2\alpha}
++ \ln\frac{1+\alpha}{\alpha} \bigg]-L=\frac{1}{2}\ln(1)+L-\frac{1}{2}+\frac{1}{2}+\ln(1)-L=0.
+\]
+
+Therefore:
+
+\[
+\lim_{\alpha \to -\infty} H_{G_I^0}(\mu, \alpha, L) = H_{\Gamma_{\text{SAR}}}(L, \mu).
+\]
 
