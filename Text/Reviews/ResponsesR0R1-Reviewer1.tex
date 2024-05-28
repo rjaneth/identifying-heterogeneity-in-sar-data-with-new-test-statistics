@@ -78,12 +78,12 @@ We have clarified that
 \end{quote}
 \end{responsebox}
 
+\vspace{3em}
 \begin{reviewbox}{Comment 2}
 Page 15, line 266. Could you please better define the intensity format? Does it refer to GRD? In that case, which acquisition mode and which final equivalent number of looks? How does this information relates with the L values in Figure 13 caption? It would also be useful to complement the description with the images acquisition date.
 \end{reviewbox}
 
 \begin{responsebox}{Response}
-
 We have clarified the intensity format to refer to Ground Range Detected (GRD) data. Also, we have added Table 9 that provides a detailed overview of the SAR images selected.
 
 We have clarified (line 264) that
@@ -97,9 +97,9 @@ with ExtraWide-swath mode (EW) and Strip Map mode (SM). Table 9 provides detaile
 parameters of the selected SAR images.
 }
 \end{quote}
-
 \end{responsebox}
 
+\vspace{3em}
 \begin{reviewbox}{Comment 3}
 Page 15, Figure 13. In order to ease the interpretation of the results for the 3 sites, it would be useful to show an optical image (the closest's Sentinel-2 available for example) of the corresponding SAR images.
 \end{reviewbox}
@@ -107,6 +107,7 @@ Page 15, Figure 13. In order to ease the interpretation of the results for the 3
 	We have added the optical images obtained from Sentinel-2 for the corresponding SAR images. These optical images are now shown in Figure 14. This addition helps to facilitate the interpretation of the results and more clearly differentiate the homogeneous and heterogeneous regions.
 \end{responsebox}
 
+\vspace{3em}
 \begin{reviewbox}{Comment 4}
 Page 15, Figure 13 caption. In reference to the L values 18, 36 and 36. Could you please provide more information about how you get those values?
 \end{reviewbox}
@@ -117,14 +118,13 @@ In reference to the $L$ values 18, 36, and 36 in the caption of Figure 13, these
 We have clarified (line 271) that
 \begin{quote}
 	\textcolor{blue}{
-We used the number of looks, $L$, informed in the SNAP (Sentinel Application Platform) metadata: the product of azimuth and range looks. 
+We used the number of looks $L$ informed in the SNAP (Sentinel Application Platform) metadata: the product of azimuth and range looks. 
 This value is close to the equivalent number of looks calculated as the ratio of the squared sample mean to the sample variance in areas with fully-developed speckle.
 }
 \end{quote}
-
 \end{responsebox}
 
-
+\vspace{3em}
 \begin{reviewbox}{Comment 5}
 Page 16, line 269. Could you comment on why you selected a 7x7 window?
 \end{reviewbox}
@@ -137,16 +137,17 @@ We have clarified (line 280) that
 	\textcolor{blue}{The three statistical tests are applied to the SAR images using $7\times 7$ local sliding windows.
 		This window size balances detailed local information and sufficient number of data points, as illustrated in Figures [\dots]}
 \end{quote}
-
-
-
 \end{responsebox}
 
-
+\vspace{3em}
 \begin{reviewbox}{Comment 6}
 As a suggestion, in order to conduct a more quantitative analysis of the results for each estimator, would you consider comparing the mean and standard deviation values of the different tests among some reference areas in the images? Ideally, a land cover map would serve. Alternatively, you may use some polygons with a clear land cover label (water, vegetation, urban). This would also serve to evaluate the sensitivity of the estimators for classification purposes.
 \end{reviewbox}
+\begin{responsebox}{Response}
+	content...
+\end{responsebox}
 
+\vspace{3em}
 \begin{reviewbox}{Comment 7}
 Some general comments:
 \begin{itemize}
@@ -155,7 +156,6 @@ Some general comments:
 	\item could you comment what would be the impact of your work in classification applications with SAR images?
 \end{itemize}
 \end{reviewbox}
-
 
 \begin{responsebox}{Response}
 \begin{itemize}
@@ -177,10 +177,6 @@ We have added the following paragraph to the conclusions:
 		This type of analysis can assist users in selecting appropriate training samples for classification purposes.}
 \end{quote}
 \end{itemize}
-
-
-
-
 \end{responsebox}
 
 \end{document}

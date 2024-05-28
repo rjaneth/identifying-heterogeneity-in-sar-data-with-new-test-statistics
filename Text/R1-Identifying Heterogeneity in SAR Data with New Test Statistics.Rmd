@@ -2032,7 +2032,7 @@ knitr::include_graphics("../Figures/PNG/mnad_005_Phantom_7_z1.png")
 
 We evaluated the proposed test statistics using four SAR images: one of Rotterdam, Netherlands, acquired by the TerraSAR-X satellite with Single-look Slant-range Complex (SSC) and high-resolution Spotlight-mode (HS); another of the Coast of Jalisco, Mexico; and two of Illinois, USA, acquired by the Sentinel-1B in Ground Range Detected (GRD) format, with Extra Wide-swath mode (EW) and Strip Map mode (SM). Table&nbsp;\ref{tab:table_param} provides detailed parameters of the selected SAR images. They contain mountainous areas, agricultural regions, water bodies, and urban areas, as shown in Figures&nbsp;\ref{fig:real_SAR_Images_coe}(a)--(d).
 
-We used the number of looks, $L$, informed in the SNAP (Sentinel Application Platform) metadata: the product of azimuth and range looks. 
+We used the number of looks $L$ informed in the SNAP (Sentinel Application Platform) metadata: the product of azimuth and range looks. 
 This value is close to the equivalent number of looks calculated as the ratio of the squared sample mean to the sample variance in areas with fully-developed speckle.
 \renewcommand{\arraystretch}{2}   
 ```{r parameters_sar, echo=FALSE, message=FALSE, warning=FALSE}
@@ -2234,13 +2234,12 @@ In addition, all tests could recognize images with different textures and identi
 Despite presenting the results of using the estimators as local filters, we suggest using them in specific samples that visibly contain only one type of land use or land cover. 
 This type of analysis can assist users in selecting appropriate training samples for classification purposes.
 
-\appendixtitles{no} 
+<!-- \appendixtitles{no}  -->
 \appendixstart
 \appendix
-\section[\appendixname~\thesection]{}
+<!-- \section[\appendixname~\thesection]{} -->
 
-
-## Limit Behavior of \(H_{G_I^0}\) as \(\alpha \to -\infty\) {#app:1}
+# Limit Behavior of \(H_{G_I^0}\) as \(\alpha \to -\infty\) {#app:1}
 
 To verify that \(H_{G_I^0}(\mu, \alpha, L)\) converges to \(H_{\Gamma_{\text{SAR}}}(L, \mu)\) as \(\alpha \to -\infty\),  we show that the additional terms in \(H_{G_I^0}\) cancel in the limit.
 
