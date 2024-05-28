@@ -2220,9 +2220,11 @@ Additionally, assuming a \SI{5}{\percent} threshold for $p$-values, in most case
 Conversely, when applying the same tests to a high-resolution TerraSAR-X image of Rotterdam, with a single look, the $S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L)$ test detected less heterogeneity compared to the CV-based tests. This indicates that the performance of the entropy test depends significantly on the number of looks, performing better with a higher number of looks as in the Sentinel-1B images. 
 
 ## Quantitative Analysis of Test Statistics
-In order to conduct a more quantitative analysis of the results, we compared the mean and standard deviation values of the different tests among selected reference areas in the Illinois-Region 2 image. These reference areas represent water, vegetation, and urban land covers, as shown in Figure&nbsp;\ref{fig:land_cover}.
+In order to conduct a more quantitative analysis of the results, we compared the mean and standard deviation values of the different tests among selected reference areas in the Illinois-Region 2 image. 
+These reference areas represent water, vegetation, and urban land covers, as shown in Figure&nbsp;\ref{fig:land_cover}.
 
-We selected labeled polygons (water, vegetation, urban) and conducted 100 sampling iterations with replacement from each category, using window sizes of $11\times11$ pixels. For each sample, we applied the corresponding test statistic. Finally, we computed the mean and standard deviation of the results obtained from the 100 samples.
+We selected labeled polygons (water, vegetation, urban) and conducted 100 sampling iterations with replacement from each category, using window sizes of $11\times11$ pixels. For each sample, we applied the corresponding test statistic. 
+Finally, we computed the mean and standard deviation of the results obtained from the 100 samples.
 
 \renewcommand{\arraystretch}{1}  
 ```{r land_cover, echo=FALSE, message=FALSE, warning=FALSE, fig.fullwidth = TRUE, out.width="50%", fig.align="center",fig.pos = 'H', fig.cap='Image of Illinois-Region 2 with reference samples. ',   fig.width = 20, fig.height = 10}
@@ -2276,7 +2278,8 @@ kable(results_comparison_data, caption = "Analysis of  test statistics for diffe
 
 ```
 
-Based on the analysis, $S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L)$ appears to be the most sensitive test for classification purposes because it shows the largest distinction in mean values between the different land cover types, indicating it is better at differentiating between homogeneous and heterogeneous areas. However, CV and $\text{CV}_{\text{MnAD}}$ are also reliable with lower variability, making them good candidates depending on the specific application.
+Based on the analysis, $S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L)$ appears to be the most sensitive test for classification purposes because it shows the largest distinction in mean values between the different land cover types, indicating it is better at differentiating between homogeneous and heterogeneous areas.
+However, CV and $\text{CV}_{\text{MnAD}}$ test are also reliable with a lower variability, making them good candidates depending on the specific application.
 
 
 
