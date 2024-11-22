@@ -1,0 +1,120 @@
+%!TEX program = xelatex
+\documentclass[table,aspectratio=169]{beamer}
+
+%\usefonttheme{professionalfonts}
+\usepackage[T1]{fontenc}
+\renewcommand*\familydefault{\sfdefault}
+
+\usepackage{beamerthemesplit}
+\usepackage{graphicx}
+\graphicspath{{./Figures/}}
+
+\usepackage{bm,bbm,bbding}
+\usepackage{natbib}
+\usepackage{siunitx}
+\usepackage{texnames}
+\usepackage{algorithm,algpseudocode}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{amsmath}
+
+\definecolor{anti-flashwhite}{rgb}{0.95, 0.95, 0.96}
+\definecolor{byzantine}{rgb}{0.74, 0.2, 0.64}
+\definecolor{VUWlightgreen}{rgb}{0, .294, .204}
+\definecolor{VUWgreen}{rgb}{0, .196, .136}
+
+\usetheme[numbering=fraction]{metropolis}
+
+\setbeamercovered{dynamic}
+\setbeamercolor{background canvas}{bg=VUWgreen}
+\setbeamercolor{normal text}{fg=anti-flashwhite, bg=VUWgreen}
+\setbeamercolor{frametitle}{bg=VUWlightgreen,fg=anti-flashwhite}
+\setbeamercolor{footline}{bg=VUWlightgreen}
+
+\makeatletter
+\setlength{\metropolis@frametitle@padding}{.5em}% <- default 2.2 ex
+
+\setbeamertemplate{footline}{%
+	\begin{beamercolorbox}[wd=\textwidth, sep=.2ex]{footline}% <- default 3ex
+		\usebeamerfont{page number in head/foot}%
+		\usebeamertemplate*{frame footer}
+		\hfill%
+		\usebeamertemplate*{frame numbering}
+	\end{beamercolorbox}%
+}
+\makeatother
+
+\setbeamertemplate{frame footer}{\includegraphics[width=1.5cm]{"Logo Offshore Reversed Landscape RGB"}}
+\setbeamertemplate{navigation symbols}{}
+
+\AtBeginSubsection[]
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection,currentsubsection]
+	\end{frame}
+}
+
+\title{Identifying Heterogeneity in SAR Data with New Test Statistics}
+\subtitle{There are no too old problems}
+\author{Alejandro C.\ Frery}
+\institute{Victoria University of Wellington\\
+	School of Mathematics and Statistics\\
+	New Zealand}
+\date{November, 2024}
+
+\begin{document}
+	
+	\setsansfont[BoldFont={Avenir Heavy}]{Avenir Book}
+	
+	\frame{\titlepage}
+	
+	\begin{frame}
+		This is a joint work with Prof.\ Abraão Nascimento and MSc.\ Janeth Alpala (it is part of her PhD project), from Universidade Federal de Pernambuco, Brazil.
+	\end{frame}
+	
+	\begin{frame}{Starting point}
+		\begin{itemize}[<+->]
+			\item Synthetic Aperture Radar (SAR) technology is essential for environmental monitoring and disaster management. 
+			\item It provides
+			images under various conditions, including day or night and adverse weather
+			situations~\citep{Moreira2013,Mu2019}. 
+			\item The effective use of SAR
+			data relies on understanding of their statistical properties
+			because it is corrupted by speckle: a noise-like interference effect~\citep{Argenti2013}.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}[standout]
+		\frametitle{Takeaways}
+		You may forget about the technical contents of this talk, but remember:
+		\begin{itemize}[<+->]
+			\item There are no ``too old'' problems that cannot be revisited.
+			\item The data statistical properties always bring valuable information.
+			\item A careful mathematical manipulation often leads to new exciting results.
+		\end{itemize}
+	\end{frame}
+	
+	
+	\begin{frame}[allowframebreaks,allowdisplaybreaks]
+		\bibliographystyle{agsm}
+		\bibliography{references} 	
+	\end{frame}
+	
+	\begin{frame}[standout]
+		\frametitle{The End}
+		\begin{columns}
+			\begin{column}{.4\linewidth}
+				\centering
+				\includegraphics[width=.7\linewidth]{QRCode-WebPageVUW}\\	\includegraphics[width=\linewidth]{"Logo Offshore Reversed Landscape RGB"}
+			\end{column}
+			\begin{column}{.6\linewidth}
+				Thanks for your kind attention!
+				
+				Questions?
+			\end{column}
+		\end{columns}
+		
+	\end{frame}
+	
+\end{document}
