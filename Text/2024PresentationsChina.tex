@@ -170,8 +170,8 @@ The coefficient of variation under the $\Gamma_{\text{SAR}}$ models is:
 
 Procedure:
 \begin{enumerate}
-	\item Collect (typically small) samples $\bm x_1, \bm x_2, \dots, \bm x_m$.
-	\item Compute the sample coefficients of variation $\text{CV}(\bm x_1),\text{CV}(\bm x_2), \dots, \text{CV}(\bm x_m)$.
+	\item Collect (typically small) samples $\bm z_1, \bm z_2, \dots, \bm z_m$.
+	\item Compute the sample coefficients of variation $\text{CV}(\bm z_1),\text{CV}(\bm z_2), \dots, \text{CV}(\bm z_m)$.
 	\item Decide for heterogeneity those samples ``too far'' from $1/\sqrt{L}$.
 \end{enumerate}
 
@@ -182,10 +182,10 @@ But, what is ``too far''?
 \begin{frame}{The usual approach: I}
 We are tempted to form a statistical test using the coefficient of variation as the test statistic.
 
-Consider the random sample $\bm X=(X_1,X_2,\dots,X_n)$ that, under the null hypothesis has $\Gamma_{\text{SAR}}$ distribution.
+Consider the random sample $\bm Z=(Z_1,Z_2,\dots,Z_n)$ that, under the null hypothesis has $\Gamma_{\text{SAR}}$ distribution.
 Then, we need the distribution of
 \begin{equation}
-\widehat{\text{CV}}(\bm X) = \frac{\frac1n \sum_{\ell=1}^n X_\ell}{\sqrt{\frac1n \sum_{\ell=1}^n \big(X_\ell-\overline{\bm X}\big)^2}}.
+\widehat{\text{CV}}(\bm Z) = \frac{\frac1n \sum_{\ell=1}^n Z_\ell}{\sqrt{\frac1n \sum_{\ell=1}^n \big(Z_\ell-\overline{\bm Z}\big)^2}}.
 \label{eq:CV}
 \end{equation}
 
@@ -200,7 +200,7 @@ scale, respectively.
 
 Their estimator becomes
 \begin{equation}
-\widecheck{\text{CV}}(\bm X) = \frac{\widehat{Q}_2(\bm X)}{\frac1n \sum_{\ell=1}^n|X_i-\widehat{Q}_2(\bm X)|}.
+\widecheck{\text{CV}}(\bm Z) = \frac{\widehat{Q}_2(\bm Z)}{\frac1n \sum_{\ell=1}^n \big|Z_i-\widehat{Q}_2(\bm Z)\big|}.
 \end{equation}
 
 It is robust, we don't know its distribution under the $\Gamma_{\text{SAR}}$ model.
@@ -215,7 +215,7 @@ It has been used for SAR data, among others, by
 
 Specifically, the Shannon entropy of the model $F$, characterized by the probability density function $f$ is
 $$
-H(F) = -\int f(x) \ln\big(f(x)\big) dx.
+H(F) = -\int_{-\infty}^\infty f(x) \ln\big(f(x)\big) dx.
 $$
 
 There are other types of entropy, e.g., Rényi and Tsallis, and also the Fisher information measure~\citep{AsymptoticDistributionofCertainTypesofEntropyundertheMultinomialLaw}.
@@ -253,7 +253,7 @@ This test statistic is close to zero under the null hypothesis (homogeneity, ful
 Now we must choose suitable estimators $\widehat{H_{\Gamma_{\text{SAR}}}}$ and $\widehat{\mu}$.
 \end{frame}
 
-\begin{frame}{Estimating the Shannon entropy}
+\begin{frame}[allowframebreaks]{Estimating the Shannon entropy}
 The Shannon entropy's maximum likelihood estimator under the $\Gamma_{\text{SAR}}$ model is
 $$
 \widehat{H_{\Gamma_{\text{SAR}}}} = L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) + \widehat{\ln \mu},
@@ -264,8 +264,53 @@ We are also interested in non-parametric alternatives.
 
 Recall the definition of the Shannon entropy:
 \begin{align*}
-	H(F) &= -\int f(x) \ln\big(f(x)\big) dx.
+	H(F) = -\int_{-\infty}^\infty f(x) \ln\big(f(x)\big) dx.
 \end{align*}
+This can be written as
+$$
+H(F) = \int_{0}^{1} \ln \Big( \frac{d}{dy} F^{-1}(y) \Big) \, dy.
+$$
+See the proof in the Appendix.
+
+Now, given the random sample $\bm Z=(Z_1,Z_2,\dots,Z_n)$ and its sorted version $Z_{(1)},Z_{(2)},\dots,Z_{(n)}$, we can 
+\begin{itemize}
+	\item estimate $F^{-1}$ by the empirical cumulative distribution function,
+	\item approximate the derivative with finite differences (called ``spacings''),
+	\item approximate the integral with a summation.
+\end{itemize}
+
+There are several versions of entropy estimators based on spacings.
+We found that the best in terms of bias and mean square error is the one proposed by
+\citet{IbrahimAlOmari2014}:
+ \[
+	\widehat{H}_{\text{AO}}(\bm{Z})=\frac{1}{n} \sum_{i=1}^n \log \left[\frac{n}{\omega_i m}\left(Z_{(i+m)}-Z_{(i-m)}\right)\right],
+	\] where \[
+	\omega_i= \begin{cases}3/2 & \text { if }\quad 1 \leq i \leq m, \\ 2 & \text { if }\quad m+1 \leq i \leq n-m, \\ 3/2 & \text { if } \quad n-m+1 \leq i \leq n,\end{cases}
+	\] 
+	in which \(m=\big[\sqrt{n}+0.5\big]\), \(Z_{(i-m)}=Z_{(1)}\) for \(i \leq m\), and
+	\(Z_{(i+m)}=Z_{(n)}\) for \(i \geq n-m\).
+
+This estimator is asymptotically consistent, i.e., it converges in
+probability to the true value when \(m,n\rightarrow\infty\) and
+\(m/n\rightarrow0\). 
+
+However, we will use an improved bootstrap-improved
+version $\widetilde{H}_{\text{AO}}(\bm Z)$ because it performs better with small samples.
+See details in \citet{IdentifyingHeterogeneityinSARDatawithNewTestStatistics}.
+\end{frame}
+
+\begin{frame}{Finally\dots}
+	We have three test statistics:
+	\begin{align*}
+		S_{\widehat{\text{CV}}}(\bm Z;L) &= \frac{\frac1n \sum_{\ell=1}^n Z_\ell}{\sqrt{\frac1n \sum_{\ell=1}^n \big(Z_\ell-\overline{\bm Z}\big)^2}} - \frac1{\sqrt{L}} \\
+		S_{\widehat{\text{CV}_{\text{MnAD}}}} (\bm Z;L) &= \frac{\widehat{Q}_2(\bm Z)}{\frac1n \sum_{\ell=1}^n|X_i-\widehat{Q}_2(\bm Z)|}-\frac1{\sqrt{L}},\\
+		S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L) & = \widetilde{H}_{\text{AO}}(\bm Z) - L + \ln L - \ln\Gamma(L) - (1-L)\psi^{(0)}(L) - \ln \widehat{\mu}
+	\end{align*}
+	
+We don't know their distributions, but we know that they should be close to zero under the null hypothesis (homogeneity, fully developed speckle).
+
+We tested their size (error Type~I) and power (error Type~II) and finite-size distribution under the null hypothesis.
+\alert{The winner is\dots}
 \end{frame}
 
 \begin{frame}[standout]
@@ -278,7 +323,6 @@ You may forget about the technical contents of this talk, but remember:
 	\item Reproducibility goes a long way!
 \end{itemize}
 \end{frame}
-
 
 \begin{frame}[allowframebreaks,allowdisplaybreaks]
 \bibliographystyle{agsm}
@@ -300,7 +344,7 @@ You may forget about the technical contents of this talk, but remember:
 \end{columns}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Appendix}
+\begin{frame}[allowframebreaks]{Appendix}\label{App:Proof}
 
 	The Shannon entropy of a probability distribution with cumulative distribution function (CDF) \( F(x) \) and probability density function (PDF) \( f(x) = F'(x) \) is:
 	\[
@@ -340,3 +384,14 @@ You may forget about the technical contents of this talk, but remember:
 \end{frame}
 
 \end{document}
+
+Title: Identifying Heterogeneity in SAR Data with New Test Statistics
+
+Abstract: We will discuss a statistical approach to identify the underlying roughness characteristics in synthetic aperture radar (SAR) intensity data. The physical modeling of this kind of data allows the use of the Gamma distribution in the presence of fully-developed speckle, i.e., when there are infinitely many independent backscatterers per resolution cell, and none dominates the return. Such areas are often called ``homogeneous'' or ``textureless'' regions. The GI0 distribution is also a widely accepted law for heterogeneous and extremely heterogeneous regions. We propose three test statistics to distinguish between homogeneous and inhomogeneous regions with a known number of looks. The first test statistic uses a bootstrapped non-parametric estimator of Shannon entropy, providing a robust assessment in uncertain distributional assumptions. The second test uses the classical coefficient of variation (CV). The third test uses an alternative form of estimating the CV based on the ratio of the mean
+absolute deviation from the median to the median.
+
+Bio: Alejandro C. Frery received in 1983 a B.Sc. in Electronic and Electrical Engineering from the Universidad de Mendoza. His M.Sc. degree was in Applied Mathematics (Statistics) from the Instituto de Matemática Pura e Aplicada (IMPA, Rio de Janeiro, 1990), and his Ph.D. degree was in Applied Computing from the Instituto Nacional de Pesquisas Espaciais (INPE, São José dos Campos, Brazil, 1993). His research interests are data visualisation, statistical computing, and stochastic modelling, with signal and image processing and networks applications.
+
+He has held a ``Huashan Scholar'' position at Xidian University, Xi'an, China, since 2019. Since May 2020, he has been a Statistics and Data Science Professor at the School of Mathematics and Statistics, Victoria University of Wellington, New Zealand.
+
+Prof. Frery is also a member of the International Society for Photogrammetry and Remote Sensing (ISPRS), the New Zealand Statistical Association, and the Statistical Society of Australia. In 2018, he received the IEEE GRSS Regional Leader Award. After serving as Associate Editor for over five years, Prof. Frery was the Editor-in-Chief of the IEEE Geoscience and Remote Sensing Letters from 2014 to 2018. He was an IEEE Geoscience and Remote Sensing Society (GRSS) Distinguished Lecturer from 2015 to 2019. He served as this Society's AdCom (Advisory Committee) member, in charge of Future Publications, Plagiarism and Regional Symposia from 2019 to 2022. Since 2023, he has been the Vice-President of Publications. 
