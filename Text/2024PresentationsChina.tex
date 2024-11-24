@@ -8,11 +8,9 @@
 \usepackage{graphicx}
 \graphicspath{{./Figures/PNG/}}
 
-\usepackage{bm,bbm,bbding}
+\usepackage{bm,bbm}
 \usepackage{natbib}
 \usepackage{siunitx}
-\usepackage{texnames}
-\usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{mathabx}
@@ -377,28 +375,13 @@ You may forget about the technical contents of this talk, but remember:
 	\item No problem is too old to be revisited.
 	\item The data statistical properties always bring valuable information.
 	\item A careful mathematical manipulation often leads to new exciting results.
-	\item Reproducibility goes a long way!
+	\item The reproducible article (including these slides) is available \href{https://github.com/rjaneth/identifying-heterogeneity-in-sar-data-with-new-test-statistics}{\alert{here}}. Reproducibility goes a long way!
 \end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks,allowdisplaybreaks]
 \bibliographystyle{agsm}
 \bibliography{references} 	
-\end{frame}
-
-\begin{frame}[standout]
-\frametitle{The End}
-\begin{columns}
-	\begin{column}{.4\linewidth}
-		\centering
-		\includegraphics[width=.7\linewidth]{QRCode-WebPageVUW}\\	\includegraphics[width=\linewidth]{"Logo Offshore Reversed Landscape RGB"}
-	\end{column}
-	\begin{column}{.6\linewidth}
-		Thanks for your kind attention!
-		
-		Questions?
-	\end{column}
-\end{columns}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Appendix}\label{App:Proof}
@@ -438,6 +421,21 @@ You may forget about the technical contents of this talk, but remember:
 	H = \int_0^1 \ln \left( \frac{d}{dy} F^{-1}(y) \right) \, dy.
 	\] 
 \end{description}	
+\end{frame}
+
+\begin{frame}[standout]
+	\frametitle{The End}
+	\begin{columns}
+		\begin{column}{.4\linewidth}
+			\centering
+			\includegraphics[width=.7\linewidth]{QRCode-WebPageVUW}\\	\includegraphics[width=\linewidth]{"Logo Offshore Reversed Landscape RGB"}
+		\end{column}
+		\begin{column}{.6\linewidth}
+			Thanks for your kind attention!
+			
+			Questions?
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \end{document}
