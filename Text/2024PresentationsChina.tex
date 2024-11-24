@@ -1,19 +1,17 @@
 %!TEX program = xelatex
 \documentclass[table,aspectratio=169]{beamer}
 
-%\usefonttheme{professionalfonts}
 \usepackage[T1]{fontenc}
-\renewcommand*\familydefault{\sfdefault}
+\usefonttheme{serif}
 
-\usepackage{beamerthemesplit}
+%\usepackage{beamerthemesplit}
 \usepackage{graphicx}
-\graphicspath{{./Figures/}}
+\graphicspath{{./Figures/PNG/}}
 
 \usepackage{bm,bbm,bbding}
 \usepackage{natbib}
 \usepackage{siunitx}
 \usepackage{texnames}
-\usepackage{algorithm,algpseudocode}
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{amsmath}
@@ -189,7 +187,7 @@ Then, we need the distribution of
 \label{eq:CV}
 \end{equation}
 
-Although we know that $\bar{\bm X}$ and $\widehat{\text{CV}}(\overline X) $ are independent \citep{OnaCharacterizationoftheGammaDistributiontheIndependenceoftheSampleMeanandtheSampleCoefficientofVariation}, we don't know the distribution of~\eqref{eq:CV}.
+Although we know that $\overline{\bm X}$ and $\widehat{\text{CV}}(\overline X) $ are independent \citep{OnaCharacterizationoftheGammaDistributiontheIndependenceoftheSampleMeanandtheSampleCoefficientofVariation}, we don't know the distribution of~\eqref{eq:CV}.
 \end{frame}
 
 \begin{frame}{The usual approach: II}
@@ -203,7 +201,7 @@ Their estimator becomes
 \widecheck{\text{CV}}(\bm Z) = \frac{\widehat{Q}_2(\bm Z)}{\frac1n \sum_{\ell=1}^n \big|Z_i-\widehat{Q}_2(\bm Z)\big|}.
 \end{equation}
 
-It is robust, we don't know its distribution under the $\Gamma_{\text{SAR}}$ model.
+It is robust, but we don't know its distribution under the $\Gamma_{\text{SAR}}$ model.
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Our proposal's rationale}
@@ -274,7 +272,7 @@ See the proof in the Appendix.
 
 Now, given the random sample $\bm Z=(Z_1,Z_2,\dots,Z_n)$ and its sorted version $Z_{(1)},Z_{(2)},\dots,Z_{(n)}$, we can 
 \begin{itemize}
-	\item estimate $F^{-1}$ by the empirical cumulative distribution function,
+	\item estimate $F$ by the empirical cumulative distribution function,
 	\item approximate the derivative with finite differences (called ``spacings''),
 	\item approximate the integral with a summation.
 \end{itemize}
@@ -331,14 +329,31 @@ We tested their size (error Type~I) and power (error Type~II) and finite-size di
 {\setbeamercolor{background canvas}{bg=anti-flashwhite}
 \begin{frame}{Application to simulated data: $S_{\widehat{\text{CV}}}$, $S_{\widehat{\text{CV}_{\text{MnAD}}}}$, and $S_{\widetilde{H}_{\text{AO}}}$ $p$-values}
 \centering
-{\includegraphics[width=.32\linewidth]{../Figures/PNG/cv_pvalues_Phantom_4_z1} }
-{\includegraphics[width=.32\linewidth]{../Figures/PNG/mnad_p_values_Phantom_mnad_7_z1} }
-{\includegraphics[width=.32\linewidth]{../Figures/PNG/H_pvalue_Phantom_4_z1_200b} }
+{\includegraphics[width=.33\linewidth]{../Figures/PNG/cv_pvalues_Phantom_4_z1} }
+{\includegraphics[width=.33\linewidth]{../Figures/PNG/mnad_p_values_Phantom_mnad_7_z1} }
+{\includegraphics[width=.33\linewidth]{../Figures/PNG/H_pvalue_Phantom_4_z1_200b} }
 \end{frame}
 }
 
 {\setbeamercolor{background canvas}{bg=anti-flashwhite}
-\begin{frame}{Application to Sentinel~2 data}
+	\begin{frame}{Rotterdam: optical and Sentinel~2 data}
+		\centering
+\includegraphics[width=.48\linewidth]{../Figures/PNG/Rotterdam} 
+\includegraphics[width=.48\linewidth]{../Figures/PNG/Rotterdam_1024}
+	\end{frame}
+}
+
+{\setbeamercolor{background canvas}{bg=anti-flashwhite}
+	\begin{frame}{Rotterdam: $S_{\widehat{\text{CV}}}$, $S_{\widehat{\text{CV}_{\text{MnAD}}}}$, and $S_{\widetilde{H}_{\text{AO}}}$ $p$-values}
+		\centering
+\visible<1->{\includegraphics[width=.32\linewidth]{../Figures/PNG/cv_Rotterdam}}
+\visible<2->{\includegraphics[width=.32\linewidth]{../Figures/PNG/mnad_Rotterdam}}
+\visible<3->{\includegraphics[width=.32\linewidth]{../Figures/PNG/Entropy_AO_Rotterdam_1024}}
+	\end{frame}
+}
+
+{\setbeamercolor{background canvas}{bg=anti-flashwhite}
+\begin{frame}{Illinois: optical, Sentinel~2, and $p$-values}
 \centering
 \includegraphics[width=.335\linewidth]{../Figures/PNG/Sentinel2_Illinois_lake}
 \includegraphics[width=.32\linewidth]{../Figures/PNG/lake_512}
