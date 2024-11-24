@@ -229,7 +229,11 @@ in~\eqref{E:gi01}:
 	+ (L-\alpha) \psi^{(0)}(L-\alpha)-(1-\alpha)\psi^{(0)}(-\alpha)+\ln (-1-\alpha)+\ln\Gamma(-\alpha)-L,
 \end{multline} where \(\psi^{(0)}(\cdot)\) is the digamma function.
 
-\alert{They are different! Check \citet{IdentifyingHeterogeneityinSARDatawithNewTestStatistics} for details.} Therefore, some empirical version of~\eqref{E:E-gamma} could be used to form a test statistic.
+As expected, $H_{G_I^0}(\mu, \alpha, L)\to H_{\Gamma_{\text{SAR}}}(L, \mu)$ when $\alpha\to-\infty$.
+\alert{But they are different!}
+Check \citet{IdentifyingHeterogeneityinSARDatawithNewTestStatistics} for details. 
+
+Therefore, some empirical version of~\eqref{E:E-gamma} could be used to form a test statistic.
 
 Now, assume that we have a good estimator for the Shannon entropy, say $\widehat{H_{\Gamma_{\text{SAR}}}}$.
 Under the $\Gamma_{\text{SAR}}$ model, we expect it to be close to~\eqref{E:E-gamma}.
@@ -248,6 +252,14 @@ This test statistic is close to zero under the null hypothesis (homogeneity, ful
 
 Now we must choose suitable estimators $\widehat{H_{\Gamma_{\text{SAR}}}}$ and $\widehat{\mu}$.
 \end{frame}
+
+{\setbeamercolor{background canvas}{bg=anti-flashwhite}
+	\begin{frame}{What we want to measure}
+		\centering
+\includegraphics[width=0.78\linewidth]{R1-Identifying-Heterogeneity-in-SAR-Data-with-New-Test-Statistics_files/figure-latex/Plot_GI0_to_gamma1-1}
+	\end{frame}
+}
+
 
 \begin{frame}[allowframebreaks]{Estimating the Shannon entropy}
 The Shannon entropy's maximum likelihood estimator under the $\Gamma_{\text{SAR}}$ model is
