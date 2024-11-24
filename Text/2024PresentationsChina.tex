@@ -271,18 +271,40 @@ where $\widehat{\ln \mu}$ is the natural logarithm of the sample mean.
 We are also interested in non-parametric alternatives.
 
 Recall the definition of the Shannon entropy:
-\begin{align*}
+\begin{equation*}
 	H(F) = -\int_{-\infty}^\infty f(x) \ln\big(f(x)\big) dx.
-\end{align*}
-This can be written as
+\end{equation*}
+
+We want an estimator for $H(F)$, for example
 $$
-H(F) = \int_{0}^{1} \ln \Big( \frac{d}{dy} F^{-1}(y) \Big) \, dy.
+\widehat{H}(F) = H(\widehat{F}) = -\int_{-\infty}^\infty \widehat{f}(x) \ln\big(\widehat{f}(x)\big) dx,
+$$
+but how will we estimate $f$?
+
+Two ways to estimate $f$:
+\begin{itemize}
+	\item estimating the parameters $\widehat{f}(x;\bm\theta) = f(x;\widehat{\bm \theta})$,
+	\item estimating the density in a non-parametric way.
+\end{itemize}
+
+Parameter estimation $f(x;\widehat{\bm \theta})$ is \alert{inadequate}, because we are not sure which is the best model.
+
+Density estimation $\widehat{f}$ is \alert{tricky} because we want to work with small samples.
+
+\framebreak
+
+The Shannon entropy can be written as
+$$
+H(F) = 
+-\int_{-\infty}^\infty f(x) \ln\big(f(x)\big) dx =
+\int_{0}^{1} \ln \Big( \frac{d}{dy} F^{-1}(y) \Big) \, dy.
 $$
 See the proof in the Appendix.
 
 Now, given the random sample $\bm Z=(Z_1,Z_2,\dots,Z_n)$ and its sorted version $Z_{(1)},Z_{(2)},\dots,Z_{(n)}$, we can 
 \begin{itemize}
 	\item estimate $F$ by the empirical cumulative distribution function,
+	\item its inverse, the quantile function $F^{-1}$, by the order statistics
 	\item approximate the derivative with finite differences (called ``spacings''),
 	\item approximate the integral with a summation.
 \end{itemize}
@@ -302,7 +324,7 @@ This estimator is asymptotically consistent, i.e., it converges in
 probability to the true value when \(m,n\rightarrow\infty\) and
 \(m/n\rightarrow0\). 
 
-However, we will use an improved bootstrap-improved
+However, we will use a bootstrap-improved
 version $\widetilde{H}_{\text{AO}}(\bm Z)$ because it performs better with small samples.
 See details in \citet{IdentifyingHeterogeneityinSARDatawithNewTestStatistics}.
 \end{frame}
