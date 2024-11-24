@@ -304,12 +304,12 @@ See the proof in the Appendix.
 Now, given the random sample $\bm Z=(Z_1,Z_2,\dots,Z_n)$ and its sorted version $Z_{(1)},Z_{(2)},\dots,Z_{(n)}$, we can 
 \begin{itemize}
 	\item estimate $F$ by the empirical cumulative distribution function,
-	\item its inverse, the quantile function $F^{-1}$, by the order statistics
-	\item approximate the derivative with finite differences (called ``spacings''),
-	\item approximate the integral with a summation.
+	\item its inverse, the quantile function $F^{-1}$, by the \alert{order statistics}
+	\item approximate the derivative with finite differences (called \alert{``spacings''}),
+	\item approximate the integral with a \alert{summation}.
 \end{itemize}
 
-There are several versions of entropy estimators based on spacings.
+\citet{vasicek1976test} proposed estimators based on spacings ($m$), followed by several other versions.
 We found that the best in terms of bias and mean square error is the one proposed by
 \citet{IbrahimAlOmari2014}:
  \[
