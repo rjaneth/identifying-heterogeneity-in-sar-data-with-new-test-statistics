@@ -70,7 +70,7 @@
 \institute{Victoria University of Wellington\\
 School of Mathematics and Statistics\\
 New Zealand}
-\date{November, 2024}
+\date{December, 2024}
 
 \begin{document}
 
@@ -176,16 +176,15 @@ But, what is ``too far''?
 
 
 \begin{frame}{The usual approach: I}
-We are tempted to form a statistical test using the coefficient of variation as the test statistic.
+We are tempted to form a test statistic using the coefficient of variation.
 
 Consider the random sample $\bm Z=(Z_1,Z_2,\dots,Z_n)$ that, under the null hypothesis has $\Gamma_{\text{SAR}}$ distribution.
-Then, we need the distribution of
+Our test statistic is
 \begin{equation}
-\widehat{\text{CV}}(\bm Z) = \frac{\frac1n \sum_{\ell=1}^n Z_\ell}{\sqrt{\frac1n \sum_{\ell=1}^n \big(Z_\ell-\overline{\bm Z}\big)^2}}.
-\label{eq:CV}
+S_{\widehat{\text{CV}}}(\bm Z;L) = \overbrace{\frac{\frac1n \sum_{\ell=1}^n Z_\ell}{\sqrt{\frac1n \sum_{\ell=1}^n \big(Z_\ell-\overline{\bm Z}\big)^2}}}^{\widehat{\text{CV}}(\bm Z)} - \underbrace{\frac{1}{\sqrt{L}}}_{\text{CV}\mid \Gamma_{\text{SAR}}} . \label{eq:SCV}
 \end{equation}
 
-Although we know that $\overline{\bm X}$ and $\widehat{\text{CV}}(\overline X) $ are independent \citep{OnaCharacterizationoftheGammaDistributiontheIndependenceoftheSampleMeanandtheSampleCoefficientofVariation}, we don't know the distribution of~\eqref{eq:CV}.
+Although we know that $\overline{\bm X}$ and $\widehat{\text{CV}}(\overline X) $ are independent \citep{OnaCharacterizationoftheGammaDistributiontheIndependenceoftheSampleMeanandtheSampleCoefficientofVariation}, we don't know the distribution of~\eqref{eq:SCV}.
 \end{frame}
 
 \begin{frame}{The usual approach: II}
@@ -194,9 +193,9 @@ The coefficient of variation is so widespread that \citet{Ospina2019} proposed a
 They replaced the mean by the median, and the standard deviation by the mean absolute deviation from the median (MnAD), two well-known robust measures of location and 
 scale, respectively. 
 
-Their estimator becomes
+Our robust test statistic becomes
 \begin{equation}
-\widecheck{\text{CV}}(\bm Z) = \frac{\widehat{Q}_2(\bm Z)}{\frac1n \sum_{\ell=1}^n \big|Z_i-\widehat{Q}_2(\bm Z)\big|}.
+S_{\widecheck{\text{CV}}}(\bm Z;L) = \frac{\widehat{Q}_2(\bm Z)}{\frac1n \sum_{\ell=1}^n \big|Z_i-\widehat{Q}_2(\bm Z)\big|} - \frac{1}{\sqrt{L}}.
 \end{equation}
 
 It is robust, but we don't know its distribution under the $\Gamma_{\text{SAR}}$ model.
@@ -235,22 +234,22 @@ Check \citet{IdentifyingHeterogeneityinSARDatawithNewTestStatistics} for details
 
 Therefore, some empirical version of~\eqref{E:E-gamma} could be used to form a test statistic.
 
-Now, assume that we have a good estimator for the Shannon entropy, say $\widehat{H_{\Gamma_{\text{SAR}}}}$.
+Assume we have an estimator $\widehat{H}$ for the Shannon entropy of \alert{any} model.
 Under the $\Gamma_{\text{SAR}}$ model, we expect it to be close to~\eqref{E:E-gamma}.
 Such estimator estimates
 $$
-\widehat{H_{\Gamma_{\text{SAR}}}} = \reallywidehat{L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) + \ln \mu}
+\widehat{H}\mid {\Gamma_{\text{SAR}}} (L,\mu) = \widehat{H_{\Gamma_{\text{SAR}}}}  = \reallywidehat{L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) + \ln \mu}
 $$
 
 Now we build a test statistic:
 \begin{align*}
 	S(\bm Z; L) = & \hskip1ex\reallywidehat{L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) + \ln \mu} - \mbox{}\\
 	& \hskip1ex L + \ln L - \ln\Gamma(L) - (1-L)\psi^{(0)}(L) - \ln \widehat{\mu}\\
-	= & \hskip1ex \widehat{H_{\Gamma_{\text{SAR}}}} - L + \ln L - \ln\Gamma(L) - (1-L)\psi^{(0)}(L) - \ln \widehat{\mu}.
+	= & \hskip1ex \widehat{H} - L + \ln L - \ln\Gamma(L) - (1-L)\psi^{(0)}(L) - \ln \widehat{\mu}.
 \end{align*}
 This test statistic is close to zero under the null hypothesis (homogeneity, fully developed speckle, the $\Gamma_{\text{SAR}}$ model).
 
-Now we must choose suitable estimators $\widehat{H_{\Gamma_{\text{SAR}}}}$ and $\widehat{\mu}$.
+Now we must choose suitable estimators $\widehat{H}$ and $\widehat{\mu}$.
 \end{frame}
 
 {\setbeamercolor{background canvas}{bg=anti-flashwhite}
@@ -267,8 +266,6 @@ $$
 \widehat{H_{\Gamma_{\text{SAR}}}} = L -\ln L+\ln\Gamma(L)+(1-L)\psi^{(0)}(L) + \widehat{\ln \mu},
 $$
 where $\widehat{\ln \mu}$ is the natural logarithm of the sample mean.
-
-We are also interested in non-parametric alternatives.
 
 Recall the definition of the Shannon entropy:
 \begin{equation*}
@@ -333,14 +330,14 @@ See details in \citet{IdentifyingHeterogeneityinSARDatawithNewTestStatistics}.
 	We have three test statistics:
 	\begin{align*}
 		S_{\widehat{\text{CV}}}(\bm Z;L) &= \frac{\frac1n \sum_{\ell=1}^n Z_\ell}{\sqrt{\frac1n \sum_{\ell=1}^n \big(Z_\ell-\overline{\bm Z}\big)^2}} - \frac1{\sqrt{L}} \\
-		S_{\widehat{\text{CV}_{\text{MnAD}}}} (\bm Z;L) &= \frac{\widehat{Q}_2(\bm Z)}{\frac1n \sum_{\ell=1}^n|X_i-\widehat{Q}_2(\bm Z)|}-\frac1{\sqrt{L}},\\
+		S_{\widecheck{\text{CV}}}(\bm Z;L) &= \frac{\widehat{Q}_2(\bm Z)}{\frac1n \sum_{\ell=1}^n|X_i-\widehat{Q}_2(\bm Z)|}-\frac1{\sqrt{L}},\\
 		S_{\widetilde{H}_{\text{AO}}}(\bm{Z}; L) & = \widetilde{H}_{\text{AO}}(\bm Z) - L + \ln L - \ln\Gamma(L) - (1-L)\psi^{(0)}(L) - \ln \widehat{\mu}
 	\end{align*}
 	
 We don't know their distributions, but we know that they should be close to zero under the null hypothesis (homogeneity, fully developed speckle).
 
-We tested their size (error Type~I) and power (error Type~II) and finite-size distribution under the null hypothesis.
-\alert{The winner is\dots}
+We tested their size (error Type~I under the null hypothesis) 
+and power (error Type~II under the $G_I^0$ model) and finite-size distributions.
 \end{frame}
 
 %{\setbeamercolor{background canvas}{bg=anti-flashwhite}
